@@ -2240,24 +2240,24 @@ static bool setting_append_list(
             }
          }
 
-         CONFIG_ACTION(
-               list, list_info,
-               MENU_ENUM_LABEL_LOAD_CONTENT_LIST,
-               MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_LIST,
-               &group_info,
-               &subgroup_info,
-               parent_group);
+//         CONFIG_ACTION(
+//               list, list_info,
+//               MENU_ENUM_LABEL_LOAD_CONTENT_LIST,
+//               MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_LIST,
+//               &group_info,
+//               &subgroup_info,
+//               parent_group);
 
-         if (settings->bools.history_list_enable)
-         {
-            CONFIG_ACTION(
-                  list, list_info,
-                  MENU_ENUM_LABEL_LOAD_CONTENT_HISTORY,
-                  MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_HISTORY,
-                  &group_info,
-                  &subgroup_info,
-                  parent_group);
-         }
+//         if (settings->bools.history_list_enable)
+//         {
+//            CONFIG_ACTION(
+//                  list, list_info,
+//                  MENU_ENUM_LABEL_LOAD_CONTENT_HISTORY,
+//                  MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_HISTORY,
+//                  &group_info,
+//                  &subgroup_info,
+//                  parent_group);
+//         }
 
          if (string_is_not_equal_fast(settings->arrays.menu_driver, "xmb", 3))
          {

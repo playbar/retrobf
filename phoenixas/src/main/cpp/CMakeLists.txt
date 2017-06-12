@@ -202,7 +202,6 @@ add_library(retroarch-activity SHARED
                 ${RARCH_DIR}/src/paths.c
                 ${RARCH_DIR}/libretro-common/queues/task_queue.c
                 ${RARCH_DIR}/src/msg_hash.c
-                ${RARCH_DIR}/intl/msg_hash_chs.c
                 ${RARCH_DIR}/intl/msg_hash_us.c
                 ${RARCH_DIR}/wifi/wifi_driver.c
                 ${RARCH_DIR}/wifi/drivers/nullwifi.c

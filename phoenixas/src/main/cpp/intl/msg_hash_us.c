@@ -2422,10 +2422,10 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "horizontal_menu")
        MSG_HASH(MENU_ENUM_LABEL_IMAGES_TAB,
                 "images_tab")
-       MSG_HASH(MENU_ENUM_LABEL_INFORMATION,
-                "information")
-       MSG_HASH(MENU_ENUM_LABEL_INFORMATION_LIST,
-                "information_list")
+       case MENU_ENUM_LABEL_INFORMATION:
+           return "information";
+       case MENU_ENUM_LABEL_INFORMATION_LIST:
+           return "information_list";
        MSG_HASH(MENU_ENUM_LABEL_INFO_SCREEN,
                 "info_screen")
        MSG_HASH(MENU_ENUM_LABEL_INPUT_ALL_USERS_CONTROL_MENU,
@@ -3774,8 +3774,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "System name")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_CORE_INPUT_REMAPPING_OPTIONS,
                 "Controls")
-//       MSG_HASH(MENU_ENUM_LABEL_VALUE_CORE_LIST,
-//                "Load Core")
         case MENU_ENUM_LABEL_VALUE_CORE_LIST:
             return "Load Core";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_CORE_OPTIONS,
@@ -3898,10 +3896,10 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Horizontal Menu")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_IMAGES_TAB,
                 "Image")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_INFORMATION,
-                "Information")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_INFORMATION_LIST,
-                "Information")
+        case MENU_ENUM_LABEL_VALUE_INFORMATION:
+            return "Information";
+        case MENU_ENUM_LABEL_VALUE_INFORMATION_LIST:
+            return "Information";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_ADC_TYPE,
                 "Analog To Digital Type")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_ALL_USERS_CONTROL_MENU,
@@ -4042,8 +4040,8 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Overlay next")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_META_PAUSE_TOGGLE,
                 "Pause toggle")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_META_QUIT_KEY,
-                "Quit RetroArch")
+        case MENU_ENUM_LABEL_VALUE_INPUT_META_QUIT_KEY:
+            return "Quit RetroArch";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_META_RESET,
                 "Reset game")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_META_REWIND,
@@ -4376,8 +4374,8 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Present")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_PRIVACY_SETTINGS,
                 "Privacy")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_QUIT_RETROARCH,
-                "Quit RetroArch")
+        case MENU_ENUM_LABEL_VALUE_QUIT_RETROARCH:
+            return "Quit RetroArch";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RDB_ENTRY_ANALOG,
                 "Analog supported")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RDB_ENTRY_BBFC_RATING,
