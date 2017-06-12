@@ -2894,8 +2894,8 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "sort_savestates_enable")
        MSG_HASH(MENU_ENUM_LABEL_SSH_ENABLE,
                 "ssh_enable")
-       MSG_HASH(MENU_ENUM_LABEL_START_CORE,
-                "start_core")
+       case MENU_ENUM_LABEL_START_CORE:
+           return "start_core";
        MSG_HASH(MENU_ENUM_LABEL_START_NET_RETROPAD,
                 "menu_start_net_retropad")
        MSG_HASH(MENU_ENUM_LABEL_START_VIDEO_PROCESSOR,

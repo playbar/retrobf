@@ -4447,8 +4447,9 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
             BIND_ACTION_OK(cbs, action_ok_core_deferred_set_current_core);
             break;
          case MENU_ENUM_LABEL_START_CORE:
-            BIND_ACTION_OK(cbs, action_ok_start_core);
-            break;
+              cbs->action_ok = action_ok_start_core;
+              cbs->action_ok_ident = "action_ok_start_core";
+              break;
          case MENU_ENUM_LABEL_START_NET_RETROPAD:
             BIND_ACTION_OK(cbs, action_ok_start_net_retropad_core);
             break;
@@ -4682,8 +4683,9 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
             BIND_ACTION_OK(cbs, action_ok_browse_url_list);
             break;
          case MENU_ENUM_LABEL_CORE_LIST:
-            BIND_ACTION_OK(cbs, action_ok_core_list);
-            break;
+               cbs->action_ok = action_ok_core_list;
+               cbs->action_ok_ident = "action_ok_core_list";
+               break;
          case MENU_ENUM_LABEL_DISK_IMAGE_APPEND:
             BIND_ACTION_OK(cbs, action_ok_disk_image_append_list);
             break;

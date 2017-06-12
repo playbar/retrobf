@@ -1265,8 +1265,9 @@ static int menu_cbs_init_bind_deferred_push_compare_label(
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_core_input_remapping_options);
                break;
             case MENU_ENUM_LABEL_CORE_LIST:
-               BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_core_list);
-               break;
+                 cbs->action_deferred_push = deferred_push_core_list;
+                 cbs->action_deferred_push_ident = "deferred_push_core_list";
+                 break;
             case MENU_ENUM_LABEL_CONTENT_COLLECTION_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_content_collection_list);
                break;
