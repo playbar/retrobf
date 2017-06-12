@@ -3433,15 +3433,12 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
           MENU_ENUM_LABEL_VALUE_ACHIEVEMENT_LIST_HARDCORE,
           "Achievement List (Hardcore)"
        )
-       MSG_HASH(
-          MENU_ENUM_LABEL_VALUE_ADD_CONTENT_LIST,
-          "Scan Content"
-       )
-       MSG_HASH(
-          MENU_ENUM_LABEL_VALUE_CONFIGURATIONS_LIST,
-          "Configurations"
-       )
-       MSG_HASH(
+       MSG_HASH(MENU_ENUM_LABEL_VALUE_ADD_CONTENT_LIST, "Scan Content")
+
+        case MENU_ENUM_LABEL_VALUE_CONFIGURATIONS_LIST:
+            return "Configurations";
+
+        MSG_HASH(
           MENU_ENUM_LABEL_VALUE_ADD_TAB,
           "Import content"
        )
@@ -3880,8 +3877,8 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Changing Virtual Gamepad Overlay")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_HELP_CONTROLS,
                 "Basic Menu Controls")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_HELP_LIST,
-                "Help")
+        case MENU_ENUM_LABEL_VALUE_HELP_LIST:
+            return "Help";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_HELP_LOADING_CONTENT,
                 "Loading Content")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_HELP_SCANNING_CONTENT,

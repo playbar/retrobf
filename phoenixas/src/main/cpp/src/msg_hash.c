@@ -90,56 +90,6 @@ const char *msg_hash_to_str(enum msg_hash_enums msg)
 {
    const char *ret = NULL;
 
-#ifdef HAVE_LANGEXTRA
-   switch (uint_user_language)
-   {
-//      case RETRO_LANGUAGE_FRENCH:
-//         ret = msg_hash_to_str_fr(msg);
-//         break;
-//      case RETRO_LANGUAGE_GERMAN:
-//         ret = msg_hash_to_str_de(msg);
-//         break;
-//      case RETRO_LANGUAGE_SPANISH:
-//         ret = msg_hash_to_str_es(msg);
-//         break;
-//      case RETRO_LANGUAGE_ITALIAN:
-//         ret = msg_hash_to_str_it(msg);
-//         break;
-//      case RETRO_LANGUAGE_PORTUGUESE_BRAZIL:
-//         ret = msg_hash_to_str_pt_br(msg);
-//         break;
-//      case RETRO_LANGUAGE_PORTUGUESE_PORTUGAL:
-//         ret = msg_hash_to_str_pt_pt(msg);
-//         break;
-//      case RETRO_LANGUAGE_DUTCH:
-//         ret = msg_hash_to_str_nl(msg);
-//         break;
-//      case RETRO_LANGUAGE_ESPERANTO:
-//         ret = msg_hash_to_str_eo(msg);
-//         break;
-//      case RETRO_LANGUAGE_POLISH:
-//         ret = msg_hash_to_str_pl(msg);
-//         break;
-//      case RETRO_LANGUAGE_RUSSIAN:
-//         ret = msg_hash_to_str_ru(msg);
-//         break;
-//      case RETRO_LANGUAGE_JAPANESE:
-//         ret = msg_hash_to_str_jp(msg);
-//         break;
-//      case RETRO_LANGUAGE_KOREAN:
-//         ret = msg_hash_to_str_ko(msg);
-//         break;
-//      case RETRO_LANGUAGE_VIETNAMESE:
-//         ret = msg_hash_to_str_vn(msg);
-//         break;
-//      case RETRO_LANGUAGE_CHINESE_SIMPLIFIED:
-//         ret = msg_hash_to_str_chs(msg);
-//         break;
-      default:
-         break;
-   }
-#endif
-
    if (ret && !string_is_equal(ret, "null"))
       return ret;
 

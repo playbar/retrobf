@@ -1151,7 +1151,8 @@ static int menu_cbs_init_bind_deferred_push_compare_label(
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_load_content_list);
                break;
             case MENU_ENUM_LABEL_INFORMATION_LIST:
-               BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_information_list);
+                 cbs->action_deferred_push = deferred_push_information_list;
+                 cbs->action_deferred_push_ident = "deferred_push_information_list";
                break;
             case MENU_ENUM_LABEL_MANAGEMENT:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_management_options);

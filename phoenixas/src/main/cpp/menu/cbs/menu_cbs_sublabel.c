@@ -55,7 +55,12 @@ default_sublabel_macro(action_bind_sublabel_recording_settings_list,       MENU_
 default_sublabel_macro(action_bind_sublabel_frame_throttle_settings_list,  MENU_ENUM_SUBLABEL_FRAME_THROTTLE_SETTINGS)
 default_sublabel_macro(action_bind_sublabel_onscreen_display_settings_list,MENU_ENUM_SUBLABEL_ONSCREEN_DISPLAY_SETTINGS)
 default_sublabel_macro(action_bind_sublabel_core_settings_list,            MENU_ENUM_SUBLABEL_CORE_SETTINGS)
-default_sublabel_macro(action_bind_sublabel_information_list_list,         MENU_ENUM_SUBLABEL_INFORMATION_LIST_LIST)
+static int action_bind_sublabel_information_list_list(file_list_t *list, unsigned type, unsigned i, const char *label, const char *path, char *s, size_t len)
+{
+   strlcpy(s, msg_hash_to_str(MENU_ENUM_SUBLABEL_INFORMATION_LIST_LIST), len);
+   return 0;
+}
+
 default_sublabel_macro(action_bind_sublabel_cheevos_enable,                MENU_ENUM_SUBLABEL_CHEEVOS_ENABLE)
 default_sublabel_macro(action_bind_sublabel_cheevos_test_unofficial,       MENU_ENUM_SUBLABEL_CHEEVOS_TEST_UNOFFICIAL)
 default_sublabel_macro(action_bind_sublabel_cheevos_hardcore_mode_enable,  MENU_ENUM_SUBLABEL_CHEEVOS_HARDCORE_MODE_ENABLE)
@@ -322,7 +327,11 @@ default_sublabel_macro(action_bind_sublabel_video_viewport_custom_height,       
 default_sublabel_macro(action_bind_sublabel_video_viewport_custom_width,           MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_CUSTOM_WIDTH)
 default_sublabel_macro(action_bind_sublabel_video_viewport_custom_x,               MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_CUSTOM_X)
 default_sublabel_macro(action_bind_sublabel_video_viewport_custom_y,               MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_CUSTOM_Y)
-default_sublabel_macro(action_bind_sublabel_netplay_use_mitm_server,               MENU_ENUM_SUBLABEL_NETPLAY_USE_MITM_SERVER)
+static int action_bind_sublabel_netplay_use_mitm_server(file_list_t *list, unsigned type, unsigned i, const char *label, const char *path, char *s, size_t len)
+{
+   strlcpy(s, msg_hash_to_str(MENU_ENUM_SUBLABEL_NETPLAY_USE_MITM_SERVER), len);
+   return 0;
+}
 
 static int action_bind_sublabel_cheevos_entry(
       file_list_t *list,
@@ -1149,14 +1158,16 @@ int menu_cbs_init_bind_sublabel(menu_file_list_cbs_t *cbs,
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_user_bind_settings);
             break;
          case MENU_ENUM_LABEL_INFORMATION_LIST:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_information_list_list);
+              cbs->action_sublabel = action_bind_sublabel_information_list_list;
+              cbs->action_sublabel_ident = "action_bind_sublabel_information_list_list";
             break;
          case MENU_ENUM_LABEL_NETPLAY:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_netplay_settings);
             break;
          case MENU_ENUM_LABEL_ONLINE_UPDATER:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_online_updater);
-            break;
+              cbs->action_sublabel = action_bind_sublabel_online_updater;
+              cbs->action_sublabel_ident = "action_bind_sublabel_online_updater";
+              break;
          case MENU_ENUM_LABEL_VIDEO_MAX_SWAPCHAIN_IMAGES:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_max_swapchain_images);
             break;
@@ -1260,7 +1271,9 @@ int menu_cbs_init_bind_sublabel(menu_file_list_cbs_t *cbs,
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_content_history_size);
             break;
          case MENU_ENUM_LABEL_NETPLAY_USE_MITM_SERVER:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_netplay_use_mitm_server);
+//            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_netplay_use_mitm_server);
+              cbs->action_sublabel = action_bind_sublabel_netplay_use_mitm_server;
+              cbs->action_sublabel_ident = "action_bind_sublabel_netplay_use_mitm_server";
             break;
          default:
          case MSG_UNKNOWN:

@@ -83,7 +83,6 @@ default_title_macro(action_get_user_accounts_cheevos_list,      MENU_ENUM_LABEL_
 default_title_macro(action_get_download_core_content_list,      MENU_ENUM_LABEL_VALUE_DOWNLOAD_CORE_CONTENT)
 default_title_macro(action_get_user_accounts_list,              MENU_ENUM_LABEL_VALUE_ACCOUNTS_LIST)
 default_title_macro(action_get_core_information_list,           MENU_ENUM_LABEL_VALUE_CORE_INFORMATION)
-//default_title_macro(action_get_core_list,                       MENU_ENUM_LABEL_VALUE_CORE_LIST)
 static int action_get_core_list(const char *path, const char *label, unsigned menu_type, char *s, size_t len)
 {
    sanitize_to_string(s, msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CORE_LIST), len);
@@ -589,7 +588,8 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
             BIND_ACTION_GET_TITLE(cbs, action_get_title_config_directory);
             break;
          case MENU_ENUM_LABEL_INFORMATION_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_title_information_list);
+              cbs->action_get_title = action_get_title_information_list;
+              cbs->action_get_title_ident = "action_get_title_information_list";
             break;
          case MENU_ENUM_LABEL_SETTINGS:
             BIND_ACTION_GET_TITLE(cbs, action_get_settings_list);
@@ -610,7 +610,6 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
             BIND_ACTION_GET_TITLE(cbs, action_get_core_information_list);
             break;
          case MENU_ENUM_LABEL_CORE_LIST:
-//          BIND_ACTION_GET_TITLE(cbs, action_get_core_list);
               cbs->action_get_title = action_get_core_list;
               cbs->action_get_title_ident = "action_get_core_list";
             break;
@@ -922,7 +921,6 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
             BIND_ACTION_GET_TITLE(cbs, action_get_core_information_list);
             break;
          case MENU_LABEL_CORE_LIST:
-//            BIND_ACTION_GET_TITLE(cbs, action_get_core_list);
               cbs->action_get_title = action_get_core_list;
               cbs->action_get_title_ident = "action_get_core_list";
             break;
