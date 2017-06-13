@@ -794,7 +794,6 @@ enum msg_hash_enums
 
    MENU_LABEL(HELP_WHAT_IS_A_CORE),
    MENU_LABEL(HELP_LOADING_CONTENT),
-   MENU_LABEL(HELP_LIST),
    MENU_LABEL(HELP_CONTROLS),
 
    MENU_ENUM_LABEL_VALUE_EXTRACTING_PLEASE_WAIT,
@@ -1244,9 +1243,6 @@ enum msg_hash_enums
    MENU_ENUM_LABEL_VALUE_CORE_LIST,
    MENU_LABEL(MANAGEMENT),
    MENU_LABEL(ONLINE),
-   MENU_LABEL(ONLINE_UPDATER),
-   MENU_LABEL(NETPLAY),
-   MENU_LABEL(SETTINGS),
    MENU_LABEL(FRONTEND_COUNTERS),
    MENU_LABEL(CORE_COUNTERS),
    MENU_LABEL(NETWORK_INFORMATION),
@@ -1280,7 +1276,6 @@ enum msg_hash_enums
    MENU_ENUM_LABEL_INFO_SCREEN,
 
    MENU_LABEL(CUSTOM_RATIO),
-   MENU_LABEL(HELP),
    MENU_LABEL(CHEAT_DATABASE_PATH),
    MENU_LABEL(CURSOR_DIRECTORY),
    MENU_LABEL(OSK_OVERLAY_DIRECTORY),
@@ -1817,7 +1812,6 @@ enum msg_hash_enums
 
 #define MENU_LABEL_VIDEO_FILTER                                                0x1c0eb741U
 #define MENU_LABEL_HELP_CONTROLS                                               0x04859221U
-#define MENU_LABEL_HELP_LIST                                                   0x006af669U
 #define MENU_LABEL_HELP_WHAT_IS_A_CORE                                         0x83fcbc44U
 #define MENU_LABEL_HELP_LOADING_CONTENT                                        0x231d8245U
 #define MENU_LABEL_HELP_SCANNING_CONTENT                                       0x1dec52b8U
@@ -1826,8 +1820,6 @@ enum msg_hash_enums
 
 /* Main menu */
 #define MENU_LABEL_LOAD_CONTENT_LIST                                           0x5745de1fU
-#define MENU_LABEL_ONLINE_UPDATER                                              0xcac0025eU
-#define MENU_LABEL_NETPLAY                                                     0x0b511d22U
 #define MENU_LABEL_SETTINGS                                                    0x1304dc16U
 #define MENU_LABEL_HELP                                                        0x7c97d2eeU
 #define MENU_VALUE_HORIZONTAL_MENU                                             0x35761704U

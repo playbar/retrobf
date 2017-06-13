@@ -650,9 +650,7 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
                              "b) Go to '%s' -> '%s', and look at\n"
                              "'%s'. Let it run for\n"
                              "2048 frames, then press 'OK'.",
-                     msg_hash_to_str(MENU_ENUM_LABEL_VALUE_SETTINGS),
                      msg_hash_to_str(MENU_ENUM_LABEL_VALUE_VIDEO_SETTINGS),
-                     msg_hash_to_str(MENU_ENUM_LABEL_VALUE_SETTINGS),
                      msg_hash_to_str(MENU_ENUM_LABEL_VALUE_VIDEO_SETTINGS),
                      msg_hash_to_str(MENU_ENUM_LABEL_VALUE_VIDEO_REFRESH_RATE_AUTO));
             strlcpy(s, t, len);
@@ -1919,21 +1917,13 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
                             "To load a core, select one from\n"
                             "'Load Core'.\n"
                             " \n"
-#ifdef HAVE_NETWORKING
                     "You can obtain cores in several ways: \n"
                     "* Download them by going to\n"
                     "'%s' -> '%s'.\n"
                     "* Manually move them over to\n"
                     "'%s'.",
-                    msg_hash_to_str(MENU_ENUM_LABEL_VALUE_ONLINE_UPDATER),
                     msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CORE_UPDATER_LIST),
                     msg_hash_to_str(MENU_ENUM_LABEL_VALUE_LIBRETRO_DIR_PATH)
-#else
-                            "You can obtain cores by\n"
-                            "manually moving them over to\n"
-                            "'%s'.",
-                     msg_hash_to_str(MENU_ENUM_LABEL_VALUE_LIBRETRO_DIR_PATH)
-#endif
             );
             break;
         case MENU_ENUM_LABEL_VALUE_HELP_CHANGE_VIRTUAL_GAMEPAD_DESC:
@@ -1948,7 +1938,6 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
                              "hidden when in the menu.\n"
                              "If you'd like to change this behavior,\n"
                              "you can set '%s' to false.",
-                     msg_hash_to_str(MENU_ENUM_LABEL_VALUE_SETTINGS),
                      msg_hash_to_str(MENU_ENUM_LABEL_VALUE_OVERLAY_SETTINGS),
                      msg_hash_to_str(MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_HIDE_IN_MENU)
             );
@@ -2382,16 +2371,12 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "game_specific_options_create")
        MSG_HASH(MENU_ENUM_LABEL_GAME_SPECIFIC_OPTIONS_IN_USE,
                 "game_specific_options_in_use")
-       MSG_HASH(MENU_ENUM_LABEL_HELP,
-                "help")
        MSG_HASH(MENU_ENUM_LABEL_HELP_AUDIO_VIDEO_TROUBLESHOOTING,
                 "help_audio_video_troubleshooting")
        MSG_HASH(MENU_ENUM_LABEL_HELP_CHANGE_VIRTUAL_GAMEPAD,
                 "help_change_virtual_gamepad")
        MSG_HASH(MENU_ENUM_LABEL_HELP_CONTROLS,
                 "help_controls")
-       MSG_HASH(MENU_ENUM_LABEL_HELP_LIST,
-                "help_list")
        MSG_HASH(MENU_ENUM_LABEL_HELP_LOADING_CONTENT,
                 "help_loading_content")
        MSG_HASH(MENU_ENUM_LABEL_HELP_SCANNING_CONTENT,
@@ -2560,8 +2545,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "menu_navigation_browser_filter_supported_extensions_enable")
        MSG_HASH(MENU_ENUM_LABEL_NAVIGATION_WRAPAROUND,
                 "menu_navigation_wraparound_enable")
-       MSG_HASH(MENU_ENUM_LABEL_NETPLAY,
-                "netplay")
        MSG_HASH(MENU_ENUM_LABEL_NETPLAY_CHECK_FRAMES,
                 "netplay_check_frames")
        MSG_HASH(MENU_ENUM_LABEL_NETPLAY_CLIENT_SWAP_INPUT,
@@ -2656,8 +2639,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "no_shader_parameters.")
        MSG_HASH(MENU_ENUM_LABEL_ONLINE,
                 "online")
-       MSG_HASH(MENU_ENUM_LABEL_ONLINE_UPDATER,
-                "online_updater")
        MSG_HASH(MENU_ENUM_LABEL_ONSCREEN_DISPLAY_SETTINGS,
                 "onscreen_display_settings")
        MSG_HASH(MENU_ENUM_LABEL_ONSCREEN_OVERLAY_SETTINGS,
@@ -2850,8 +2831,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "screenshot_directory")
        MSG_HASH(MENU_ENUM_LABEL_SCREEN_RESOLUTION,
                 "screen_resolution")
-       MSG_HASH(MENU_ENUM_LABEL_SETTINGS,
-                "settings")
        MSG_HASH(MENU_ENUM_LABEL_SETTINGS_TAB,
                 "settings_tab")
        MSG_HASH(MENU_ENUM_LABEL_SHADER_APPLY_CHANGES,
@@ -3847,16 +3826,12 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Create game-options file")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_GAME_SPECIFIC_OPTIONS_IN_USE,
                 "Game-options file")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_HELP,
-                "Help")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_HELP_AUDIO_VIDEO_TROUBLESHOOTING,
                 "Audio/Video Troubleshooting")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_HELP_CHANGE_VIRTUAL_GAMEPAD,
                 "Changing Virtual Gamepad Overlay")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_HELP_CONTROLS,
                 "Basic Menu Controls")
-        case MENU_ENUM_LABEL_VALUE_HELP_LIST:
-            return "Help";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_HELP_LOADING_CONTENT,
                 "Loading Content")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_HELP_SCANNING_CONTENT,
@@ -4187,8 +4162,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Navigation Wrap-Around")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_NEAREST,
                 "Nearest")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_NETPLAY,
-                "Netplay")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_NETPLAY_ALLOW_SLAVES,
                 "Allow Slave-Mode Clients")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_NETPLAY_CHECK_FRAMES,
@@ -4295,8 +4268,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "ON")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_ONLINE,
                 "Online")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_ONLINE_UPDATER,
-                "Online Updater")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_ONSCREEN_DISPLAY_SETTINGS,
                 "Onscreen Display")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_ONSCREEN_OVERLAY_SETTINGS,
@@ -4505,8 +4476,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Search")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_SECONDS,
                 "seconds")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_SETTINGS,
-                "Settings")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_SETTINGS_TAB,
                 "Settings")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_SHADER,
@@ -5021,14 +4990,10 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Configure controls for this user.")
        MSG_HASH(MENU_ENUM_SUBLABEL_LOG_VERBOSITY,
                 "Enable or disable logging to the terminal.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_NETPLAY,
-                "Join or host a netplay session.")
        MSG_HASH(MENU_ENUM_SUBLABEL_NETPLAY_LAN_SCAN_SETTINGS,
                 "Search for and connect to netplay hosts on the local network.")
        MSG_HASH(MENU_ENUM_SUBLABEL_INFORMATION_LIST_LIST,
                 "Display core, network, and system information.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_ONLINE_UPDATER,
-                "Download add-ons, components, and content for RetroArch.")
        MSG_HASH(MENU_ENUM_SUBLABEL_SAMBA_ENABLE,
                 "Enable or disable network sharing of your folders.")
        MSG_HASH(MENU_ENUM_SUBLABEL_SERVICES_SETTINGS,
@@ -5059,8 +5024,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Change video output settings.")
        MSG_HASH(MENU_ENUM_SUBLABEL_WIFI_SETTINGS,
                 "Scans for wireless networks and establishes connection.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_HELP_LIST,
-                "Learn more about how the program works.")
        MSG_HASH(MSG_APPENDED_DISK,
                 "Appended disk")
        MSG_HASH(MSG_APPLICATION_DIR,

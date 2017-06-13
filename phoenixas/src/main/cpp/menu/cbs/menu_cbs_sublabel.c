@@ -66,16 +66,13 @@ default_sublabel_macro(action_bind_sublabel_audio_settings_list,           MENU_
 default_sublabel_macro(action_bind_sublabel_input_settings_list,           MENU_ENUM_SUBLABEL_INPUT_SETTINGS)
 default_sublabel_macro(action_bind_sublabel_wifi_settings_list,            MENU_ENUM_SUBLABEL_WIFI_SETTINGS)
 default_sublabel_macro(action_bind_sublabel_netplay_lan_scan_settings_list,MENU_ENUM_SUBLABEL_NETPLAY_LAN_SCAN_SETTINGS)
-default_sublabel_macro(action_bind_sublabel_help_list,                     MENU_ENUM_SUBLABEL_HELP_LIST)
 default_sublabel_macro(action_bind_sublabel_services_settings_list,        MENU_ENUM_SUBLABEL_SERVICES_SETTINGS)
 default_sublabel_macro(action_bind_sublabel_ssh_enable,                    MENU_ENUM_SUBLABEL_SSH_ENABLE)
 default_sublabel_macro(action_bind_sublabel_samba_enable,                  MENU_ENUM_SUBLABEL_SAMBA_ENABLE )
 default_sublabel_macro(action_bind_sublabel_bluetooth_enable,              MENU_ENUM_SUBLABEL_BLUETOOTH_ENABLE )
 default_sublabel_macro(action_bind_sublabel_user_language,                 MENU_ENUM_SUBLABEL_USER_LANGUAGE)
 default_sublabel_macro(action_bind_sublabel_max_swapchain_images,          MENU_ENUM_SUBLABEL_VIDEO_MAX_SWAPCHAIN_IMAGES )
-default_sublabel_macro(action_bind_sublabel_online_updater,                MENU_ENUM_SUBLABEL_ONLINE_UPDATER)
 default_sublabel_macro(action_bind_sublabel_fps_show,                      MENU_ENUM_SUBLABEL_FPS_SHOW)
-default_sublabel_macro(action_bind_sublabel_netplay_settings,              MENU_ENUM_SUBLABEL_NETPLAY)
 default_sublabel_macro(action_bind_sublabel_user_bind_settings,            MENU_ENUM_SUBLABEL_INPUT_USER_BINDS)
 default_sublabel_macro(action_bind_sublabel_input_hotkey_settings,         MENU_ENUM_SUBLABEL_INPUT_HOTKEY_BINDS)
 default_sublabel_macro(action_bind_sublabel_video_frame_delay,             MENU_ENUM_SUBLABEL_VIDEO_FRAME_DELAY)
@@ -1154,13 +1151,6 @@ int menu_cbs_init_bind_sublabel(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_INPUT_USER_16_BINDS:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_user_bind_settings);
             break;
-         case MENU_ENUM_LABEL_NETPLAY:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_netplay_settings);
-            break;
-         case MENU_ENUM_LABEL_ONLINE_UPDATER:
-              cbs->action_sublabel = action_bind_sublabel_online_updater;
-              cbs->action_sublabel_ident = "action_bind_sublabel_online_updater";
-              break;
          case MENU_ENUM_LABEL_VIDEO_MAX_SWAPCHAIN_IMAGES:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_max_swapchain_images);
             break;
@@ -1226,9 +1216,6 @@ int menu_cbs_init_bind_sublabel(menu_file_list_cbs_t *cbs,
             break;
          case MENU_ENUM_LABEL_NETPLAY_LAN_SCAN_SETTINGS:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_netplay_lan_scan_settings_list);
-            break;
-         case MENU_ENUM_LABEL_HELP_LIST:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_help_list);
             break;
          case MENU_ENUM_LABEL_LAKKA_SERVICES:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_services_settings_list);

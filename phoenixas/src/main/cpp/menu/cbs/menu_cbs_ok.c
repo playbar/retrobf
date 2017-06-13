@@ -3676,8 +3676,7 @@ static void netplay_refresh_rooms_cb(void *task_data, void *user_data, const cha
    menu_entries_get_last_stack(&path, &label, &menu_type, &enum_idx, NULL);
 
    /* Don't push the results if we left the netplay menu */
-   if (!string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_NETPLAY_TAB))
-    && !string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_NETPLAY)))
+   if (!string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_NETPLAY_TAB)))
       return;
 
    if (!data || err)
@@ -4167,13 +4166,6 @@ static int action_ok_help_audio_video_troubleshooting(const char *path,
          MENU_DIALOG_HELP_AUDIO_VIDEO_TROUBLESHOOTING);
 }
 
-static int action_ok_help(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok_help(path, label, type, idx, entry_idx,
-         MENU_ENUM_LABEL_HELP, MENU_DIALOG_WELCOME);
-}
-
 static int action_ok_help_controls(const char *path,
       const char *label, unsigned type, size_t idx, size_t entry_idx)
 {
@@ -4505,9 +4497,6 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_SAVE_NEW_CONFIG:
             BIND_ACTION_OK(cbs, action_ok_save_new_config);
             break;
-         case MENU_ENUM_LABEL_HELP:
-            BIND_ACTION_OK(cbs, action_ok_help);
-            break;
          case MENU_ENUM_LABEL_HELP_CONTROLS:
             BIND_ACTION_OK(cbs, action_ok_help_controls);
             break;
@@ -4608,15 +4597,11 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_ACHIEVEMENT_LIST:
          case MENU_ENUM_LABEL_ACHIEVEMENT_LIST_HARDCORE:
          case MENU_ENUM_LABEL_DISK_OPTIONS:
-         case MENU_ENUM_LABEL_SETTINGS:
          case MENU_ENUM_LABEL_FRONTEND_COUNTERS:
          case MENU_ENUM_LABEL_CORE_COUNTERS:
          case MENU_ENUM_LABEL_MANAGEMENT:
-         case MENU_ENUM_LABEL_ONLINE_UPDATER:
-         case MENU_ENUM_LABEL_NETPLAY:
          case MENU_ENUM_LABEL_LOAD_CONTENT_LIST:
          case MENU_ENUM_LABEL_CONFIGURATIONS_LIST:
-         case MENU_ENUM_LABEL_HELP_LIST:
          case MENU_ENUM_LABEL_CONTENT_SETTINGS:
             BIND_ACTION_OK(cbs, action_ok_push_default);
             break;

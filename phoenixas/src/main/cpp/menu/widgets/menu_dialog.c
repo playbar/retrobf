@@ -251,41 +251,41 @@ void menu_dialog_push_pending(bool push, enum menu_dialog_type type)
    menu_dialog_current_type = type;
    menu_dialog_active = true;
 }
-
-void menu_dialog_push(void)
-{
-   menu_displaylist_info_t info;
-
-   if (!menu_dialog_is_push_pending())
-      return;
-
-   info.need_sort            = false;
-   info.need_refresh         = false;
-   info.need_entries_refresh = false;
-   info.need_push            = false;
-   info.need_clear           = false;
-   info.need_navigation_clear= false;
-   info.list                 = menu_entries_get_menu_stack_ptr(0);
-   info.menu_list            = NULL;
-   info.path[0]              = '\0';
-   info.path_b[0]            = '\0';
-   info.path_c[0]            = '\0';
-   info.label[0]             = '\0';
-   info.label_hash           = 0;
-   info.exts[0]              = '\0';
-   info.type                 = 0;
-   info.type_default         = 0;
-   info.directory_ptr        = 0;
-   info.flags                = 0;
-   info.enum_idx             = MENU_ENUM_LABEL_HELP;
-   info.setting              = NULL;
-
-   strlcpy(info.label,
-         msg_hash_to_str(MENU_ENUM_LABEL_HELP),
-         sizeof(info.label));
-
-   menu_displaylist_ctl(DISPLAYLIST_HELP, &info);
-}
+//
+//void menu_dialog_push(void)
+//{
+//   menu_displaylist_info_t info;
+//
+//   if (!menu_dialog_is_push_pending())
+//      return;
+//
+//   info.need_sort            = false;
+//   info.need_refresh         = false;
+//   info.need_entries_refresh = false;
+//   info.need_push            = false;
+//   info.need_clear           = false;
+//   info.need_navigation_clear= false;
+//   info.list                 = menu_entries_get_menu_stack_ptr(0);
+//   info.menu_list            = NULL;
+//   info.path[0]              = '\0';
+//   info.path_b[0]            = '\0';
+//   info.path_c[0]            = '\0';
+//   info.label[0]             = '\0';
+//   info.label_hash           = 0;
+//   info.exts[0]              = '\0';
+//   info.type                 = 0;
+//   info.type_default         = 0;
+//   info.directory_ptr        = 0;
+//   info.flags                = 0;
+//   info.enum_idx             = MENU_ENUM_LABEL_HELP;
+//   info.setting              = NULL;
+//
+//   strlcpy(info.label,
+//         msg_hash_to_str(MENU_ENUM_LABEL_HELP),
+//         sizeof(info.label));
+//
+//   menu_displaylist_ctl(DISPLAYLIST_HELP, &info);
+//}
 
 void menu_dialog_set_current_id(unsigned id)
 {
@@ -311,7 +311,7 @@ void menu_dialog_show_message(
       menu_display_toggle_set_reason(MENU_TOGGLE_REASON_MESSAGE);
 
    menu_dialog_push_pending(true, type);
-   menu_dialog_push();
+//   menu_dialog_push();
 }
 
 bool menu_dialog_is_active(void)
