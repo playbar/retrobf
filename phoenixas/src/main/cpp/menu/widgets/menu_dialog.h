@@ -59,7 +59,7 @@ void menu_dialog_unset_pending_push(void);
 
 bool menu_dialog_is_push_pending(void);
 
-//void menu_dialog_push(void);
+void menu_dialog_push(void);
 
 void menu_dialog_reset(void);
 

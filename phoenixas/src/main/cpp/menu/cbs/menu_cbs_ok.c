@@ -3250,6 +3250,13 @@ static int action_ok_compressed_archive_push_detect_core(const char *path,
          entry_idx, ACTION_OK_DL_COMPRESSED_ARCHIVE_PUSH_DETECT_CORE);
 }
 
+static int action_ok_configurations_list(const char *path,
+      const char *label, unsigned type, size_t idx, size_t entry_idx)
+{
+   return generic_action_ok_displaylist_push(path, NULL, label, type, idx,
+         entry_idx, ACTION_OK_DL_CONFIGURATIONS_LIST);
+}
+
 static int action_ok_saving_list(const char *path,
       const char *label, unsigned type, size_t idx, size_t entry_idx)
 {
@@ -3669,7 +3676,8 @@ static void netplay_refresh_rooms_cb(void *task_data, void *user_data, const cha
    menu_entries_get_last_stack(&path, &label, &menu_type, &enum_idx, NULL);
 
    /* Don't push the results if we left the netplay menu */
-   if (!string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_NETPLAY_TAB)))
+   if (!string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_NETPLAY_TAB))
+    && !string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_NETPLAY)))
       return;
 
    if (!data || err)
@@ -4159,6 +4167,13 @@ static int action_ok_help_audio_video_troubleshooting(const char *path,
          MENU_DIALOG_HELP_AUDIO_VIDEO_TROUBLESHOOTING);
 }
 
+static int action_ok_help(const char *path,
+      const char *label, unsigned type, size_t idx, size_t entry_idx)
+{
+   return generic_action_ok_help(path, label, type, idx, entry_idx,
+         MENU_ENUM_LABEL_HELP, MENU_DIALOG_WELCOME);
+}
+
 static int action_ok_help_controls(const char *path,
       const char *label, unsigned type, size_t idx, size_t entry_idx)
 {
@@ -4423,9 +4438,8 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
             BIND_ACTION_OK(cbs, action_ok_browse_url_start);
             break;
          case MENU_ENUM_LABEL_FILE_BROWSER_CORE:
-              cbs->action_ok = action_ok_load_core;
-              cbs->action_ok_ident = "action_ok_load_core";
-              break;
+            BIND_ACTION_OK(cbs, action_ok_load_core);
+            break;
          case MENU_ENUM_LABEL_FILE_BROWSER_CORE_SELECT_FROM_COLLECTION:
             BIND_ACTION_OK(cbs, action_ok_core_deferred_set);
             break;
@@ -4489,6 +4503,9 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
             break;
          case MENU_ENUM_LABEL_SAVE_NEW_CONFIG:
             BIND_ACTION_OK(cbs, action_ok_save_new_config);
+            break;
+         case MENU_ENUM_LABEL_HELP:
+            BIND_ACTION_OK(cbs, action_ok_help);
             break;
          case MENU_ENUM_LABEL_HELP_CONTROLS:
             BIND_ACTION_OK(cbs, action_ok_help_controls);
@@ -4590,10 +4607,17 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_ACHIEVEMENT_LIST:
          case MENU_ENUM_LABEL_ACHIEVEMENT_LIST_HARDCORE:
          case MENU_ENUM_LABEL_DISK_OPTIONS:
+         case MENU_ENUM_LABEL_SETTINGS:
          case MENU_ENUM_LABEL_FRONTEND_COUNTERS:
          case MENU_ENUM_LABEL_CORE_COUNTERS:
          case MENU_ENUM_LABEL_MANAGEMENT:
+         case MENU_ENUM_LABEL_ONLINE_UPDATER:
+         case MENU_ENUM_LABEL_NETPLAY:
          case MENU_ENUM_LABEL_LOAD_CONTENT_LIST:
+         case MENU_ENUM_LABEL_ADD_CONTENT_LIST:
+         case MENU_ENUM_LABEL_CONFIGURATIONS_LIST:
+         case MENU_ENUM_LABEL_HELP_LIST:
+         case MENU_ENUM_LABEL_INFORMATION_LIST:
          case MENU_ENUM_LABEL_CONTENT_SETTINGS:
             BIND_ACTION_OK(cbs, action_ok_push_default);
             break;
@@ -4623,6 +4647,7 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_DETECT_CORE_LIST_OK_CURRENT_CORE:
             BIND_ACTION_OK(cbs, action_ok_file_load_current_core);
             break;
+         case MENU_ENUM_LABEL_LOAD_CONTENT_HISTORY:
          case MENU_ENUM_LABEL_CURSOR_MANAGER_LIST:
          case MENU_ENUM_LABEL_DATABASE_MANAGER_LIST:
             BIND_ACTION_OK(cbs, action_ok_push_generic_list);
@@ -4663,6 +4688,9 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
                break;
          case MENU_ENUM_LABEL_DISK_IMAGE_APPEND:
             BIND_ACTION_OK(cbs, action_ok_disk_image_append_list);
+            break;
+         case MENU_ENUM_LABEL_CONFIGURATIONS:
+            BIND_ACTION_OK(cbs, action_ok_configurations_list);
             break;
          case MENU_ENUM_LABEL_SAVING_SETTINGS:
             BIND_ACTION_OK(cbs, action_ok_saving_list);
@@ -4992,8 +5020,7 @@ static int menu_cbs_init_bind_ok_compare_type(menu_file_list_cbs_t *cbs,
                      BIND_ACTION_OK(cbs, action_ok_core_deferred_set);
                      break;
                   case MENU_LABEL_CORE_LIST:
-                     cbs->action_ok = action_ok_load_core;
-                     cbs->action_ok_ident = "action_ok_load_core";
+                     BIND_ACTION_OK(cbs, action_ok_load_core);
                      break;
                }
             }

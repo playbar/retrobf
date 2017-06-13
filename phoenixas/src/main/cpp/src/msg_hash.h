@@ -794,6 +794,7 @@ enum msg_hash_enums
 
    MENU_LABEL(HELP_WHAT_IS_A_CORE),
    MENU_LABEL(HELP_LOADING_CONTENT),
+   MENU_LABEL(HELP_LIST),
    MENU_LABEL(HELP_CONTROLS),
 
    MENU_ENUM_LABEL_VALUE_EXTRACTING_PLEASE_WAIT,
@@ -884,6 +885,8 @@ enum msg_hash_enums
    MENU_LABEL(NETPLAY_REFRESH_ROOMS),
    MENU_LABEL(NETPLAY_ROOM_NICKNAME),
    MENU_LABEL(NETPLAY_ROOM_NICKNAME_LAN),
+   MENU_LABEL(ADD_CONTENT_LIST),
+   MENU_LABEL(CONFIGURATIONS_LIST),
 
    MENU_ENUM_LABEL_VALUE_DONT_CARE,
    MENU_ENUM_LABEL_VALUE_LINEAR,
@@ -912,7 +915,7 @@ enum msg_hash_enums
    MENU_LABEL(UPDATE_CORE_INFO_FILES),
 
    MENU_LABEL(INFORMATION),
-//   MENU_LABEL(INFORMATION_LIST),
+   MENU_LABEL(INFORMATION_LIST),
    MENU_LABEL(USE_BUILTIN_PLAYER),
    MENU_LABEL(CONTENT_SETTINGS),
    MENU_LABEL(LOAD_CONTENT_LIST),
@@ -1242,8 +1245,12 @@ enum msg_hash_enums
    MENU_ENUM_LABEL_VALUE_CORE_LIST,
    MENU_LABEL(MANAGEMENT),
    MENU_LABEL(ONLINE),
+   MENU_LABEL(ONLINE_UPDATER),
+   MENU_LABEL(NETPLAY),
+   MENU_LABEL(SETTINGS),
    MENU_LABEL(FRONTEND_COUNTERS),
    MENU_LABEL(CORE_COUNTERS),
+   MENU_LABEL(LOAD_CONTENT_HISTORY),
    MENU_LABEL(NETWORK_INFORMATION),
    MENU_LABEL(SYSTEM_INFORMATION),
    MENU_LABEL(ACHIEVEMENT_LIST),
@@ -1275,6 +1282,7 @@ enum msg_hash_enums
    MENU_ENUM_LABEL_INFO_SCREEN,
 
    MENU_LABEL(CUSTOM_RATIO),
+   MENU_LABEL(HELP),
    MENU_LABEL(CHEAT_DATABASE_PATH),
    MENU_LABEL(CURSOR_DIRECTORY),
    MENU_LABEL(OSK_OVERLAY_DIRECTORY),
@@ -1329,6 +1337,7 @@ enum msg_hash_enums
    MENU_LABEL(CHEAT_APPLY_CHANGES),
 
    MENU_ENUM_LABEL_COLLECTION,
+   MENU_LABEL(CONFIGURATIONS),
    MENU_LABEL(CONTENT_COLLECTION_LIST),
    MENU_LABEL(BROWSE_URL_LIST),
 
@@ -1628,6 +1637,7 @@ enum msg_hash_enums
 #define MENU_LABEL_DEFERRED_CORE_CONTENT_LIST                                  0x76150c63U
 #define MENU_LABEL_DEFERRED_LAKKA_LIST                                         0x3db437c4U
 #define MENU_LABEL_DEFERRED_INPUT_HOTKEY_BINDS_LIST                            0x10b41d97U
+#define MENU_LABEL_DEFERRED_CONFIGURATIONS_LIST                                0x679a1b0bU
 #define MENU_LABEL_DEFERRED_BROWSE_URL_START                                   0xcef58296U
 
 /* Cheevos settings */
@@ -1659,6 +1669,7 @@ enum msg_hash_enums
 
 /* Information settings */
 
+#define MENU_LABEL_INFORMATION_LIST                                            0x225e7606U
 #define MENU_LABEL_SYSTEM_INFORMATION                                          0x206ebf0fU
 #define MENU_LABEL_NETWORK_INFORMATION                                         0x73ae3cb4U
 
@@ -1785,6 +1796,7 @@ enum msg_hash_enums
 #define MENU_LABEL_CUSTOM_BIND                                                 0x1e84b3fcU
 #define MENU_LABEL_CUSTOM_BIND_ALL                                             0x79ac14f4U
 #define MENU_LABEL_CUSTOM_BIND_DEFAULTS                                        0xe88f7b13U
+#define MENU_LABEL_CONFIGURATIONS                                              0x3e930a50U
 #define MENU_LABEL_REMAP_FILE_SAVE_CORE                                        0x7c9d4c8fU
 #define MENU_LABEL_REMAP_FILE_SAVE_GAME                                        0x7c9f41e0U
 #define MENU_LABEL_CONTENT_COLLECTION_LIST                                     0x32d1df83U
@@ -1808,6 +1820,7 @@ enum msg_hash_enums
 
 #define MENU_LABEL_VIDEO_FILTER                                                0x1c0eb741U
 #define MENU_LABEL_HELP_CONTROLS                                               0x04859221U
+#define MENU_LABEL_HELP_LIST                                                   0x006af669U
 #define MENU_LABEL_HELP_WHAT_IS_A_CORE                                         0x83fcbc44U
 #define MENU_LABEL_HELP_LOADING_CONTENT                                        0x231d8245U
 #define MENU_LABEL_HELP_SCANNING_CONTENT                                       0x1dec52b8U
@@ -1816,6 +1829,10 @@ enum msg_hash_enums
 
 /* Main menu */
 #define MENU_LABEL_LOAD_CONTENT_LIST                                           0x5745de1fU
+#define MENU_LABEL_LOAD_CONTENT_HISTORY                                        0xfe1d79e5U
+#define MENU_LABEL_ADD_CONTENT_LIST                                            0x046f4668U
+#define MENU_LABEL_ONLINE_UPDATER                                              0xcac0025eU
+#define MENU_LABEL_NETPLAY                                                     0x0b511d22U
 #define MENU_LABEL_SETTINGS                                                    0x1304dc16U
 #define MENU_LABEL_HELP                                                        0x7c97d2eeU
 #define MENU_VALUE_HORIZONTAL_MENU                                             0x35761704U
