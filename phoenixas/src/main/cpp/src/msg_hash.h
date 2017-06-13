@@ -885,7 +885,6 @@ enum msg_hash_enums
    MENU_LABEL(NETPLAY_REFRESH_ROOMS),
    MENU_LABEL(NETPLAY_ROOM_NICKNAME),
    MENU_LABEL(NETPLAY_ROOM_NICKNAME_LAN),
-   MENU_LABEL(ADD_CONTENT_LIST),
    MENU_LABEL(CONFIGURATIONS_LIST),
 
    MENU_ENUM_LABEL_VALUE_DONT_CARE,
@@ -915,7 +914,7 @@ enum msg_hash_enums
    MENU_LABEL(UPDATE_CORE_INFO_FILES),
 
    MENU_LABEL(INFORMATION),
-   MENU_LABEL(INFORMATION_LIST),
+//   MENU_LABEL(INFORMATION_LIST),
    MENU_LABEL(USE_BUILTIN_PLAYER),
    MENU_LABEL(CONTENT_SETTINGS),
    MENU_LABEL(LOAD_CONTENT_LIST),
@@ -1250,7 +1249,6 @@ enum msg_hash_enums
    MENU_LABEL(SETTINGS),
    MENU_LABEL(FRONTEND_COUNTERS),
    MENU_LABEL(CORE_COUNTERS),
-   MENU_LABEL(LOAD_CONTENT_HISTORY),
    MENU_LABEL(NETWORK_INFORMATION),
    MENU_LABEL(SYSTEM_INFORMATION),
    MENU_LABEL(ACHIEVEMENT_LIST),
@@ -1669,7 +1667,6 @@ enum msg_hash_enums
 
 /* Information settings */
 
-#define MENU_LABEL_INFORMATION_LIST                                            0x225e7606U
 #define MENU_LABEL_SYSTEM_INFORMATION                                          0x206ebf0fU
 #define MENU_LABEL_NETWORK_INFORMATION                                         0x73ae3cb4U
 
@@ -1829,8 +1826,6 @@ enum msg_hash_enums
 
 /* Main menu */
 #define MENU_LABEL_LOAD_CONTENT_LIST                                           0x5745de1fU
-#define MENU_LABEL_LOAD_CONTENT_HISTORY                                        0xfe1d79e5U
-#define MENU_LABEL_ADD_CONTENT_LIST                                            0x046f4668U
 #define MENU_LABEL_ONLINE_UPDATER                                              0xcac0025eU
 #define MENU_LABEL_NETPLAY                                                     0x0b511d22U
 #define MENU_LABEL_SETTINGS                                                    0x1304dc16U

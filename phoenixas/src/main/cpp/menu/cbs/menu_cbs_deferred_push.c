@@ -320,11 +320,6 @@ static int deferred_push_content_settings(menu_displaylist_info_t *info)
    return deferred_push_dlist(info, DISPLAYLIST_CONTENT_SETTINGS);
 }
 
-static int deferred_push_add_content_list(menu_displaylist_info_t *info)
-{
-   return deferred_push_dlist(info, DISPLAYLIST_ADD_CONTENT_LIST);
-}
-
 static int deferred_push_configurations_list(menu_displaylist_info_t *info)
 {
    return deferred_push_dlist(info, DISPLAYLIST_CONFIGURATIONS_LIST);
@@ -333,11 +328,6 @@ static int deferred_push_configurations_list(menu_displaylist_info_t *info)
 static int deferred_push_load_content_list(menu_displaylist_info_t *info)
 {
    return deferred_push_dlist(info, DISPLAYLIST_LOAD_CONTENT_LIST);
-}
-
-static int deferred_push_information_list(menu_displaylist_info_t *info)
-{
-   return deferred_push_dlist(info, DISPLAYLIST_INFORMATION_LIST);
 }
 
 static int deferred_push_management_options(menu_displaylist_info_t *info)
@@ -787,11 +777,6 @@ static int deferred_push_default(menu_displaylist_info_t *info)
    return general_push(info, PUSH_DEFAULT, DISPLAYLIST_DEFAULT);
 }
 
-static int deferred_push_history_list(menu_displaylist_info_t *info)
-{
-   return deferred_push_dlist(info, DISPLAYLIST_HISTORY);
-}
-
 static int deferred_push_database_manager_list(menu_displaylist_info_t *info)
 {
    return deferred_push_dlist(info, DISPLAYLIST_DATABASES);
@@ -1111,9 +1096,6 @@ static int menu_cbs_init_bind_deferred_push_compare_label(
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_lakka_list);
 #endif
                break;
-            case MENU_ENUM_LABEL_LOAD_CONTENT_HISTORY:
-               BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_history_list);
-               break;
             case MENU_ENUM_LABEL_DATABASE_MANAGER_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_database_manager_list);
                break;
@@ -1141,18 +1123,11 @@ static int menu_cbs_init_bind_deferred_push_compare_label(
             case MENU_ENUM_LABEL_CONTENT_SETTINGS:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_content_settings);
                break;
-            case MENU_ENUM_LABEL_ADD_CONTENT_LIST:
-               BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_add_content_list);
-               break;
             case MENU_ENUM_LABEL_CONFIGURATIONS_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_configurations_list);
                break;
             case MENU_ENUM_LABEL_LOAD_CONTENT_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_load_content_list);
-               break;
-            case MENU_ENUM_LABEL_INFORMATION_LIST:
-                 cbs->action_deferred_push = deferred_push_information_list;
-                 cbs->action_deferred_push_ident = "deferred_push_information_list";
                break;
             case MENU_ENUM_LABEL_MANAGEMENT:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_management_options);
@@ -1408,9 +1383,6 @@ static int menu_cbs_init_bind_deferred_push_compare_label(
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_lakka_list);
 #endif
                break;
-            case MENU_LABEL_LOAD_CONTENT_HISTORY:
-               BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_history_list);
-               break;
             case MENU_LABEL_DATABASE_MANAGER_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_database_manager_list);
                break;
@@ -1438,14 +1410,8 @@ static int menu_cbs_init_bind_deferred_push_compare_label(
             case MENU_LABEL_CONTENT_SETTINGS:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_content_settings);
                break;
-            case MENU_LABEL_ADD_CONTENT_LIST:
-               BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_add_content_list);
-               break;
             case MENU_LABEL_LOAD_CONTENT_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_load_content_list);
-               break;
-            case MENU_LABEL_INFORMATION_LIST:
-               BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_information_list);
                break;
             case MENU_LABEL_MANAGEMENT:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_management_options);

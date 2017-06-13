@@ -2187,26 +2187,6 @@ static bool setting_append_list(
                     &subgroup_info,
                     parent_group);
 
-#if defined(HAVE_VIDEO_PROCESSOR)
-        CONFIG_ACTION(
-               list, list_info,
-               MENU_ENUM_LABEL_START_VIDEO_PROCESSOR,
-               MENU_ENUM_LABEL_VALUE_START_VIDEO_PROCESSOR,
-               &group_info,
-               &subgroup_info,
-               parent_group);
-#endif
-
-#if defined(HAVE_NETWORKING) && defined(HAVE_NETWORKGAMEPAD) && defined(HAVE_NETWORKGAMEPAD_CORE)
-        CONFIG_ACTION(
-               list, list_info,
-               MENU_ENUM_LABEL_START_NET_RETROPAD,
-               MENU_ENUM_LABEL_VALUE_START_NET_RETROPAD,
-               &group_info,
-               &subgroup_info,
-               parent_group);
-#endif
-
             CONFIG_ACTION(
                     list, list_info,
                     MENU_ENUM_LABEL_CONTENT_SETTINGS,
@@ -2215,60 +2195,34 @@ static bool setting_append_list(
                     &subgroup_info,
                     parent_group);
 
-#ifndef HAVE_DYNAMIC
-            if (frontend_driver_has_fork())
-#endif
-            {
-                char ext_name[255];
 
-                ext_name[0] = '\0';
+            char ext_name[255];
 
-                if (frontend_driver_get_core_extension(ext_name, sizeof(ext_name)))
-                {
-                    CONFIG_ACTION(
-                            list, list_info,
-                            MENU_ENUM_LABEL_CORE_LIST,
-                            MENU_ENUM_LABEL_VALUE_CORE_LIST,
-                            &group_info,
-                            &subgroup_info,
-                            parent_group);
-                    (*list)[list_info->index - 1].size                = (uint32_t)path_get_realsize(RARCH_PATH_CORE);
-                    (*list)[list_info->index - 1].value.target.string = path_get_ptr(RARCH_PATH_CORE);
-                    (*list)[list_info->index - 1].values       = ext_name;
-                    menu_settings_list_current_add_cmd(list, list_info, CMD_EVENT_LOAD_CORE);
-                    settings_data_list_current_add_flags(list, list_info, SD_FLAG_BROWSER_ACTION);
-                }
-            }
+            ext_name[0] = '\0';
 
-//         CONFIG_ACTION(
-//               list, list_info,
-//               MENU_ENUM_LABEL_LOAD_CONTENT_LIST,
-//               MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_LIST,
-//               &group_info,
-//               &subgroup_info,
-//               parent_group);
-
-//         if (settings->bools.history_list_enable)
-//         {
-//            CONFIG_ACTION(
-//                  list, list_info,
-//                  MENU_ENUM_LABEL_LOAD_CONTENT_HISTORY,
-//                  MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_HISTORY,
-//                  &group_info,
-//                  &subgroup_info,
-//                  parent_group);
-//         }
-
-            if (string_is_not_equal_fast(settings->arrays.menu_driver, "xmb", 3))
+            if (frontend_driver_get_core_extension(ext_name, sizeof(ext_name)))
             {
                 CONFIG_ACTION(
                         list, list_info,
-                        MENU_ENUM_LABEL_ADD_CONTENT_LIST,
-                        MENU_ENUM_LABEL_VALUE_ADD_CONTENT_LIST,
+                        MENU_ENUM_LABEL_CORE_LIST,
+                        MENU_ENUM_LABEL_VALUE_CORE_LIST,
                         &group_info,
                         &subgroup_info,
                         parent_group);
+                (*list)[list_info->index - 1].size                = (uint32_t)path_get_realsize(RARCH_PATH_CORE);
+                (*list)[list_info->index - 1].value.target.string = path_get_ptr(RARCH_PATH_CORE);
+                (*list)[list_info->index - 1].values       = ext_name;
+                menu_settings_list_current_add_cmd(list, list_info, CMD_EVENT_LOAD_CORE);
+                settings_data_list_current_add_flags(list, list_info, SD_FLAG_BROWSER_ACTION);
             }
+
+         CONFIG_ACTION(
+               list, list_info,
+               MENU_ENUM_LABEL_LOAD_CONTENT_LIST,
+               MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_LIST,
+               &group_info,
+               &subgroup_info,
+               parent_group);
 
 #if defined(HAVE_NETWORKING)
 //         CONFIG_ACTION(
@@ -2295,14 +2249,6 @@ static bool setting_append_list(
 //                    &group_info,
 //                    &subgroup_info,
 //                    parent_group);
-
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_INFORMATION_LIST,
-                    MENU_ENUM_LABEL_VALUE_INFORMATION_LIST,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
 
 #ifndef __CELLOS_LV2__
             CONFIG_ACTION(

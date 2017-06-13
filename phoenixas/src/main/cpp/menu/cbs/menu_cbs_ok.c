@@ -4438,8 +4438,9 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
             BIND_ACTION_OK(cbs, action_ok_browse_url_start);
             break;
          case MENU_ENUM_LABEL_FILE_BROWSER_CORE:
-            BIND_ACTION_OK(cbs, action_ok_load_core);
-            break;
+              cbs->action_ok = action_ok_load_core;
+              cbs->action_ok_ident = "action_ok_load_core";
+              break;
          case MENU_ENUM_LABEL_FILE_BROWSER_CORE_SELECT_FROM_COLLECTION:
             BIND_ACTION_OK(cbs, action_ok_core_deferred_set);
             break;
@@ -4614,10 +4615,8 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_ONLINE_UPDATER:
          case MENU_ENUM_LABEL_NETPLAY:
          case MENU_ENUM_LABEL_LOAD_CONTENT_LIST:
-         case MENU_ENUM_LABEL_ADD_CONTENT_LIST:
          case MENU_ENUM_LABEL_CONFIGURATIONS_LIST:
          case MENU_ENUM_LABEL_HELP_LIST:
-         case MENU_ENUM_LABEL_INFORMATION_LIST:
          case MENU_ENUM_LABEL_CONTENT_SETTINGS:
             BIND_ACTION_OK(cbs, action_ok_push_default);
             break;
@@ -4647,7 +4646,6 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_DETECT_CORE_LIST_OK_CURRENT_CORE:
             BIND_ACTION_OK(cbs, action_ok_file_load_current_core);
             break;
-         case MENU_ENUM_LABEL_LOAD_CONTENT_HISTORY:
          case MENU_ENUM_LABEL_CURSOR_MANAGER_LIST:
          case MENU_ENUM_LABEL_DATABASE_MANAGER_LIST:
             BIND_ACTION_OK(cbs, action_ok_push_generic_list);
@@ -5020,7 +5018,8 @@ static int menu_cbs_init_bind_ok_compare_type(menu_file_list_cbs_t *cbs,
                      BIND_ACTION_OK(cbs, action_ok_core_deferred_set);
                      break;
                   case MENU_LABEL_CORE_LIST:
-                     BIND_ACTION_OK(cbs, action_ok_load_core);
+                     cbs->action_ok = action_ok_load_core;
+                     cbs->action_ok_ident = "action_ok_load_core";
                      break;
                }
             }

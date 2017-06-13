@@ -676,7 +676,6 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
                              " \n"
                              "NOTE: Content for some cores might still not be\n"
                              "scannable.",
-                     msg_hash_to_str(MENU_ENUM_LABEL_VALUE_ADD_CONTENT_LIST),
                      msg_hash_to_str(MENU_ENUM_LABEL_VALUE_SCAN_DIRECTORY),
                      msg_hash_to_str(MENU_ENUM_LABEL_VALUE_SCAN_FILE),
                      msg_hash_to_str(MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_LIST),
@@ -752,20 +751,7 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
                              "when content is loaded."
             );
             break;
-        case MENU_ENUM_LABEL_LOAD_CONTENT_HISTORY:
-            snprintf(s, len,
-                     "Loading content from history. \n"
-                             " \n"
-                             "As content is loaded, content and libretro \n"
-                             "core combinations are saved to history. \n"
-                             " \n"
-                             "The history is saved to a file in the same \n"
-                             "directory as the RetroArch config file. If \n"
-                             "no config file was loaded in startup, history \n"
-                             "will not be saved or loaded, and will not exist \n"
-                             "in the main menu."
-            );
-            break;
+
         case MENU_ENUM_LABEL_VIDEO_DRIVER:
             snprintf(s, len,
                      "Current Video driver.");
@@ -2001,8 +1987,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "achievement_list")
        MSG_HASH(MENU_ENUM_LABEL_ACHIEVEMENT_LIST_HARDCORE,
                 "achievement_list_hardcore")
-       MSG_HASH(MENU_ENUM_LABEL_ADD_CONTENT_LIST,
-                "add_content")
        MSG_HASH(MENU_ENUM_LABEL_CONFIGURATIONS_LIST,
                 "configurations_list")
        MSG_HASH(MENU_ENUM_LABEL_ADD_TAB,
@@ -2424,8 +2408,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "images_tab")
        case MENU_ENUM_LABEL_INFORMATION:
            return "information";
-       case MENU_ENUM_LABEL_INFORMATION_LIST:
-           return "information_list";
        MSG_HASH(MENU_ENUM_LABEL_INFO_SCREEN,
                 "info_screen")
        MSG_HASH(MENU_ENUM_LABEL_INPUT_ALL_USERS_CONTROL_MENU,
@@ -2534,8 +2516,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "load_archive")
        MSG_HASH(MENU_ENUM_LABEL_LOAD_ARCHIVE_DETECT_CORE,
                 "load_archive_detect_core")
-       MSG_HASH(MENU_ENUM_LABEL_LOAD_CONTENT_HISTORY,
-                "load_recent")
        MSG_HASH(MENU_ENUM_LABEL_LOAD_CONTENT_LIST,
                 "load_content")
        MSG_HASH(MENU_ENUM_LABEL_LOAD_STATE,
@@ -2806,10 +2786,10 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "remap_file_save_core")
        MSG_HASH(MENU_ENUM_LABEL_REMAP_FILE_SAVE_GAME,
                 "remap_file_save_game")
-       MSG_HASH(MENU_ENUM_LABEL_RESTART_CONTENT,
-                "restart_content")
-       MSG_HASH(MENU_ENUM_LABEL_RESTART_RETROARCH,
-                "restart_retroarch")
+       case MENU_ENUM_LABEL_RESTART_CONTENT:
+           return "restart_content";
+       case MENU_ENUM_LABEL_RESTART_RETROARCH:
+           return "restart_retroarch";
        MSG_HASH(MENU_ENUM_LABEL_RESUME,
                 "resume")
        MSG_HASH(MENU_ENUM_LABEL_RESUME_CONTENT,
@@ -3433,8 +3413,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
           MENU_ENUM_LABEL_VALUE_ACHIEVEMENT_LIST_HARDCORE,
           "Achievement List (Hardcore)"
        )
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_ADD_CONTENT_LIST, "Scan Content")
-
         case MENU_ENUM_LABEL_VALUE_CONFIGURATIONS_LIST:
             return "Configurations";
 
@@ -3895,8 +3873,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Image")
         case MENU_ENUM_LABEL_VALUE_INFORMATION:
             return "Information";
-        case MENU_ENUM_LABEL_VALUE_INFORMATION_LIST:
-            return "Information";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_ADC_TYPE,
                 "Analog To Digital Type")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_ALL_USERS_CONTROL_MENU,
@@ -4145,8 +4121,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Linear")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_LOAD_ARCHIVE,
                 "Load Archive")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_HISTORY,
-                "Load Recent")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_LIST,
                 "Load Content")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_LOAD_STATE,
@@ -4457,8 +4431,8 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Save Game Remap File")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_REQUIRED,
                 "Required")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_RESTART_CONTENT,
-                "Restart")
+        case MENU_ENUM_LABEL_VALUE_RESTART_CONTENT:
+            return "Restart";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RESTART_RETROARCH,
                 "Restart RetroArch")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RESUME,
@@ -5023,8 +4997,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Change playlist settings.")
        MSG_HASH(MENU_ENUM_SUBLABEL_NETWORK_SETTINGS,
                 "Configure server and network settings.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_ADD_CONTENT_LIST,
-                "Scan content and add to the database.")
        MSG_HASH(MENU_ENUM_SUBLABEL_AUDIO_SETTINGS,
                 "Change audio output settings.")
        MSG_HASH(MENU_ENUM_SUBLABEL_BLUETOOTH_ENABLE,

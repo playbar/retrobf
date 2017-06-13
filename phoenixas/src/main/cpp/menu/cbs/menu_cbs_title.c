@@ -92,10 +92,8 @@ default_title_macro(action_get_online_updater_list,             MENU_ENUM_LABEL_
 default_title_macro(action_get_netplay_list,                    MENU_ENUM_LABEL_VALUE_NETPLAY)
 default_title_macro(action_get_online_thumbnails_updater_list,  MENU_ENUM_LABEL_VALUE_THUMBNAILS_UPDATER_LIST)
 default_title_macro(action_get_core_updater_list,               MENU_ENUM_LABEL_VALUE_CORE_UPDATER_LIST)
-default_title_macro(action_get_add_content_list,                MENU_ENUM_LABEL_VALUE_ADD_CONTENT_LIST)
 default_title_macro(action_get_configurations_list,             MENU_ENUM_LABEL_VALUE_CONFIGURATIONS_LIST)
 default_title_macro(action_get_core_options_list,               MENU_ENUM_LABEL_VALUE_CORE_OPTIONS)
-default_title_macro(action_get_load_recent_list,                MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_HISTORY)
 default_title_macro(action_get_quick_menu_list,                 MENU_ENUM_LABEL_VALUE_CONTENT_SETTINGS)
 default_title_macro(action_get_input_remapping_options_list,    MENU_ENUM_LABEL_VALUE_CORE_INPUT_REMAPPING_OPTIONS)
 default_title_macro(action_get_shader_options_list,             MENU_ENUM_LABEL_VALUE_SHADER_OPTIONS)
@@ -137,8 +135,6 @@ default_title_macro(action_get_database_manager_list,           MENU_ENUM_LABEL_
 default_title_macro(action_get_system_information_list,         MENU_ENUM_LABEL_VALUE_SYSTEM_INFORMATION)
 default_title_macro(action_get_network_information_list,        MENU_ENUM_LABEL_VALUE_NETWORK_INFORMATION)
 default_title_macro(action_get_settings_list,                   MENU_ENUM_LABEL_VALUE_SETTINGS)
-default_title_macro(action_get_title_information_list,          MENU_ENUM_LABEL_VALUE_INFORMATION_LIST)
-
 default_fill_title_macro(action_get_title_disk_image_append,    MENU_ENUM_LABEL_VALUE_DISK_IMAGE_APPEND)
 default_fill_title_macro(action_get_title_cheat_file_load,      MENU_ENUM_LABEL_VALUE_CHEAT_FILE)
 default_fill_title_macro(action_get_title_remap_file_load,      MENU_ENUM_LABEL_VALUE_REMAP_FILE)
@@ -587,10 +583,6 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_RGUI_CONFIG_DIRECTORY:
             BIND_ACTION_GET_TITLE(cbs, action_get_title_config_directory);
             break;
-         case MENU_ENUM_LABEL_INFORMATION_LIST:
-              cbs->action_get_title = action_get_title_information_list;
-              cbs->action_get_title_ident = "action_get_title_information_list";
-            break;
          case MENU_ENUM_LABEL_SETTINGS:
             BIND_ACTION_GET_TITLE(cbs, action_get_settings_list);
             break;
@@ -628,17 +620,11 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_DEFERRED_CORE_UPDATER_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_core_updater_list);
             break;
-         case MENU_ENUM_LABEL_ADD_CONTENT_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_add_content_list);
-            break;
          case MENU_ENUM_LABEL_CONFIGURATIONS_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_configurations_list);
             break;
          case MENU_ENUM_LABEL_CORE_OPTIONS:
             BIND_ACTION_GET_TITLE(cbs, action_get_core_options_list);
-            break;
-         case MENU_ENUM_LABEL_LOAD_CONTENT_HISTORY:
-            BIND_ACTION_GET_TITLE(cbs, action_get_load_recent_list);
             break;
          case MENU_ENUM_LABEL_CONTENT_SETTINGS:
             BIND_ACTION_GET_TITLE(cbs, action_get_quick_menu_list);
@@ -899,9 +885,6 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_LABEL_RGUI_CONFIG_DIRECTORY:
             BIND_ACTION_GET_TITLE(cbs, action_get_title_config_directory);
             break;
-         case MENU_LABEL_INFORMATION_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_title_information_list);
-            break;
          case MENU_LABEL_SETTINGS:
             BIND_ACTION_GET_TITLE(cbs, action_get_settings_list);
             break;
@@ -942,14 +925,8 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_LABEL_DEFERRED_CONFIGURATIONS_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_configurations_list);
             break;
-         case MENU_LABEL_ADD_CONTENT_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_add_content_list);
-            break;
          case MENU_LABEL_CORE_OPTIONS:
             BIND_ACTION_GET_TITLE(cbs, action_get_core_options_list);
-            break;
-         case MENU_LABEL_LOAD_CONTENT_HISTORY:
-            BIND_ACTION_GET_TITLE(cbs, action_get_load_recent_list);
             break;
          case MENU_LABEL_CONTENT_SETTINGS:
             BIND_ACTION_GET_TITLE(cbs, action_get_quick_menu_list);
