@@ -300,11 +300,6 @@ static int deferred_push_content_settings(menu_displaylist_info_t *info)
    return deferred_push_dlist(info, DISPLAYLIST_CONTENT_SETTINGS);
 }
 
-static int deferred_push_configurations_list(menu_displaylist_info_t *info)
-{
-   return deferred_push_dlist(info, DISPLAYLIST_CONFIGURATIONS_LIST);
-}
-
 static int deferred_push_load_content_list(menu_displaylist_info_t *info)
 {
    return deferred_push_dlist(info, DISPLAYLIST_LOAD_CONTENT_LIST);
@@ -787,11 +782,6 @@ static int deferred_push_core_list(menu_displaylist_info_t *info)
    return deferred_push_dlist(info, DISPLAYLIST_CORES);
 }
 
-static int deferred_push_configurations(menu_displaylist_info_t *info)
-{
-   return deferred_push_dlist(info, DISPLAYLIST_CONFIG_FILES);
-}
-
 static int deferred_push_video_shader_preset(menu_displaylist_info_t *info)
 {
    return deferred_push_dlist(info, DISPLAYLIST_SHADER_PRESET);
@@ -1097,9 +1087,6 @@ static int menu_cbs_init_bind_deferred_push_compare_label(
             case MENU_ENUM_LABEL_CONTENT_SETTINGS:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_content_settings);
                break;
-            case MENU_ENUM_LABEL_CONFIGURATIONS_LIST:
-               BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_configurations_list);
-               break;
             case MENU_ENUM_LABEL_LOAD_CONTENT_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_load_content_list);
                break;
@@ -1214,9 +1201,6 @@ static int menu_cbs_init_bind_deferred_push_compare_label(
             case MENU_ENUM_LABEL_CONTENT_COLLECTION_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_content_collection_list);
                break;
-            case MENU_ENUM_LABEL_CONFIGURATIONS:
-               BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_configurations);
-               break;
             case MENU_ENUM_LABEL_VIDEO_SHADER_PRESET:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_video_shader_preset);
                break;
@@ -1286,9 +1270,6 @@ static int menu_cbs_init_bind_deferred_push_compare_label(
       {
          switch (label_hash)
          {
-            case MENU_LABEL_DEFERRED_CONFIGURATIONS_LIST:
-               BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_configurations_list);
-               break;
             case MENU_LABEL_DEFERRED_USER_BINDS_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_user_binds_list);
                break;
@@ -1484,9 +1465,6 @@ static int menu_cbs_init_bind_deferred_push_compare_label(
                break;
             case MENU_LABEL_CONTENT_COLLECTION_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_content_collection_list);
-               break;
-            case MENU_LABEL_CONFIGURATIONS:
-               BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_configurations);
                break;
             case MENU_LABEL_VIDEO_SHADER_PRESET:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_video_shader_preset);

@@ -3054,12 +3054,6 @@ static int menu_displaylist_parse_configurations_list(
       menu_displaylist_info_t *info)
 {
    menu_entries_append_enum(info->list,
-         msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CONFIGURATIONS),
-         msg_hash_to_str(MENU_ENUM_LABEL_CONFIGURATIONS),
-         MENU_ENUM_LABEL_CONFIGURATIONS,
-         MENU_SETTING_ACTION, 0, 0);
-
-   menu_entries_append_enum(info->list,
          msg_hash_to_str(MENU_ENUM_LABEL_VALUE_SAVE_CURRENT_CONFIG),
          msg_hash_to_str(MENU_ENUM_LABEL_SAVE_CURRENT_CONFIG),
          MENU_ENUM_LABEL_SAVE_CURRENT_CONFIG,
@@ -6011,15 +6005,12 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type, void *data)
                         MENU_ENUM_LABEL_CONTENT_SETTINGS,
                         PARSE_ACTION, false);
 
-               if (system->load_no_content)
-                  menu_displaylist_parse_settings_enum(menu, info,
-                        MENU_ENUM_LABEL_START_CORE, PARSE_ACTION, false);
+               if (system->load_no_content) {
+                   menu_displaylist_parse_settings_enum(menu, info, MENU_ENUM_LABEL_START_CORE,
+                                                        PARSE_ACTION, false);
+               }
             }
 
-
-#ifndef HAVE_DYNAMIC
-            if (frontend_driver_has_fork())
-#endif
             {
                menu_displaylist_parse_settings_enum(menu, info,
                      MENU_ENUM_LABEL_CORE_LIST, PARSE_ACTION, false);
@@ -6029,19 +6020,9 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type, void *data)
                   MENU_ENUM_LABEL_LOAD_CONTENT_LIST,
                   PARSE_ACTION, false);
             menu_displaylist_parse_settings_enum(menu, info,
-                  MENU_ENUM_LABEL_CONFIGURATIONS_LIST,
-                  PARSE_ACTION, false);
-            menu_displaylist_parse_settings_enum(menu, info,
                   MENU_ENUM_LABEL_QUIT_RETROARCH,
                   PARSE_ACTION, false);
-#if defined(HAVE_LAKKA)
-            menu_displaylist_parse_settings_enum(menu, info,
-                  MENU_ENUM_LABEL_REBOOT,
-                  PARSE_ACTION, false);
-            menu_displaylist_parse_settings_enum(menu, info,
-                  MENU_ENUM_LABEL_SHUTDOWN,
-                  PARSE_ACTION, false);
-#endif
+
             info->need_push    = true;
          }
          break;

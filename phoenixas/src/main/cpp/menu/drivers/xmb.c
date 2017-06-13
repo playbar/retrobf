@@ -4052,17 +4052,13 @@ static int xmb_list_push(void *data, void *userdata,
                menu_displaylist_ctl(DISPLAYLIST_SETTING_ENUM, &entry);
             }
 
-#ifndef HAVE_DYNAMIC
-            if (frontend_driver_has_fork())
-#endif
+
             {
                entry.enum_idx   = MENU_ENUM_LABEL_CORE_LIST;
                menu_displaylist_ctl(DISPLAYLIST_SETTING_ENUM, &entry);
             }
 
             entry.enum_idx      = MENU_ENUM_LABEL_LOAD_CONTENT_LIST;
-            menu_displaylist_ctl(DISPLAYLIST_SETTING_ENUM, &entry);
-            entry.enum_idx      = MENU_ENUM_LABEL_CONFIGURATIONS_LIST;
             menu_displaylist_ctl(DISPLAYLIST_SETTING_ENUM, &entry);
 
             entry.enum_idx      = MENU_ENUM_LABEL_QUIT_RETROARCH;

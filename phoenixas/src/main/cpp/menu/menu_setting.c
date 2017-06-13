@@ -1689,18 +1689,6 @@ void general_write_handler(void *data)
         }
             break;
         case MENU_ENUM_LABEL_SYSTEM_BGM_ENABLE:
-            if (*setting->value.target.boolean)
-            {
-#if defined(__CELLOS_LV2__) && (CELL_SDK_VERSION > 0x340000)
-                cellSysutilEnableBgmPlayback();
-#endif
-            }
-            else
-            {
-#if defined(__CELLOS_LV2__) && (CELL_SDK_VERSION > 0x340000)
-                cellSysutilDisableBgmPlayback();
-#endif
-            }
             break;
         case MENU_ENUM_LABEL_NETPLAY_IP_ADDRESS:
 #ifdef HAVE_NETWORKING
@@ -1791,258 +1779,6 @@ enum settings_list_type
     SETTINGS_LIST_PRIVACY
 };
 
-static bool setting_append_list_input_player_options(
-        rarch_setting_t **list,
-        rarch_setting_info_t *list_info,
-        const char *parent_group,
-        unsigned user)
-{
-    /* This constants matches the string length.
-    * Keep it up to date or you'll get some really obvious bugs.
-    * 2 is the length of '99'; we don't need more users than that.
-    */
-    static char buffer[MAX_USERS][13+2+1];
-    static char group_lbl[MAX_USERS][255];
-    unsigned i;
-    rarch_setting_group_info_t group_info      = {0};
-    rarch_setting_group_info_t subgroup_info   = {0};
-    settings_t *settings                       = config_get_ptr();
-    rarch_system_info_t *system                = runloop_get_system_info();
-    const struct retro_keybind* const defaults =
-            (user == 0) ? retro_keybinds_1 : retro_keybinds_rest;
-    const char *temp_value                     = msg_hash_to_str
-            ((enum msg_hash_enums)(MENU_ENUM_LABEL_INPUT_USER_1_BINDS + user));
-
-    snprintf(buffer[user],    sizeof(buffer[user]),
-             "%s %u", msg_hash_to_str(MENU_ENUM_LABEL_VALUE_USER), user + 1);
-
-    strlcpy(group_lbl[user], temp_value, sizeof(group_lbl[user]));
-
-    START_GROUP(list, list_info, &group_info, group_lbl[user], parent_group);
-
-    parent_group = "setting";//msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS);
-
-    START_SUB_GROUP(
-            list,
-            list_info,
-            buffer[user],
-            &group_info,
-            &subgroup_info,
-            parent_group);
-
-    {
-        char tmp_string[PATH_MAX_LENGTH];
-        /* These constants match the string lengths.
-       * Keep them up to date or you'll get some really obvious bugs.
-       * 2 is the length of '99'; we don't need more users than that.
-       */
-        /* FIXME/TODO - really need to clean up this mess in some way. */
-        static char key[MAX_USERS][64];
-        static char key_type[MAX_USERS][64];
-        static char key_analog[MAX_USERS][64];
-        static char key_bind_all[MAX_USERS][64];
-        static char key_bind_all_save_autoconfig[MAX_USERS][64];
-        static char key_bind_defaults[MAX_USERS][64];
-
-        static char label[MAX_USERS][64];
-        static char label_type[MAX_USERS][64];
-        static char label_analog[MAX_USERS][64];
-        static char label_bind_all[MAX_USERS][64];
-        static char label_bind_all_save_autoconfig[MAX_USERS][64];
-        static char label_bind_defaults[MAX_USERS][64];
-
-        tmp_string[0] = '\0';
-
-        snprintf(tmp_string, sizeof(tmp_string), "input_player%u", user + 1);
-
-        fill_pathname_join_delim(key[user], tmp_string, "joypad_index", '_',
-                                 sizeof(key[user]));
-        snprintf(key_type[user], sizeof(key_type[user]),
-                 msg_hash_to_str(MENU_ENUM_LABEL_INPUT_LIBRETRO_DEVICE),
-                 user + 1);
-        snprintf(key_analog[user], sizeof(key_analog[user]),
-                 msg_hash_to_str(MENU_ENUM_LABEL_INPUT_PLAYER_ANALOG_DPAD_MODE),
-                 user + 1);
-        fill_pathname_join_delim(key_bind_all[user], tmp_string, "bind_all", '_',
-                                 sizeof(key_bind_all[user]));
-        fill_pathname_join_delim(key_bind_all_save_autoconfig[user],
-                                 tmp_string, "bind_all_save_autoconfig", '_',
-                                 sizeof(key_bind_all_save_autoconfig[user]));
-        fill_pathname_join_delim(key_bind_defaults[user],
-                                 tmp_string, "bind_defaults", '_',
-                                 sizeof(key_bind_defaults[user]));
-
-        snprintf(label[user], sizeof(label[user]),
-                 "%s %u %s", msg_hash_to_str(MENU_ENUM_LABEL_VALUE_USER), user + 1,
-                 msg_hash_to_str(MENU_ENUM_LABEL_VALUE_INPUT_DEVICE_INDEX));
-        snprintf(label_type[user], sizeof(label_type[user]),
-                 "%s %u %s", msg_hash_to_str(MENU_ENUM_LABEL_VALUE_USER), user + 1,
-                 msg_hash_to_str(MENU_ENUM_LABEL_VALUE_INPUT_DEVICE_TYPE));
-        snprintf(label_analog[user], sizeof(label_analog[user]),
-                 "%s %u %s", msg_hash_to_str(MENU_ENUM_LABEL_VALUE_USER), user + 1,
-                 msg_hash_to_str(MENU_ENUM_LABEL_VALUE_INPUT_ADC_TYPE));
-        snprintf(label_bind_all[user], sizeof(label_bind_all[user]),
-                 "%s %u %s", msg_hash_to_str(MENU_ENUM_LABEL_VALUE_USER), user + 1,
-                 msg_hash_to_str(MENU_ENUM_LABEL_VALUE_INPUT_BIND_ALL));
-        snprintf(label_bind_defaults[user], sizeof(label_bind_defaults[user]),
-                 "%s %u %s", msg_hash_to_str(MENU_ENUM_LABEL_VALUE_USER), user + 1,
-                 msg_hash_to_str(MENU_ENUM_LABEL_VALUE_INPUT_BIND_DEFAULT_ALL));
-        snprintf(label_bind_all_save_autoconfig[user], sizeof(label_bind_all_save_autoconfig[user]),
-                 "%s %u %s", msg_hash_to_str(MENU_ENUM_LABEL_VALUE_USER), user + 1,
-                 msg_hash_to_str(MENU_ENUM_LABEL_VALUE_INPUT_SAVE_AUTOCONFIG));
-
-        CONFIG_UINT_ALT(
-                list, list_info,
-                input_config_get_device_ptr(user),
-                key_type[user],
-                label_type[user],
-                user,
-                &group_info,
-                &subgroup_info,
-                parent_group,
-                general_write_handler,
-                general_read_handler);
-        (*list)[list_info->index - 1].index = user + 1;
-        (*list)[list_info->index - 1].index_offset = user;
-        (*list)[list_info->index - 1].action_left   = &setting_action_left_libretro_device_type;
-        (*list)[list_info->index - 1].action_right  = &setting_action_right_libretro_device_type;
-        (*list)[list_info->index - 1].action_select = &setting_action_right_libretro_device_type;
-        (*list)[list_info->index - 1].action_start  = &setting_action_start_libretro_device_type;
-        (*list)[list_info->index - 1].get_string_representation =
-                &setting_get_string_representation_uint_libretro_device;
-        menu_settings_list_current_add_enum_idx(list, list_info, (enum msg_hash_enums)(MENU_ENUM_LABEL_INPUT_LIBRETRO_DEVICE + user));
-
-        CONFIG_UINT_ALT(
-                list, list_info,
-                &settings->uints.input_analog_dpad_mode[user],
-                key_analog[user],
-                label_analog[user],
-                user,
-                &group_info,
-                &subgroup_info,
-                parent_group,
-                general_write_handler,
-                general_read_handler);
-        (*list)[list_info->index - 1].index = user + 1;
-        (*list)[list_info->index - 1].index_offset = user;
-        (*list)[list_info->index - 1].action_left   = &setting_action_left_analog_dpad_mode;
-        (*list)[list_info->index - 1].action_right  = &setting_action_right_analog_dpad_mode;
-        (*list)[list_info->index - 1].action_select = &setting_action_right_analog_dpad_mode;
-        (*list)[list_info->index - 1].action_start = &setting_action_start_analog_dpad_mode;
-        (*list)[list_info->index - 1].get_string_representation =
-                &setting_get_string_representation_uint_analog_dpad_mode;
-        menu_settings_list_current_add_enum_idx(list, list_info, (enum msg_hash_enums)(MENU_ENUM_LABEL_INPUT_PLAYER_ANALOG_DPAD_MODE + user));
-
-        CONFIG_ACTION_ALT(
-                list, list_info,
-                key[user],
-                label[user],
-                &group_info,
-                &subgroup_info,
-                parent_group);
-        (*list)[list_info->index - 1].index = user + 1;
-        (*list)[list_info->index - 1].index_offset = user;
-        (*list)[list_info->index - 1].action_start  = &setting_action_start_bind_device;
-        (*list)[list_info->index - 1].action_left   = &setting_action_left_bind_device;
-        (*list)[list_info->index - 1].action_right  = &setting_action_right_bind_device;
-        (*list)[list_info->index - 1].action_select = &setting_action_right_bind_device;
-        (*list)[list_info->index - 1].get_string_representation = &get_string_representation_bind_device;
-
-        CONFIG_ACTION_ALT(
-                list, list_info,
-                key_bind_all[user],
-                label_bind_all[user],
-                &group_info,
-                &subgroup_info,
-                parent_group);
-        (*list)[list_info->index - 1].index          = user + 1;
-        (*list)[list_info->index - 1].index_offset   = user;
-        (*list)[list_info->index - 1].action_ok      = &setting_action_ok_bind_all;
-        (*list)[list_info->index - 1].action_cancel  = NULL;
-
-        CONFIG_ACTION_ALT(
-                list, list_info,
-                key_bind_defaults[user],
-                label_bind_defaults[user],
-                &group_info,
-                &subgroup_info,
-                parent_group);
-        (*list)[list_info->index - 1].index          = user + 1;
-        (*list)[list_info->index - 1].index_offset   = user;
-        (*list)[list_info->index - 1].action_ok      = &setting_action_ok_bind_defaults;
-        (*list)[list_info->index - 1].action_cancel  = NULL;
-
-        CONFIG_ACTION_ALT(
-                list, list_info,
-                key_bind_all_save_autoconfig[user],
-                label_bind_all_save_autoconfig[user],
-                &group_info,
-                &subgroup_info,
-                parent_group);
-        (*list)[list_info->index - 1].index          = user + 1;
-        (*list)[list_info->index - 1].index_offset   = user;
-        (*list)[list_info->index - 1].action_ok      = &setting_action_ok_bind_all_save_autoconfig;
-        (*list)[list_info->index - 1].action_cancel  = NULL;
-    }
-
-    for (i = 0; i < RARCH_BIND_LIST_END; i ++)
-    {
-        char label[255];
-        char name[255];
-
-        if (input_config_bind_map_get_meta(i))
-            continue;
-
-        label[0] = name[0]          = '\0';
-
-        fill_pathname_noext(label, buffer[user],
-                            " ",
-                            sizeof(label));
-
-        if (
-                settings->bools.input_descriptor_label_show
-                && (i < RARCH_FIRST_META_KEY)
-                && core_has_set_input_descriptor()
-                && (i != RARCH_TURBO_ENABLE)
-                )
-        {
-            if (system->input_desc_btn[user][i])
-                strlcat(label,
-                        system->input_desc_btn[user][i],
-                        sizeof(label));
-            else
-            {
-                strlcat(label, msg_hash_to_str(MENU_ENUM_LABEL_VALUE_NOT_AVAILABLE),
-                        sizeof(label));
-
-                if (settings->bools.input_descriptor_hide_unbound)
-                    continue;
-            }
-        }
-        else
-            strlcat(label, input_config_bind_map_get_desc(i), sizeof(label));
-
-        snprintf(name, sizeof(name), "p%u_%s", user + 1, input_config_bind_map_get_base(i));
-
-        CONFIG_BIND_ALT(
-                list, list_info,
-                &input_config_binds[user][i],
-                user + 1,
-                user,
-                strdup(name),
-                strdup(label),
-                &defaults[i],
-                &group_info,
-                &subgroup_info,
-                parent_group);
-        (*list)[list_info->index - 1].bind_type = i + MENU_SETTINGS_BIND_BEGIN;
-    }
-
-    END_SUB_GROUP(list, list_info, parent_group);
-    END_GROUP(list, list_info, parent_group);
-
-    return true;
-}
 
 /**
  * config_get_audio_resampler_driver_options:
@@ -2121,10 +1857,7 @@ static bool setting_append_list(
                     parent_group);
 
 
-            char ext_name[255];
-
-            ext_name[0] = '\0';
-
+            char ext_name[255] = {0};
             if (frontend_driver_get_core_extension(ext_name, sizeof(ext_name)))
             {
                 CONFIG_ACTION(
@@ -2138,7 +1871,7 @@ static bool setting_append_list(
                 (*list)[list_info->index - 1].value.target.string = path_get_ptr(RARCH_PATH_CORE);
                 (*list)[list_info->index - 1].values       = ext_name;
                 menu_settings_list_current_add_cmd(list, list_info, CMD_EVENT_LOAD_CORE);
-                settings_data_list_current_add_flags(list, list_info, SD_FLAG_BROWSER_ACTION);
+//                settings_data_list_current_add_flags(list, list_info, SD_FLAG_BROWSER_ACTION);
             }
 
             CONFIG_ACTION(
@@ -2158,24 +1891,6 @@ static bool setting_append_list(
                     &subgroup_info,
                     parent_group);
             menu_settings_list_current_add_cmd(list, list_info, CMD_EVENT_RESTART_RETROARCH);
-
-//         CONFIG_ACTION(
-//               list, list_info,
-//               MENU_ENUM_LABEL_CONFIGURATIONS_LIST,
-//               MENU_ENUM_LABEL_VALUE_CONFIGURATIONS_LIST,
-//               &group_info,
-//               &subgroup_info,
-//               parent_group);
-            settings_data_list_current_add_flags(list, list_info, SD_FLAG_LAKKA_ADVANCED);
-
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_CONFIGURATIONS,
-                    MENU_ENUM_LABEL_VALUE_CONFIGURATIONS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
-            settings_data_list_current_add_flags(list, list_info, SD_FLAG_LAKKA_ADVANCED);
 
             CONFIG_ACTION(
                     list, list_info,

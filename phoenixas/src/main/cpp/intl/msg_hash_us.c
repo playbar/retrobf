@@ -1976,8 +1976,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "achievement_list")
        MSG_HASH(MENU_ENUM_LABEL_ACHIEVEMENT_LIST_HARDCORE,
                 "achievement_list_hardcore")
-       MSG_HASH(MENU_ENUM_LABEL_CONFIGURATIONS_LIST,
-                "configurations_list")
        MSG_HASH(MENU_ENUM_LABEL_ADD_TAB,
                 "add_tab")
        MSG_HASH(MENU_ENUM_LABEL_NETPLAY_TAB,
@@ -2118,8 +2116,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "unload_core")
        MSG_HASH(MENU_ENUM_LABEL_COLLECTION,
                 "collection")
-       MSG_HASH(MENU_ENUM_LABEL_CONFIGURATIONS,
-                "configurations")
        MSG_HASH(MENU_ENUM_LABEL_CONFIGURATION_SETTINGS,
                 "Determines how configuration files \n"
                         "are loaded and prioritized.")
@@ -2157,8 +2153,8 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "core_info_entry")
        MSG_HASH(MENU_ENUM_LABEL_CORE_INPUT_REMAPPING_OPTIONS,
                 "core_input_remapping_options")
-       MSG_HASH(MENU_ENUM_LABEL_CORE_LIST,
-                "load_core")
+       case MENU_ENUM_LABEL_CORE_LIST:
+           return "load_core";
        MSG_HASH(MENU_ENUM_LABEL_CORE_OPTIONS,
                 "core_options")
        MSG_HASH(MENU_ENUM_LABEL_CORE_OPTION_ENTRY,
@@ -3392,9 +3388,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
           MENU_ENUM_LABEL_VALUE_ACHIEVEMENT_LIST_HARDCORE,
           "Achievement List (Hardcore)"
        )
-        case MENU_ENUM_LABEL_VALUE_CONFIGURATIONS_LIST:
-            return "Configurations";
-
         MSG_HASH(
           MENU_ENUM_LABEL_VALUE_ADD_TAB,
           "Import content"
@@ -3663,10 +3656,7 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
           MENU_ENUM_LABEL_VALUE_CONFIG,
           "Config"
        )
-       MSG_HASH(
-          MENU_ENUM_LABEL_VALUE_CONFIGURATIONS,
-          "Load Configuration"
-       )
+
        MSG_HASH(
           MENU_ENUM_LABEL_VALUE_CONFIGURATION_SETTINGS,
           "Configuration"
@@ -4974,8 +4964,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Saves changes to the configuration file on exit.")
        MSG_HASH(MENU_ENUM_SUBLABEL_CONFIGURATION_SETTINGS,
                 "Change default settings for configuration files.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_CONFIGURATIONS_LIST,
-                "Manage and create configuration files.")
        MSG_HASH(MENU_ENUM_SUBLABEL_CPU_CORES,
                 "Amount of cores that the CPU has.")
        MSG_HASH(MENU_ENUM_SUBLABEL_FPS_SHOW,

@@ -90,7 +90,6 @@ static int action_get_core_list(const char *path, const char *label, unsigned me
 }
 default_title_macro(action_get_online_thumbnails_updater_list,  MENU_ENUM_LABEL_VALUE_THUMBNAILS_UPDATER_LIST)
 default_title_macro(action_get_core_updater_list,               MENU_ENUM_LABEL_VALUE_CORE_UPDATER_LIST)
-default_title_macro(action_get_configurations_list,             MENU_ENUM_LABEL_VALUE_CONFIGURATIONS_LIST)
 default_title_macro(action_get_core_options_list,               MENU_ENUM_LABEL_VALUE_CORE_OPTIONS)
 default_title_macro(action_get_quick_menu_list,                 MENU_ENUM_LABEL_VALUE_CONTENT_SETTINGS)
 default_title_macro(action_get_input_remapping_options_list,    MENU_ENUM_LABEL_VALUE_CORE_INPUT_REMAPPING_OPTIONS)
@@ -143,7 +142,6 @@ default_fill_title_macro(action_get_title_core_info_directory,  MENU_ENUM_LABEL_
 default_fill_title_macro(action_get_title_audio_filter,         MENU_ENUM_LABEL_VALUE_AUDIO_FILTER_DIR)
 default_fill_title_macro(action_get_title_video_shader_preset,  MENU_ENUM_LABEL_VIDEO_SHADER_PRESET_TWO)
 default_fill_title_macro(action_get_title_deferred_core_list,   MENU_ENUM_LABEL_VALUE_SUPPORTED_CORES)
-default_fill_title_macro(action_get_title_configurations,       MENU_ENUM_LABEL_VALUE_CONFIG)
 default_fill_title_macro(action_get_title_content_database_directory,   MENU_ENUM_LABEL_VALUE_CONTENT_DATABASE_DIRECTORY)
 default_fill_title_macro(action_get_title_savestate_directory,          MENU_ENUM_LABEL_VALUE_SAVESTATE_DIRECTORY)
 default_fill_title_macro(action_get_title_dynamic_wallpapers_directory, MENU_ENUM_LABEL_VALUE_DYNAMIC_WALLPAPERS_DIRECTORY)
@@ -506,9 +504,6 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_DEFERRED_CORE_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_title_deferred_core_list);
             break;
-         case MENU_ENUM_LABEL_CONFIGURATIONS:
-            BIND_ACTION_GET_TITLE(cbs, action_get_title_configurations);
-            break;
          case MENU_ENUM_LABEL_JOYPAD_AUTOCONFIG_DIR:
             BIND_ACTION_GET_TITLE(cbs, action_get_title_autoconfig_directory);
             break;
@@ -605,9 +600,6 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
             break;
          case MENU_ENUM_LABEL_DEFERRED_CORE_UPDATER_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_core_updater_list);
-            break;
-         case MENU_ENUM_LABEL_CONFIGURATIONS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_configurations_list);
             break;
          case MENU_ENUM_LABEL_CORE_OPTIONS:
             BIND_ACTION_GET_TITLE(cbs, action_get_core_options_list);
@@ -795,9 +787,6 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_LABEL_DEFERRED_CORE_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_title_deferred_core_list);
             break;
-         case MENU_LABEL_CONFIGURATIONS:
-            BIND_ACTION_GET_TITLE(cbs, action_get_title_configurations);
-            break;
          case MENU_LABEL_JOYPAD_AUTOCONFIG_DIR:
             BIND_ACTION_GET_TITLE(cbs, action_get_title_autoconfig_directory);
             break;
@@ -894,9 +883,6 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
             break;
          case MENU_LABEL_DEFERRED_CORE_UPDATER_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_core_updater_list);
-            break;
-         case MENU_LABEL_DEFERRED_CONFIGURATIONS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_configurations_list);
             break;
          case MENU_LABEL_CORE_OPTIONS:
             BIND_ACTION_GET_TITLE(cbs, action_get_core_options_list);

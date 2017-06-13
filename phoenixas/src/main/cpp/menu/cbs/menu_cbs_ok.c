@@ -3250,13 +3250,6 @@ static int action_ok_compressed_archive_push_detect_core(const char *path,
          entry_idx, ACTION_OK_DL_COMPRESSED_ARCHIVE_PUSH_DETECT_CORE);
 }
 
-static int action_ok_configurations_list(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok_displaylist_push(path, NULL, label, type, idx,
-         entry_idx, ACTION_OK_DL_CONFIGURATIONS_LIST);
-}
-
 static int action_ok_saving_list(const char *path,
       const char *label, unsigned type, size_t idx, size_t entry_idx)
 {
@@ -4601,7 +4594,6 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_CORE_COUNTERS:
          case MENU_ENUM_LABEL_MANAGEMENT:
          case MENU_ENUM_LABEL_LOAD_CONTENT_LIST:
-         case MENU_ENUM_LABEL_CONFIGURATIONS_LIST:
          case MENU_ENUM_LABEL_CONTENT_SETTINGS:
             BIND_ACTION_OK(cbs, action_ok_push_default);
             break;
@@ -4671,9 +4663,6 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
                break;
          case MENU_ENUM_LABEL_DISK_IMAGE_APPEND:
             BIND_ACTION_OK(cbs, action_ok_disk_image_append_list);
-            break;
-         case MENU_ENUM_LABEL_CONFIGURATIONS:
-            BIND_ACTION_OK(cbs, action_ok_configurations_list);
             break;
          case MENU_ENUM_LABEL_SAVING_SETTINGS:
             BIND_ACTION_OK(cbs, action_ok_saving_list);
