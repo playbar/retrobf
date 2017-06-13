@@ -26,34 +26,21 @@
 
 #ifdef NEED_DYNAMIC
 
-#ifdef _WIN32
-#include <compat/posix_string.h>
-#include <windows.h>
-#else
 #include <dlfcn.h>
 #include <src/callstack.h>
 
-#endif
-
-#ifdef _WIN32
-static char last_dyn_error[512];
-
-static void set_dl_error(void)
+int is_file_exist(const char *file_path)
 {
-   DWORD err = GetLastError();
-
-   if (FormatMessage(FORMAT_MESSAGE_IGNORE_INSERTS |
-            FORMAT_MESSAGE_FROM_SYSTEM,
-            NULL,
-            err,
-            MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),
-            last_dyn_error,
-            sizeof(last_dyn_error) - 1,
-            NULL) == 0)
-      snprintf(last_dyn_error, sizeof(last_dyn_error) - 1,
-            "unknown error %lu", err);
+   if(file_path == NULL )
+   {
+      return  -1;
+   }
+   if( access(file_path, F_OK) == 0 )
+      return 0;
+   return -1;
 }
-#endif
+
+
 
 /**
  * dylib_load:
@@ -65,22 +52,6 @@ static void set_dl_error(void)
  **/
 dylib_t dylib_load(const char *path)
 {
-#ifdef _WIN32
-   int prevmode = SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOOPENFILEERRORBOX);
-   dylib_t lib  = LoadLibrary(path);
-
-   SetErrorMode(prevmode);
-
-   if (!lib)
-   {
-      set_dl_error();
-      return NULL;
-   }
-   last_dyn_error[0] = 0;
-#else
-//    callstacktest();
-   dylib_t lib = dlopen(path, RTLD_LAZY);
-#endif
 //   FILE *pFile = fopen(path, "rb");
 //   FILE *pOut = fopen("/sdcard/2048_libretro_android.so","wb");
 //   char tmp[1024] = {0};
@@ -93,6 +64,10 @@ dylib_t dylib_load(const char *path)
 //   }
 //   fclose(pFile);
 //   fclose(pOut);
+
+   bool b = is_file_exist(path);
+   ////
+   dylib_t lib = dlopen(path, RTLD_LAZY);
    return lib;
 }
 

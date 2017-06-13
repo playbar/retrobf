@@ -258,6 +258,7 @@ static bool load_dynamic_core(void)
 static dylib_t libretro_get_system_info_lib(const char *path,
       struct retro_system_info *info, bool *load_no_content)
 {
+//   path = "/data/data/com.retroarch/lib/lib2048.so";
    dylib_t lib = dylib_load(path);
    void (*proc)(struct retro_system_info*);
 

@@ -2187,25 +2187,6 @@ static bool setting_append_list(
                     &subgroup_info,
                     parent_group);
 
-#if defined(HAVE_VIDEO_PROCESSOR)
-        CONFIG_ACTION(
-               list, list_info,
-               MENU_ENUM_LABEL_START_VIDEO_PROCESSOR,
-               MENU_ENUM_LABEL_VALUE_START_VIDEO_PROCESSOR,
-               &group_info,
-               &subgroup_info,
-               parent_group);
-#endif
-
-#if defined(HAVE_NETWORKING) && defined(HAVE_NETWORKGAMEPAD) && defined(HAVE_NETWORKGAMEPAD_CORE)
-        CONFIG_ACTION(
-               list, list_info,
-               MENU_ENUM_LABEL_START_NET_RETROPAD,
-               MENU_ENUM_LABEL_VALUE_START_NET_RETROPAD,
-               &group_info,
-               &subgroup_info,
-               parent_group);
-#endif
 
             CONFIG_ACTION(
                     list, list_info,
@@ -2215,9 +2196,6 @@ static bool setting_append_list(
                     &subgroup_info,
                     parent_group);
 
-#ifndef HAVE_DYNAMIC
-            if (frontend_driver_has_fork())
-#endif
             {
                 char ext_name[255];
 
@@ -2240,13 +2218,13 @@ static bool setting_append_list(
                 }
             }
 
-//         CONFIG_ACTION(
-//               list, list_info,
-//               MENU_ENUM_LABEL_LOAD_CONTENT_LIST,
-//               MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_LIST,
-//               &group_info,
-//               &subgroup_info,
-//               parent_group);
+         CONFIG_ACTION(
+               list, list_info,
+               MENU_ENUM_LABEL_LOAD_CONTENT_LIST,
+               MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_LIST,
+               &group_info,
+               &subgroup_info,
+               parent_group);
 
 //         if (settings->bools.history_list_enable)
 //         {
@@ -5320,7 +5298,7 @@ static bool setting_append_list(
                         parent_group,
                         general_write_handler,
                         general_read_handler);
-                menu_settings_list_current_add_range(list, list_info, 0, MATERIALUI_THEME_LAST-1, 1, true, true);
+//                menu_settings_list_current_add_range(list, list_info, 0, MATERIALUI_THEME_LAST-1, 1, true, true);
 
                 CONFIG_FLOAT(
                         list, list_info,
@@ -6840,34 +6818,34 @@ static rarch_setting_t *menu_setting_new_internal(rarch_setting_info_t *list_inf
     enum settings_list_type list_types[] =
             {
                     SETTINGS_LIST_MAIN_MENU,
-                    SETTINGS_LIST_DRIVERS,
-                    SETTINGS_LIST_CORE,
-                    SETTINGS_LIST_CONFIGURATION,
-                    SETTINGS_LIST_LOGGING,
-                    SETTINGS_LIST_SAVING,
-                    SETTINGS_LIST_REWIND,
-                    SETTINGS_LIST_VIDEO,
-                    SETTINGS_LIST_AUDIO,
-                    SETTINGS_LIST_INPUT,
-                    SETTINGS_LIST_INPUT_HOTKEY,
-                    SETTINGS_LIST_RECORDING,
-                    SETTINGS_LIST_FRAME_THROTTLING,
-                    SETTINGS_LIST_FONT,
-                    SETTINGS_LIST_OVERLAY,
-                    SETTINGS_LIST_MENU,
-                    SETTINGS_LIST_MENU_FILE_BROWSER,
-                    SETTINGS_LIST_MULTIMEDIA,
-                    SETTINGS_LIST_USER_INTERFACE,
-                    SETTINGS_LIST_PLAYLIST,
-                    SETTINGS_LIST_CHEEVOS,
-                    SETTINGS_LIST_CORE_UPDATER,
-                    SETTINGS_LIST_NETPLAY,
-                    SETTINGS_LIST_LAKKA_SERVICES,
-                    SETTINGS_LIST_USER,
-                    SETTINGS_LIST_USER_ACCOUNTS,
-                    SETTINGS_LIST_USER_ACCOUNTS_CHEEVOS,
-                    SETTINGS_LIST_DIRECTORY,
-                    SETTINGS_LIST_PRIVACY
+//                    SETTINGS_LIST_DRIVERS,
+//                    SETTINGS_LIST_CORE,
+//                    SETTINGS_LIST_CONFIGURATION,
+//                    SETTINGS_LIST_LOGGING,
+//                    SETTINGS_LIST_SAVING,
+//                    SETTINGS_LIST_REWIND,
+//                    SETTINGS_LIST_VIDEO,
+//                    SETTINGS_LIST_AUDIO,
+//                    SETTINGS_LIST_INPUT,
+//                    SETTINGS_LIST_INPUT_HOTKEY,
+//                    SETTINGS_LIST_RECORDING,
+//                    SETTINGS_LIST_FRAME_THROTTLING,
+//                    SETTINGS_LIST_FONT,
+//                    SETTINGS_LIST_OVERLAY,
+//                    SETTINGS_LIST_MENU,
+//                    SETTINGS_LIST_MENU_FILE_BROWSER,
+//                    SETTINGS_LIST_MULTIMEDIA,
+//                    SETTINGS_LIST_USER_INTERFACE,
+//                    SETTINGS_LIST_PLAYLIST,
+//                    SETTINGS_LIST_CHEEVOS,
+//                    SETTINGS_LIST_CORE_UPDATER,
+//                    SETTINGS_LIST_NETPLAY,
+//                    SETTINGS_LIST_LAKKA_SERVICES,
+//                    SETTINGS_LIST_USER,
+//                    SETTINGS_LIST_USER_ACCOUNTS,
+//                    SETTINGS_LIST_USER_ACCOUNTS_CHEEVOS,
+//                    SETTINGS_LIST_DIRECTORY,
+//                    SETTINGS_LIST_PRIVACY
             };
     rarch_setting_t terminator           = setting_terminator_setting();
     const char *root                     = msg_hash_to_str(MENU_ENUM_LABEL_MAIN_MENU);

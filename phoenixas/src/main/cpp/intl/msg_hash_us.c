@@ -2548,8 +2548,8 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "logging_settings")
        MSG_HASH(MENU_ENUM_LABEL_LOG_VERBOSITY,
                 "log_verbosity")
-       MSG_HASH(MENU_ENUM_LABEL_MAIN_MENU,
-                "main_menu")
+       case MENU_ENUM_LABEL_MAIN_MENU:
+           return "main_menu";
        MSG_HASH(MENU_ENUM_LABEL_MANAGEMENT,
                 "database_settings")
        MSG_HASH(MENU_ENUM_LABEL_MATERIALUI_MENU_COLOR_THEME,
@@ -4159,14 +4159,14 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Logging")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_LOG_VERBOSITY,
                 "Logging Verbosity")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_MAIN_MENU,
-                "Main Menu")
+        case MENU_ENUM_LABEL_VALUE_MAIN_MENU:
+            return "Main Menu";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_MANAGEMENT,
                 "Database Settings")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_MATERIALUI_MENU_COLOR_THEME,
                 "Menu Color Theme")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_MATERIALUI_MENU_COLOR_THEME_BLUE,
-                "Blue")
+        case MENU_ENUM_LABEL_VALUE_MATERIALUI_MENU_COLOR_THEME_BLUE:
+            return "Blue";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_MATERIALUI_MENU_COLOR_THEME_BLUE_GREY,
                 "Blue Grey")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_MATERIALUI_MENU_COLOR_THEME_DARK_BLUE,
@@ -4563,8 +4563,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Sort Savestates In Folders")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_SSH_ENABLE,
                 "SSH Enable")
-//       MSG_HASH(MENU_ENUM_LABEL_VALUE_START_CORE,
-//                "Start Core")
         case MENU_ENUM_LABEL_VALUE_START_CORE:
             return "Start Core";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_START_NET_RETROPAD,

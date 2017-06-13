@@ -1036,130 +1036,6 @@ static void mui_frame(void *data, video_frame_info_t *video_info)
          clearcolor.b            = 1.0f;
          clearcolor.a            = 0.75f;
          break;
-      case MATERIALUI_THEME_BLUE_GREY:
-         hex32_to_rgba_normalized(0x607D8B, blue_grey_500,  1.00);
-         hex32_to_rgba_normalized(0x607D8B, header_bg_color_real,  1.00);
-         hex32_to_rgba_normalized(0xCFD8DC, blue_grey_50,   0.90);
-         hex32_to_rgba_normalized(0xFFFFFF, footer_bg_color_real, 1.00);
-
-         header_bg_color         = header_bg_color_real;
-         body_bg_color           = white_transp_bg;
-         highlighted_entry_color = blue_grey_50;
-         footer_bg_color         = footer_bg_color_real;
-         active_tab_marker_color = blue_grey_500;
-
-         font_normal_color       = black_opaque_54;
-         font_hover_color        = black_opaque_87;
-         font_header_color       = 0xffffffff;
-
-         clearcolor.r            = 1.0f;
-         clearcolor.g            = 1.0f;
-         clearcolor.b            = 1.0f;
-         clearcolor.a            = 0.75f;
-         break;
-      case MATERIALUI_THEME_GREEN:
-         hex32_to_rgba_normalized(0x4CAF50, green_500,      1.00);
-         hex32_to_rgba_normalized(0x4CAF50, header_bg_color_real,      1.00);
-         hex32_to_rgba_normalized(0xC8E6C9, green_50,       0.90);
-         hex32_to_rgba_normalized(0xFFFFFF, footer_bg_color_real, 1.00);
-
-         header_bg_color         = header_bg_color_real;
-         body_bg_color           = white_transp_bg;
-         highlighted_entry_color = green_50;
-         footer_bg_color         = footer_bg_color_real;
-         active_tab_marker_color = green_500;
-
-         font_normal_color       = black_opaque_54;
-         font_hover_color        = black_opaque_87;
-         font_header_color       = 0xffffffff;
-
-         clearcolor.r            = 1.0f;
-         clearcolor.g            = 1.0f;
-         clearcolor.b            = 1.0f;
-         clearcolor.a            = 0.75f;
-         break;
-      case MATERIALUI_THEME_RED:
-         hex32_to_rgba_normalized(0xF44336, red_500,        1.00);
-         hex32_to_rgba_normalized(0xF44336, header_bg_color_real,        1.00);
-         hex32_to_rgba_normalized(0xFFEBEE, red_50,         0.90);
-         hex32_to_rgba_normalized(0xFFFFFF, footer_bg_color_real, 1.00);
-
-         header_bg_color         = header_bg_color_real;
-         body_bg_color           = white_transp_bg;
-         highlighted_entry_color = red_50;
-         footer_bg_color         = footer_bg_color_real;
-         active_tab_marker_color = red_500;
-
-         font_normal_color       = black_opaque_54;
-         font_hover_color        = black_opaque_87;
-         font_header_color       = 0xffffffff;
-
-         clearcolor.r            = 1.0f;
-         clearcolor.g            = 1.0f;
-         clearcolor.b            = 1.0f;
-         clearcolor.a            = 0.75f;
-         break;
-      case MATERIALUI_THEME_YELLOW:
-         hex32_to_rgba_normalized(0xFFEB3B, yellow_500,     1.00);
-         hex32_to_rgba_normalized(0xFFEB3B, header_bg_color_real,     1.00);
-         hex32_to_rgba_normalized(0xFFF9C4, yellow_200,     0.90);
-         hex32_to_rgba_normalized(0xFFFFFF, footer_bg_color_real, 1.00);
-
-         header_bg_color         = header_bg_color_real;
-         body_bg_color           = white_transp_bg;
-         highlighted_entry_color = yellow_200;
-         footer_bg_color         = footer_bg_color_real;
-         active_tab_marker_color = yellow_500;
-
-         font_normal_color       = black_opaque_54;
-         font_hover_color        = black_opaque_87;
-         font_header_color       = black_opaque_54;
-
-         clearcolor.r            = 1.0f;
-         clearcolor.g            = 1.0f;
-         clearcolor.b            = 1.0f;
-         clearcolor.a            = 0.75f;
-         break;
-      case MATERIALUI_THEME_DARK_BLUE:
-         hex32_to_rgba_normalized(0x212121, footer_bg_color_real, 1.00);
-         memcpy(header_bg_color_real, greyish_blue, sizeof(header_bg_color_real));
-         header_bg_color         = header_bg_color_real;
-         body_bg_color           = almost_black;
-         highlighted_entry_color = grey_bg;
-         footer_bg_color         = footer_bg_color_real;
-         active_tab_marker_color = greyish_blue;
-
-         font_normal_color       = white_opaque_70;
-         font_hover_color        = 0xffffffff;
-         font_header_color       = 0xffffffff;
-
-         clearcolor.r            = body_bg_color[0];
-         clearcolor.g            = body_bg_color[1];
-         clearcolor.b            = body_bg_color[2];
-         clearcolor.a            = 0.75f;
-         break;
-      case MATERIALUI_THEME_NVIDIA_SHIELD:
-         hex32_to_rgba_normalized(0x282F37, color_nv_header,1.00);
-         hex32_to_rgba_normalized(0x282F37, header_bg_color_real,1.00);
-         hex32_to_rgba_normalized(0x202427, color_nv_body,  0.90);
-         hex32_to_rgba_normalized(0x77B900, color_nv_accent,0.90);
-         hex32_to_rgba_normalized(0x202427, footer_bg_color_real,  1.00);
-
-         header_bg_color         = header_bg_color_real;
-         body_bg_color           = color_nv_body;
-         highlighted_entry_color = color_nv_accent;
-         footer_bg_color         = footer_bg_color_real;
-         active_tab_marker_color = color_nv_accent;
-
-         font_normal_color       = 0xbbc0c4ff;
-         font_hover_color        = 0xffffffff;
-         font_header_color       = 0xffffffff;
-
-         clearcolor.r            = color_nv_body[0];
-         clearcolor.g            = color_nv_body[1];
-         clearcolor.b            = color_nv_body[2];
-         clearcolor.a            = 0.75f;
-         break;
    }
 
    menu_display_set_alpha(header_bg_color_real, video_info->menu_header_opacity);
@@ -1236,9 +1112,8 @@ static void mui_frame(void *data, video_frame_info_t *video_info)
       menu_display_set_alpha(blue_50, 1.0);
 
    /* highlighted entry */
-   list             = menu_entries_get_selection_buf_ptr(0);
-   node             = (mui_node_t*)menu_entries_get_userdata_at_offset(
-         list, selection);
+   list = menu_entries_get_selection_buf_ptr(0);
+   node = (mui_node_t*)menu_entries_get_userdata_at_offset(list, selection);
 
    if (node)
       menu_display_draw_quad(

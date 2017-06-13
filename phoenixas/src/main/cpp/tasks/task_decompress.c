@@ -327,9 +327,7 @@ bool task_push_decompress(
    t->callback    = cb;
    t->user_data   = user_data;
 
-   snprintf(tmp, sizeof(tmp), "%s '%s'",
-         msg_hash_to_str(MSG_EXTRACTING), path_basename(source_file));
-
+   snprintf(tmp, sizeof(tmp), "%s '%s'", msg_hash_to_str(MSG_EXTRACTING), path_basename(source_file));
    t->title       = strdup(tmp);
 
    task_queue_push(t);
