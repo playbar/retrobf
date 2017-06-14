@@ -147,12 +147,8 @@ enum
    XMB_SYSTEM_TAB_MAIN = 0,
    XMB_SYSTEM_TAB_SETTINGS,
    XMB_SYSTEM_TAB_MUSIC,
-#ifdef HAVE_IMAGEVIEWER
    XMB_SYSTEM_TAB_IMAGES,
-#endif
-#ifdef HAVE_NETWORKING
    XMB_SYSTEM_TAB_NETPLAY,
-#endif
    XMB_SYSTEM_TAB_ADD
 };
 
@@ -3234,8 +3230,6 @@ static void xmb_init_ribbon(xmb_handle_t * xmb)
    free(dummy);
    free(ribbon_verts);
 }
-
-
 
 static void *xmb_init(void **userdata, bool video_is_threaded)
 {

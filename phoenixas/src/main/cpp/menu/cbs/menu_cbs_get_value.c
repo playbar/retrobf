@@ -864,14 +864,7 @@ static void menu_action_setting_disp_set_label_materialui_menu_color_theme(
    if (!settings)
       return;
 
-   switch (settings->uints.menu_materialui_color_theme)
-   {
-      case MATERIALUI_THEME_BLUE:
-         strlcpy(s, msg_hash_to_str(MENU_ENUM_LABEL_VALUE_MATERIALUI_MENU_COLOR_THEME_BLUE), len);
-         break;
-      default:
-         break;
-   }
+   strlcpy(s, msg_hash_to_str(MENU_ENUM_LABEL_VALUE_MATERIALUI_MENU_COLOR_THEME_BLUE), len);
 }
 
 static void menu_action_setting_disp_set_label_thumbnails(

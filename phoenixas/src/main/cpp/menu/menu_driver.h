@@ -203,11 +203,6 @@ enum menu_settings_type
    MENU_SETTINGS_LAST
 };
 
-enum materialui_color_theme
-{
-   MATERIALUI_THEME_BLUE = 0,
-};
-
 enum xmb_color_theme
 {
    XMB_THEME_LEGACY_RED  = 0,

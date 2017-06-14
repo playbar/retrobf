@@ -994,11 +994,7 @@ static void mui_frame(void *data, video_frame_info_t *video_info)
    bool background_rendered        = false;
    bool libretro_running           = video_info->libretro_running;
 
-   /* Default is blue theme */
-   float *header_bg_color          = NULL;
-   float *highlighted_entry_color  = NULL;
-   float *footer_bg_color          = NULL;
-   float *body_bg_color            = NULL;
+
    float *active_tab_marker_color  = NULL;
    float *passive_tab_icon_color   = grey_bg;
 
@@ -1013,30 +1009,21 @@ static void mui_frame(void *data, video_frame_info_t *video_info)
 
    msg[0] = title[0] = title_buf[0] = title_msg[0] = '\0';
 
-   switch (video_info->materialui_color_theme)
-   {
-      case MATERIALUI_THEME_BLUE:
-         hex32_to_rgba_normalized(0x2196F3, blue_500,       1.00);
-         hex32_to_rgba_normalized(0x2196F3, header_bg_color_real, 1.00);
-         hex32_to_rgba_normalized(0xE3F2FD, blue_50,        0.90);
-         hex32_to_rgba_normalized(0xFFFFFF, footer_bg_color_real, 1.00);
+    hex32_to_rgba_normalized(0x2196F3, blue_500,       1.00);
+    hex32_to_rgba_normalized(0x2196F3, header_bg_color_real, 1.00);
+    hex32_to_rgba_normalized(0xE3F2FD, blue_50,        0.90);
+    hex32_to_rgba_normalized(0xFFFFFF, footer_bg_color_real, 1.00);
 
-         header_bg_color         = header_bg_color_real;
-         highlighted_entry_color = blue_50;
-         footer_bg_color         = footer_bg_color_real;
-         body_bg_color           = white_transp_bg;
-         active_tab_marker_color = blue_500;
 
-         font_normal_color       = black_opaque_54;
-         font_hover_color        = black_opaque_87;
-         font_header_color       = 0xffffffff;
+    active_tab_marker_color = blue_500;
+    font_normal_color       = black_opaque_54;
+    font_hover_color        = black_opaque_87;
+    font_header_color       = 0xffffffff;
 
-         clearcolor.r            = 1.0f;
-         clearcolor.g            = 1.0f;
-         clearcolor.b            = 1.0f;
-         clearcolor.a            = 0.75f;
-         break;
-   }
+    clearcolor.r            = 1.0f;
+    clearcolor.g            = 1.0f;
+    clearcolor.b            = 1.0f;
+    clearcolor.a            = 0.75f;
 
    menu_display_set_alpha(header_bg_color_real, video_info->menu_header_opacity);
    menu_display_set_alpha(footer_bg_color_real, video_info->menu_footer_opacity);
@@ -1054,7 +1041,7 @@ static void mui_frame(void *data, video_frame_info_t *video_info)
       draw.matrix_data        = NULL;
       draw.texture            = menu_display_white_texture;
       draw.prim_type          = MENU_DISPLAY_PRIM_TRIANGLESTRIP;
-      draw.color              = &body_bg_color[0];
+      draw.color              = &white_transp_bg[0];
       draw.vertex             = NULL;
       draw.tex_coord          = NULL;
       draw.vertex_count       = 4;
@@ -1123,7 +1110,7 @@ static void mui_frame(void *data, video_frame_info_t *video_info)
       node->line_height,
       width,
       height,
-      &highlighted_entry_color[0]
+      &blue_50[0]
    );
 
    font_driver_bind_block(mui->font, &mui->raster_block);
@@ -1156,14 +1143,14 @@ static void mui_frame(void *data, video_frame_info_t *video_info)
       header_height,
       width,
       height,
-      &header_bg_color[0]);
+      &header_bg_color_real[0]);
 
    mui->tabs_height = 0;
 
    /* display tabs if depth equal one, if not hide them */
    if (mui_list_get_size(mui, MENU_LIST_PLAIN) == 1)
    {
-      mui_draw_tab_begin(mui, width, height, &footer_bg_color[0], &grey_bg[0]);
+      mui_draw_tab_begin(mui, width, height, &footer_bg_color_real[0], &grey_bg[0]);
 
       for (i = 0; i <= MUI_SYSTEM_TAB_END; i++)
          mui_draw_tab(mui, i, width, height, &passive_tab_icon_color[0], &active_tab_marker_color[0]);
@@ -1245,7 +1232,7 @@ static void mui_frame(void *data, video_frame_info_t *video_info)
    {
       const char *str          = menu_input_dialog_get_buffer();
       const char *label        = menu_input_dialog_get_label_buffer();
-      float *body_bg_color_ptr = &body_bg_color[0];
+      float *body_bg_color_ptr = &white_transp_bg[0];
 
       menu_display_draw_quad(0, 0, width, height, width, height, &black_bg[0]);
       snprintf(msg, sizeof(msg), "%s\n%s", label, str);
@@ -1257,7 +1244,7 @@ static void mui_frame(void *data, video_frame_info_t *video_info)
 
    if (!string_is_empty(mui->box_message))
    {
-      float *body_bg_color_ptr = &body_bg_color[0];
+      float *body_bg_color_ptr = &white_transp_bg[0];
 
       menu_display_draw_quad(0, 0, width, height, width, height, &black_bg[0]);
 
@@ -1567,22 +1554,16 @@ static void mui_preswitch_tabs(mui_handle_t *mui, unsigned action)
    switch (mui->categories.selection_ptr)
    {
       case MUI_SYSTEM_TAB_MAIN:
-         menu_stack->list[stack_size - 1].label =
-            strdup(msg_hash_to_str(MENU_ENUM_LABEL_MAIN_MENU));
-         menu_stack->list[stack_size - 1].type =
-            MENU_SETTINGS;
+         menu_stack->list[stack_size - 1].label = strdup(msg_hash_to_str(MENU_ENUM_LABEL_MAIN_MENU));
+         menu_stack->list[stack_size - 1].type = MENU_SETTINGS;
          break;
       case MUI_SYSTEM_TAB_PLAYLISTS:
-         menu_stack->list[stack_size - 1].label =
-            strdup(msg_hash_to_str(MENU_ENUM_LABEL_PLAYLISTS_TAB));
-         menu_stack->list[stack_size - 1].type =
-            MENU_PLAYLISTS_TAB;
+         menu_stack->list[stack_size - 1].label = strdup(msg_hash_to_str(MENU_ENUM_LABEL_PLAYLISTS_TAB));
+         menu_stack->list[stack_size - 1].type = MENU_PLAYLISTS_TAB;
          break;
       case MUI_SYSTEM_TAB_SETTINGS:
-         menu_stack->list[stack_size - 1].label =
-            strdup(msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS_TAB));
-         menu_stack->list[stack_size - 1].type =
-            MENU_SETTINGS;
+         menu_stack->list[stack_size - 1].label = strdup(msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS_TAB));
+         menu_stack->list[stack_size - 1].type = MENU_SETTINGS;
          break;
    }
 }

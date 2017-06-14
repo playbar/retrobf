@@ -19,9 +19,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
-
 #include <boolean.h>
-
 #include <retro_common_api.h>
 #include <lists/file_list.h>
 

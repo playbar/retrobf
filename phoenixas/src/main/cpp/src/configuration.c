@@ -1331,7 +1331,6 @@ static struct config_uint_setting *populate_settings_uint(settings_t *settings, 
    SETTING_UINT("xmb_theme",                    &settings->uints.menu_xmb_theme, true, xmb_icon_theme, false);
    SETTING_UINT("xmb_menu_color_theme",         &settings->uints.menu_xmb_color_theme, true, xmb_theme, false);
 #endif
-   SETTING_UINT("materialui_menu_color_theme",  &settings->uints.menu_materialui_color_theme, true, MATERIALUI_THEME_BLUE, false);
    SETTING_UINT("menu_shader_pipeline",         &settings->uints.menu_xmb_shader_pipeline, true, menu_shader_pipeline, false);
 #endif
    SETTING_UINT("audio_out_rate",               &settings->uints.audio_out_rate, true, out_rate, false);
@@ -1492,17 +1491,9 @@ static void config_set_defaults(void)
    *settings->paths.path_menu_xmb_font            = '\0';
 #endif
 
-#ifdef HAVE_MATERIALUI
-   if (g_defaults.menu.materialui.menu_color_theme_enable)
-      settings->uints.menu_materialui_color_theme = g_defaults.menu.materialui.menu_color_theme;
-#endif
 #endif
 
-#ifdef HAVE_FFMPEG
-   configuration_set_bool(settings, settings->bools.multimedia_builtin_mediaplayer_enable, true);
-#else
    configuration_set_bool(settings, settings->bools.multimedia_builtin_mediaplayer_enable, false);
-#endif
    settings->floats.video_scale                = scale;
 
    if (retroarch_is_forced_fullscreen())

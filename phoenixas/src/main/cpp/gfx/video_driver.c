@@ -2488,11 +2488,10 @@ void video_driver_build_info(video_frame_info_t *video_info)
    video_info->use_rgba              = video_driver_use_rgba;
 
    video_info->libretro_running       = false;
-#ifdef HAVE_MENU
+
    video_info->menu_is_alive          = menu_driver_is_alive();
    video_info->menu_footer_opacity    = settings->floats.menu_footer_opacity;
    video_info->menu_header_opacity    = settings->floats.menu_header_opacity;
-   video_info->materialui_color_theme = settings->uints.menu_materialui_color_theme;
    video_info->menu_shader_pipeline   = settings->uints.menu_xmb_shader_pipeline;
    video_info->xmb_theme              = settings->uints.menu_xmb_theme;
    video_info->xmb_color_theme        = settings->uints.menu_xmb_color_theme;
@@ -2503,22 +2502,7 @@ void video_driver_build_info(video_frame_info_t *video_info)
    video_info->menu_wallpaper_opacity = settings->floats.menu_wallpaper_opacity;
 
    if (!settings->bools.menu_pause_libretro)
-      video_info->libretro_running    = (rarch_ctl(RARCH_CTL_IS_INITED, NULL)
-            && !rarch_ctl(RARCH_CTL_IS_DUMMY_CORE, NULL));
-#else
-   video_info->menu_is_alive          = false;
-   video_info->menu_footer_opacity    = 0.0f;
-   video_info->menu_header_opacity    = 0.0f;
-   video_info->materialui_color_theme = 0;
-   video_info->menu_shader_pipeline   = 0;
-   video_info->xmb_color_theme        = 0;
-   video_info->xmb_theme              = 0;
-   video_info->timedate_enable        = false;
-   video_info->battery_level_enable   = false;
-   video_info->xmb_shadows_enable     = false;
-   video_info->xmb_alpha_factor       = 0.0f;
-   video_info->menu_wallpaper_opacity = 0.0f;
-#endif
+      video_info->libretro_running    = (rarch_ctl(RARCH_CTL_IS_INITED, NULL) && !rarch_ctl(RARCH_CTL_IS_DUMMY_CORE, NULL));
 
    runloop_get_status(&is_paused, &is_idle, &is_slowmotion, &is_perfcnt_enable);
 
