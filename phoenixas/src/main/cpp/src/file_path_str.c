@@ -26,11 +26,7 @@ const char *file_path_str(enum file_path_enum enum_idx)
    switch (enum_idx)
    {
       case FILE_PATH_PROGRAM_NAME:
-#if defined(IS_SALAMANDER)
-         str = "RetroArch Salamander";
-#else
          str = "RetroArch";
-#endif
          break;
       case FILE_PATH_DETECT:
          str = "DETECT";
@@ -181,18 +177,6 @@ const char *file_path_str(enum file_path_enum enum_idx)
          break;
       case FILE_PATH_AUTOCONFIG_ZIP:
          str = "autoconfig.zip";
-         break;
-      case FILE_PATH_CONTENT_HISTORY:
-         str = "content_history.lpl";
-         break;
-      case FILE_PATH_CONTENT_MUSIC_HISTORY:
-         str = "content_music_history.lpl";
-         break;
-      case FILE_PATH_CONTENT_VIDEO_HISTORY:
-         str = "content_video_history.lpl";
-         break;
-      case FILE_PATH_CONTENT_IMAGE_HISTORY:
-         str = "content_image_history.lpl";
          break;
       case FILE_PATH_CORE_OPTIONS_CONFIG:
          str = "retroarch-core-options.cfg";

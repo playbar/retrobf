@@ -1172,7 +1172,6 @@ enum msg_hash_enums
    MENU_LABEL(IMAGES_TAB),
    MENU_LABEL(HORIZONTAL_MENU),
    MENU_LABEL(SETTINGS_TAB),
-   MENU_LABEL(HISTORY_TAB),
    MENU_LABEL(ADD_TAB),
    MENU_LABEL(NETPLAY_TAB),
    MENU_LABEL(PLAYLISTS_TAB),
@@ -1252,7 +1251,6 @@ enum msg_hash_enums
    MENU_LABEL(SETTINGS),
    MENU_LABEL(FRONTEND_COUNTERS),
    MENU_LABEL(CORE_COUNTERS),
-   MENU_LABEL(LOAD_CONTENT_HISTORY),
    MENU_LABEL(NETWORK_INFORMATION),
    MENU_LABEL(SYSTEM_INFORMATION),
    MENU_LABEL(ACHIEVEMENT_LIST),
@@ -1831,7 +1829,6 @@ enum msg_hash_enums
 
 /* Main menu */
 #define MENU_LABEL_LOAD_CONTENT_LIST                                           0x5745de1fU
-#define MENU_LABEL_LOAD_CONTENT_HISTORY                                        0xfe1d79e5U
 #define MENU_LABEL_ADD_CONTENT_LIST                                            0x046f4668U
 #define MENU_LABEL_ONLINE_UPDATER                                              0xcac0025eU
 #define MENU_LABEL_NETPLAY                                                     0x0b511d22U

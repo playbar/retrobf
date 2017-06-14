@@ -1647,7 +1647,6 @@ static int menu_cbs_init_bind_get_string_representation_compare_label(
                   menu_action_setting_disp_set_label_menu_input_keyboard_gamepad_mapping_type);
             break;
          case MENU_ENUM_LABEL_CONTENT_COLLECTION_LIST:
-         case MENU_ENUM_LABEL_LOAD_CONTENT_HISTORY:
          case MENU_ENUM_LABEL_DOWNLOADED_FILE_DETECT_CORE_LIST:
          case MENU_ENUM_LABEL_FAVORITES:
          case MENU_ENUM_LABEL_CORE_OPTIONS:
@@ -1892,7 +1891,6 @@ int menu_cbs_init_bind_get_string_representation(menu_file_list_cbs_t *cbs,
             BIND_ACTION_GET_VALUE(cbs,
                   menu_action_setting_disp_set_label_cheevos_locked_entry);
             return 0;
-         case MENU_ENUM_LABEL_LOAD_CONTENT_HISTORY:
          case MENU_ENUM_LABEL_SYSTEM_INFORMATION:
             BIND_ACTION_GET_VALUE(cbs,
                   menu_action_setting_disp_set_label_menu_more);

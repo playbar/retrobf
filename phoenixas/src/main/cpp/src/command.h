@@ -101,10 +101,6 @@ enum event_command
    CMD_EVENT_RECORD_INIT,
    /* Deinitializes recording system. */
    CMD_EVENT_RECORD_DEINIT,
-   /* Deinitializes history playlist. */
-   CMD_EVENT_HISTORY_DEINIT,
-   /* Initializes history playlist. */
-   CMD_EVENT_HISTORY_INIT,
    /* Deinitializes core information. */
    CMD_EVENT_CORE_INFO_DEINIT,
    /* Initializes core information. */

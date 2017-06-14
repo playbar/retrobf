@@ -112,26 +112,10 @@ static int nanosleepDOS(const struct timespec *rqtp, struct timespec *rmtp)
  **/
 static INLINE void retro_sleep(unsigned msec)
 {
-#if defined(__CELLOS_LV2__) && !defined(__PSL1GHT__)
-   sys_timer_usleep(1000 * msec);
-#elif defined(PSP) || defined(VITA)
-   sceKernelDelayThread(1000 * msec);
-#elif defined(_3DS)
-   svcSleepThread(1000000 * (s64)msec);
-#elif defined(_WIN32)
-   Sleep(msec);
-#elif defined(XENON)
-   udelay(1000 * msec);
-#elif defined(GEKKO) || defined(__PSL1GHT__) || defined(__QNX__)
-   usleep(1000 * msec);
-#elif defined(WIIU)
-   OSSleepTicks(ms_to_ticks(msec));
-#else
    struct timespec tv = {0};
    tv.tv_sec = msec / 1000;
    tv.tv_nsec = (msec % 1000) * 1000000;
    nanosleep(&tv, NULL);
-#endif
 }
 
 /**

@@ -146,11 +146,7 @@ enum
 {
    XMB_SYSTEM_TAB_MAIN = 0,
    XMB_SYSTEM_TAB_SETTINGS,
-   XMB_SYSTEM_TAB_HISTORY,
    XMB_SYSTEM_TAB_MUSIC,
-#ifdef HAVE_FFMPEG
-   XMB_SYSTEM_TAB_VIDEO,
-#endif
 #ifdef HAVE_IMAGEVIEWER
    XMB_SYSTEM_TAB_IMAGES,
 #endif
@@ -298,7 +294,6 @@ typedef struct xmb_handle
    xmb_node_t video_tab_node;
 #endif
    xmb_node_t settings_tab_node;
-   xmb_node_t history_tab_node;
    xmb_node_t add_tab_node;
    xmb_node_t netplay_tab_node;
 
@@ -1544,12 +1539,7 @@ static xmb_node_t* xmb_get_node(xmb_handle_t *xmb, unsigned i)
 #endif
       case XMB_SYSTEM_TAB_MUSIC:
          return &xmb->music_tab_node;
-#ifdef HAVE_FFMPEG
-      case XMB_SYSTEM_TAB_VIDEO:
-         return &xmb->video_tab_node;
-#endif
-      case XMB_SYSTEM_TAB_HISTORY:
-         return &xmb->history_tab_node;
+
 #ifdef HAVE_NETWORKING
       case XMB_SYSTEM_TAB_NETPLAY:
          return &xmb->netplay_tab_node;
@@ -3292,8 +3282,6 @@ static void *xmb_init(void **userdata, bool video_is_threaded)
    xmb->tabs[xmb->system_tab_end]     = XMB_SYSTEM_TAB_MAIN;
    if (settings->bools.menu_xmb_show_settings)
       xmb->tabs[++xmb->system_tab_end] = XMB_SYSTEM_TAB_SETTINGS;
-   if (settings->bools.menu_xmb_show_history)
-      xmb->tabs[++xmb->system_tab_end] = XMB_SYSTEM_TAB_HISTORY;
 #ifdef HAVE_IMAGEVIEWER
    if (settings->bools.menu_xmb_show_images)
       xmb->tabs[++xmb->system_tab_end] = XMB_SYSTEM_TAB_IMAGES;
@@ -3558,10 +3546,6 @@ static void xmb_context_reset_textures(
    xmb->settings_tab_node.icon  = xmb->textures.list[XMB_TEXTURE_SETTINGS];
    xmb->settings_tab_node.alpha = xmb->categories.active.alpha;
    xmb->settings_tab_node.zoom  = xmb->categories.active.zoom;
-
-   xmb->history_tab_node.icon   = xmb->textures.list[XMB_TEXTURE_HISTORY];
-   xmb->history_tab_node.alpha  = xmb->categories.active.alpha;
-   xmb->history_tab_node.zoom   = xmb->categories.active.zoom;
 
    xmb->music_tab_node.icon     = xmb->textures.list[XMB_TEXTURE_MUSICS];
    xmb->music_tab_node.alpha    = xmb->categories.active.alpha;
@@ -3881,20 +3865,7 @@ static void xmb_list_cache(void *data, enum menu_list_type type, unsigned action
                menu_stack->list[stack_size - 1].type =
                   MENU_MUSIC_TAB;
                break;
-#ifdef HAVE_FFMPEG
-            case XMB_SYSTEM_TAB_VIDEO:
-               menu_stack->list[stack_size - 1].label =
-                  strdup(msg_hash_to_str(MENU_ENUM_LABEL_VIDEO_TAB));
-               menu_stack->list[stack_size - 1].type =
-                  MENU_VIDEO_TAB;
-               break;
-#endif
-            case XMB_SYSTEM_TAB_HISTORY:
-               menu_stack->list[stack_size - 1].label =
-                  strdup(msg_hash_to_str(MENU_ENUM_LABEL_HISTORY_TAB));
-               menu_stack->list[stack_size - 1].type =
-                  MENU_HISTORY_TAB;
-               break;
+
 #ifdef HAVE_NETWORKING
             case XMB_SYSTEM_TAB_NETPLAY:
                menu_stack->list[stack_size - 1].label =

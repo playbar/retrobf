@@ -60,10 +60,6 @@ enum menu_displaylist_ctl_state
    DISPLAYLIST_SETTINGS_ALL,
    DISPLAYLIST_HORIZONTAL,
    DISPLAYLIST_HORIZONTAL_CONTENT_ACTIONS,
-   DISPLAYLIST_HISTORY,
-   DISPLAYLIST_VIDEO_HISTORY,
-   DISPLAYLIST_MUSIC_HISTORY,
-   DISPLAYLIST_IMAGES_HISTORY,
    DISPLAYLIST_MUSIC_LIST,
    DISPLAYLIST_PLAYLIST_COLLECTION,
    DISPLAYLIST_DEFAULT,
@@ -212,6 +208,7 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type, void *data);
 #ifdef HAVE_NETWORKING
 void netplay_refresh_rooms_menu(file_list_t *list);
 #endif
+
 RETRO_END_DECLS
 
 #endif

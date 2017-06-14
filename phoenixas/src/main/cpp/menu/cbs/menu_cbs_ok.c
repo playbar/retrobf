@@ -4648,7 +4648,6 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_DETECT_CORE_LIST_OK_CURRENT_CORE:
             BIND_ACTION_OK(cbs, action_ok_file_load_current_core);
             break;
-         case MENU_ENUM_LABEL_LOAD_CONTENT_HISTORY:
          case MENU_ENUM_LABEL_CURSOR_MANAGER_LIST:
          case MENU_ENUM_LABEL_DATABASE_MANAGER_LIST:
             BIND_ACTION_OK(cbs, action_ok_push_generic_list);

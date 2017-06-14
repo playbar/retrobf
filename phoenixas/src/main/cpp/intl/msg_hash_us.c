@@ -752,20 +752,7 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
                              "when content is loaded."
             );
             break;
-        case MENU_ENUM_LABEL_LOAD_CONTENT_HISTORY:
-            snprintf(s, len,
-                     "Loading content from history. \n"
-                             " \n"
-                             "As content is loaded, content and libretro \n"
-                             "core combinations are saved to history. \n"
-                             " \n"
-                             "The history is saved to a file in the same \n"
-                             "directory as the RetroArch config file. If \n"
-                             "no config file was loaded in startup, history \n"
-                             "will not be saved or loaded, and will not exist \n"
-                             "in the main menu."
-            );
-            break;
+
         case MENU_ENUM_LABEL_VIDEO_DRIVER:
             snprintf(s, len,
                      "Current Video driver.");
@@ -2416,8 +2403,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "help_what_is_a_core")
        MSG_HASH(MENU_ENUM_LABEL_HISTORY_LIST_ENABLE,
                 "history_list_enable")
-       MSG_HASH(MENU_ENUM_LABEL_HISTORY_TAB,
-                "history_tab")
        MSG_HASH(MENU_ENUM_LABEL_HORIZONTAL_MENU,
                 "horizontal_menu")
        MSG_HASH(MENU_ENUM_LABEL_IMAGES_TAB,
@@ -2534,8 +2519,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "load_archive")
        MSG_HASH(MENU_ENUM_LABEL_LOAD_ARCHIVE_DETECT_CORE,
                 "load_archive_detect_core")
-       MSG_HASH(MENU_ENUM_LABEL_LOAD_CONTENT_HISTORY,
-                "load_recent")
        MSG_HASH(MENU_ENUM_LABEL_LOAD_CONTENT_LIST,
                 "load_content")
        MSG_HASH(MENU_ENUM_LABEL_LOAD_STATE,
@@ -3887,8 +3870,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "What Is A Core?")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_HISTORY_LIST_ENABLE,
                 "History List Enable")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_HISTORY_TAB,
-                "History")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_HORIZONTAL_MENU,
                 "Horizontal Menu")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_IMAGES_TAB,
@@ -4145,8 +4126,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Linear")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_LOAD_ARCHIVE,
                 "Load Archive")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_HISTORY,
-                "Load Recent")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_LIST,
                 "Load Content")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_LOAD_STATE,

@@ -52,9 +52,6 @@ typedef struct settings
       bool video_vsync;
       bool video_hard_sync;
       bool video_black_frame_insertion;
-#ifdef GEKKO
-      bool video_vfilter;
-#endif
       bool video_smooth;
       bool video_force_aspect;
       bool video_crop_overscan;
@@ -76,10 +73,6 @@ typedef struct settings
       bool audio_enable;
       bool audio_sync;
       bool audio_rate_control;
-#ifdef HAVE_WASAPI
-      bool audio_wasapi_exclusive_mode;
-      bool audio_wasapi_float_format;
-#endif
 
       /* Input */
       bool input_remap_binds_enable;
@@ -91,13 +84,6 @@ typedef struct settings
       bool input_descriptor_hide_unbound;
       bool input_all_users_control_menu;
       bool input_menu_swap_ok_cancel_buttons;
-#if defined(VITA)
-      bool input_backtouch_enable;
-      bool input_backtouch_toggle;
-#endif
-#if TARGET_OS_IPHONE
-      bool input_small_keyboard_enable;
-#endif
       bool input_keyboard_gamepad_enable;
 
 #ifdef HAVE_MENU
@@ -124,7 +110,6 @@ typedef struct settings
       bool menu_xmb_show_music;
       bool menu_xmb_show_video;
       bool menu_xmb_show_netplay;
-      bool menu_xmb_show_history;
       bool menu_xmb_show_add;
       bool menu_unified_controls;
 #endif
@@ -205,11 +190,6 @@ typedef struct settings
       bool sort_savestates_enable;
       bool config_save_on_exit;
       bool show_hidden_files;
-#ifdef HAVE_LAKKA
-      bool ssh_enable;
-      bool samba_enable;
-      bool bluetooth_enable;
-#endif
    } bools;
 
    struct
@@ -246,10 +226,6 @@ typedef struct settings
       int location_update_interval_ms;
       int location_update_interval_distance;
       int state_slot;
-
-#ifdef HAVE_WASAPI
-      int audio_wasapi_sh_buffer_length;
-#endif
    } ints;
 
    struct
@@ -366,10 +342,6 @@ typedef struct settings
       char path_audio_dsp_plugin[PATH_MAX_LENGTH];
       char path_softfilter_plugin[PATH_MAX_LENGTH];
       char path_core_options[PATH_MAX_LENGTH];
-      char path_content_history[PATH_MAX_LENGTH];
-      char path_content_music_history[PATH_MAX_LENGTH];
-      char path_content_image_history[PATH_MAX_LENGTH];
-      char path_content_video_history[PATH_MAX_LENGTH];
       char path_libretro_info[PATH_MAX_LENGTH];
       char path_cheat_settings[PATH_MAX_LENGTH];
       char path_shader[PATH_MAX_LENGTH];

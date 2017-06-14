@@ -327,7 +327,6 @@ bool task_push_netplay_crc_scan(uint32_t crc, char* name,
          NULL, true, true, true, false);
 
    attr.i = 0;
-   string_list_append(state->lpl_list, settings->paths.path_content_history, attr);
    state->found = false;
 
    for (i=0; i < info->count; i++)
@@ -335,9 +334,7 @@ bool task_push_netplay_crc_scan(uint32_t crc, char* name,
       /* check if the core name matches.
          TO-DO :we could try to load the core too to check
          if the version string matches too */
-#if 0
-      printf("Info: %s State: %s", info->list[i].core_name, state->core_name);
-#endif
+
       if(string_is_equal(info->list[i].core_name, state->core_name))
       {
          strlcpy(state->core_path, info->list[i].path, sizeof(state->core_path));
