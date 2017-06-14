@@ -442,21 +442,18 @@ typedef struct video_frame_info
    char fps_text[128];
    void (*cb_update_window_title)(void*, void *);
    void (*cb_swap_buffers)(void*, void *);
-   bool (*cb_get_metrics)(void *data, enum display_metric_types type,
-      float *value);
+   bool (*cb_get_metrics)(void *data, enum display_metric_types type, float *value);
    bool (*cb_set_resize)(void*, unsigned, unsigned);
 
    void (*cb_shader_use)(void *data, void *shader_data, unsigned index, bool set_active);
-   bool (*cb_shader_set_mvp)(void *data, void *shader_data,
-         const math_matrix_4x4 *mat);
+   bool (*cb_shader_set_mvp)(void *data, void *shader_data, const math_matrix_4x4 *mat);
 
    void *context_data;
    void *shader_data;
 } video_frame_info_t;
 
 typedef void (*update_window_title_cb)(void*, void*);
-typedef bool (*get_metrics_cb)(void *data, enum display_metric_types type,
-      float *value);
+typedef bool (*get_metrics_cb)(void *data, enum display_metric_types type, float *value);
 typedef bool (*set_resize_cb)(void*, unsigned, unsigned);
 
 
@@ -471,8 +468,7 @@ typedef struct gfx_ctx_driver
    void (*destroy)(void *data);
 
    /* Which API to bind to. */
-   bool (*bind_api)(void *video_driver, enum gfx_ctx_api,
-         unsigned major, unsigned minor);
+   bool (*bind_api)(void *video_driver, enum gfx_ctx_api, unsigned major, unsigned minor);
 
    /* Sets the swap interval. */
    void (*swap_interval)(void *data, unsigned);
@@ -504,8 +500,7 @@ typedef struct gfx_ctx_driver
 
    /* Queries for resize and quit events.
     * Also processes events. */
-   void (*check_window)(void*, bool*, bool*,
-         unsigned*, unsigned*, bool);
+   void (*check_window)(void*, bool*, bool*, unsigned*, unsigned*, bool);
 
    /* Acknowledge a resize event. This is needed for some APIs.
     * Most backends will ignore this. */
@@ -540,9 +535,8 @@ typedef struct gfx_ctx_driver
     * Returns true if a new image handle is created.
     * Always returns true the first time it's called for a new index.
     * The graphics core must handle a change in the handle correctly. */
-   bool (*image_buffer_write)(void*, const void *frame, unsigned width,
-         unsigned height, unsigned pitch, bool rgb32,
-         unsigned index, void **image_handle);
+   bool (*image_buffer_write)(void*, const void *frame, unsigned width, unsigned height,
+                              unsigned pitch, bool rgb32, unsigned index, void **image_handle);
 
    /* Shows or hides mouse. Can be NULL if context doesn't
     * have a concept of mouse pointer. */

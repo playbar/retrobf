@@ -4336,12 +4336,12 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Don't run in background")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_PERFCNT_ENABLE,
                 "Performance Counters")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_PLAYLISTS_TAB,
-                "Playlists")
+        case MENU_ENUM_LABEL_VALUE_PLAYLISTS_TAB:
+            return "Playlists";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_PLAYLIST_DIRECTORY,
                 "Playlist")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_PLAYLIST_SETTINGS,
-                "Playlists")
+        case MENU_ENUM_LABEL_VALUE_PLAYLIST_SETTINGS:
+            return "Playlists";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_POINTER_ENABLE,
                 "Touch Support")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_PORT,

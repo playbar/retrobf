@@ -962,23 +962,11 @@ static void mui_frame(void *data, video_frame_info_t *video_info)
 
    uint32_t black_opaque_54        = 0x0000008a;
    uint32_t black_opaque_87        = 0x000000de;
-   uint32_t white_opaque_70        = 0xffffffb3;
 
    /* https://material.google.com/style/color.html#color-color-palette */
    /* Hex values converted to RGB normalized decimals, alpha set to 1 */
    float blue_500[16]              = {0};
    float blue_50[16]               = {0};
-   float green_500[16]             = {0};
-   float green_50[16]              = {0};
-   float red_500[16]               = {0};
-   float red_50[16]                = {0};
-   float yellow_500[16]            = {0};
-   float blue_grey_500[16]         = {0};
-   float blue_grey_50[16]          = {0};
-   float yellow_200[16]            = {0};
-   float color_nv_header[16]       = {0};
-   float color_nv_body[16]         = {0};
-   float color_nv_accent[16]       = {0};
    float footer_bg_color_real[16]  = {0};
    float header_bg_color_real[16]  = {0};
    file_list_t *list               = NULL;
@@ -1117,15 +1105,7 @@ static void mui_frame(void *data, video_frame_info_t *video_info)
    font_driver_bind_block(mui->font2, &mui->raster_block2);
 
    if (menu_display_get_update_pending())
-      mui_render_menu_list(
-            video_info,
-            mui,
-            width,
-            height,
-            font_normal_color,
-            font_hover_color,
-            &active_tab_marker_color[0]
-            );
+      mui_render_menu_list(video_info, mui, width, height, font_normal_color, font_hover_color, &active_tab_marker_color[0]);
 
    font_driver_flush(video_info->width, video_info->height, mui->font);
    font_driver_bind_block(mui->font, NULL);
@@ -1794,12 +1774,9 @@ static int mui_pointer_up(void *userdata,
          if ((x >= start) && (x < (start + tab_width)))
          {
             mui->categories.selection_ptr = i;
-
             mui_preswitch_tabs(mui, action);
-
             if (cbs && cbs->action_content_list_switch)
-               return cbs->action_content_list_switch(selection_buf, menu_stack,
-                     "", "", 0);
+               return cbs->action_content_list_switch(selection_buf, menu_stack, "", "", 0);
          }
       }
    }
