@@ -6814,7 +6814,7 @@ bool menu_setting_free(void *data)
 static rarch_setting_t *menu_setting_new_internal(rarch_setting_info_t *list_info)
 {
     unsigned i;
-    rarch_setting_t* resized_list        = NULL;
+    rarch_setting_t* resized_list = NULL;
     enum settings_list_type list_types[] =
             {
                     SETTINGS_LIST_MAIN_MENU,
@@ -6849,8 +6849,7 @@ static rarch_setting_t *menu_setting_new_internal(rarch_setting_info_t *list_inf
             };
     rarch_setting_t terminator           = setting_terminator_setting();
     const char *root                     = msg_hash_to_str(MENU_ENUM_LABEL_MAIN_MENU);
-    rarch_setting_t *list                = (rarch_setting_t*)calloc(
-            list_info->size, sizeof(*list));
+    rarch_setting_t *list                = (rarch_setting_t*)calloc(list_info->size, sizeof(*list));
 
     if (!list)
         goto error;
@@ -6868,8 +6867,7 @@ static rarch_setting_t *menu_setting_new_internal(rarch_setting_info_t *list_inf
     (*&list)[list_info->index++] = terminator;
 
     /* flatten this array to save ourselves some kilobytes. */
-    resized_list = (rarch_setting_t*)realloc(list,
-                                             list_info->index * sizeof(rarch_setting_t));
+    resized_list = (rarch_setting_t*)realloc(list, list_info->index * sizeof(rarch_setting_t));
     if (!resized_list)
         goto error;
 
@@ -6877,7 +6875,7 @@ static rarch_setting_t *menu_setting_new_internal(rarch_setting_info_t *list_inf
 
     return list;
 
-    error:
+error:
     if (list)
         free(list);
     return NULL;

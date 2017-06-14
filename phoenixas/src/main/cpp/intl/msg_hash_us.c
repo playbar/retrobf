@@ -2184,8 +2184,8 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "core_info_entry")
        MSG_HASH(MENU_ENUM_LABEL_CORE_INPUT_REMAPPING_OPTIONS,
                 "core_input_remapping_options")
-       MSG_HASH(MENU_ENUM_LABEL_CORE_LIST,
-                "load_core")
+       case MENU_ENUM_LABEL_CORE_LIST:
+           return "load_core";
        MSG_HASH(MENU_ENUM_LABEL_CORE_OPTIONS,
                 "core_options")
        MSG_HASH(MENU_ENUM_LABEL_CORE_OPTION_ENTRY,

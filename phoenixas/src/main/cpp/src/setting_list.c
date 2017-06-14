@@ -99,8 +99,7 @@ bool settings_list_append(rarch_setting_t **list,
    if (list_info->index == list_info->size)
    {
       list_info->size *= 2;
-      *list = (rarch_setting_t*)
-         realloc(*list, sizeof(rarch_setting_t) * list_info->size);
+      *list = (rarch_setting_t*) realloc(*list, sizeof(rarch_setting_t) * list_info->size);
       if (!*list)
          return false;
    }
@@ -1948,11 +1947,8 @@ bool CONFIG_ACTION(
       value.name_hash = msg_hash_calculate(value.name);
    (*list)[list_info->index++] = value;
 
-#ifdef HAVE_MENU
    menu_settings_list_current_add_enum_idx(list, list_info, name_enum_idx);
    menu_settings_list_current_add_enum_value_idx(list, list_info, SHORT_enum_idx);
-#endif
-
    return true;
 }
 
