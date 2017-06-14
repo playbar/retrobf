@@ -1347,16 +1347,10 @@ static bool menu_init(menu_handle_t *menu_data)
          command_event(CMD_EVENT_MENU_SAVE_CURRENT_CONFIG, NULL);
    }
 
-   if (      settings->bools.bundle_assets_extract_enable
+   if (  settings->bools.bundle_assets_extract_enable
          && !string_is_empty(settings->arrays.bundle_assets_src)
          && !string_is_empty(settings->arrays.bundle_assets_dst)
-#ifdef IOS
-         && menu_dialog_is_push_pending()
-#else
-         && (settings->uints.bundle_assets_extract_version_current
-            != settings->uints.bundle_assets_extract_last_version)
-#endif
-      )
+         && (settings->uints.bundle_assets_extract_version_current  != settings->uints.bundle_assets_extract_last_version))
    {
       menu_dialog_push_pending(true, MENU_DIALOG_HELP_EXTRACT);
 #ifdef HAVE_COMPRESSION
@@ -1382,11 +1376,6 @@ static void menu_input_key_event(bool down, unsigned keycode,
    (void)down;
    (void)keycode;
    (void)mod;
-
-#if 0
-   RARCH_LOG("down: %d, keycode: %d, mod: %d, character: %d\n",
-         down, keycode, mod, character);
-#endif
 
    menu_event_kb_set(down, (enum retro_key)keycode);
 }

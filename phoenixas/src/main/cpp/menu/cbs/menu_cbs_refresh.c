@@ -16,12 +16,6 @@
 #include "../menu_driver.h"
 #include "../menu_cbs.h"
 
-#ifndef BIND_ACTION_REFRESH
-#define BIND_ACTION_REFRESH(cbs, name) \
-   cbs->action_refresh = name; \
-   cbs->action_refresh_ident = #name;
-#endif
-
 int action_refresh_default(file_list_t *list, file_list_t *menu_list)
 {
    menu_displaylist_ctx_entry_t entry;
@@ -42,7 +36,8 @@ int menu_cbs_init_bind_refresh(menu_file_list_cbs_t *cbs,
    if (!cbs)
       return -1;
 
-   BIND_ACTION_REFRESH(cbs, action_refresh_default);
+   cbs->action_refresh = action_refresh_default;
+   cbs->action_refresh_ident = "action_refresh_default";
 
    return -1;
 }

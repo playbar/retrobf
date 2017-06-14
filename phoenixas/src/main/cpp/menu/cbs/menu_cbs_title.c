@@ -137,7 +137,12 @@ default_title_macro(action_get_database_manager_list,           MENU_ENUM_LABEL_
 default_title_macro(action_get_system_information_list,         MENU_ENUM_LABEL_VALUE_SYSTEM_INFORMATION)
 default_title_macro(action_get_network_information_list,        MENU_ENUM_LABEL_VALUE_NETWORK_INFORMATION)
 default_title_macro(action_get_settings_list,                   MENU_ENUM_LABEL_VALUE_SETTINGS)
-default_title_macro(action_get_title_information_list,          MENU_ENUM_LABEL_VALUE_INFORMATION_LIST)
+//default_title_macro(action_get_title_information_list,          MENU_ENUM_LABEL_VALUE_INFORMATION_LIST)
+static int action_get_title_information_list(const char *path, const char *label, unsigned menu_type, char *s, size_t len)
+{
+   sanitize_to_string(s, msg_hash_to_str(MENU_ENUM_LABEL_VALUE_INFORMATION_LIST), len);
+   return 0;
+}
 
 default_fill_title_macro(action_get_title_disk_image_append,    MENU_ENUM_LABEL_VALUE_DISK_IMAGE_APPEND)
 default_fill_title_macro(action_get_title_cheat_file_load,      MENU_ENUM_LABEL_VALUE_CHEAT_FILE)

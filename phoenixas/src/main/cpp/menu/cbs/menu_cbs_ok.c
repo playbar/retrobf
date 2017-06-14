@@ -4619,7 +4619,8 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_HELP_LIST:
          case MENU_ENUM_LABEL_INFORMATION_LIST:
          case MENU_ENUM_LABEL_CONTENT_SETTINGS:
-            BIND_ACTION_OK(cbs, action_ok_push_default);
+              cbs->action_ok = action_ok_push_default;
+              cbs->action_ok_ident = "action_ok_push_default";
             break;
          case MENU_ENUM_LABEL_SCAN_DIRECTORY:
             BIND_ACTION_OK(cbs, action_ok_scan_directory_list);
@@ -5196,7 +5197,8 @@ int menu_cbs_init_bind_ok(menu_file_list_cbs_t *cbs,
    if (!cbs)
       return -1;
 
-   BIND_ACTION_OK(cbs, action_ok_lookup_setting);
+   cbs->action_ok = action_ok_lookup_setting;
+   cbs->action_ok_ident = "action_ok_lookup_setting";
 
    if (menu_cbs_init_bind_ok_compare_label(cbs, label, label_hash) == 0)
       return 0;

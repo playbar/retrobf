@@ -39,14 +39,6 @@
 #include "../../src/retroarch.h"
 #include "../../ui/ui_companion_driver.h"
 
-#ifndef BIND_ACTION_RIGHT
-#define BIND_ACTION_RIGHT(cbs, name) \
-   do { \
-      cbs->action_right = name; \
-      cbs->action_right_ident = #name; \
-   } while(0)
-#endif
-
 #ifdef HAVE_SHADER_MANAGER
 static int generic_shader_action_parameter_right(struct video_shader_parameter *param,
       unsigned type, const char *label, bool wraparound)
@@ -389,39 +381,46 @@ static int menu_cbs_init_bind_right_compare_type(menu_file_list_cbs_t *cbs,
    if (type >= MENU_SETTINGS_CHEAT_BEGIN
          && type <= MENU_SETTINGS_CHEAT_END)
    {
-      BIND_ACTION_RIGHT(cbs, action_right_cheat);
+      cbs->action_right = action_right_cheat;
+      cbs->action_right_ident = "action_right_cheat";
    }
 #ifdef HAVE_SHADER_MANAGER
    else if (type >= MENU_SETTINGS_SHADER_PARAMETER_0
          && type <= MENU_SETTINGS_SHADER_PARAMETER_LAST)
    {
-      BIND_ACTION_RIGHT(cbs, shader_action_parameter_right);
+      cbs->action_right = shader_action_parameter_right;
+      cbs->action_right_ident = "shader_action_parameter_right";
    }
    else if (type >= MENU_SETTINGS_SHADER_PRESET_PARAMETER_0
          && type <= MENU_SETTINGS_SHADER_PRESET_PARAMETER_LAST)
    {
-      BIND_ACTION_RIGHT(cbs, shader_action_parameter_preset_right);
+      cbs->action_right = shader_action_parameter_preset_right;
+      cbs->action_right_ident = "shader_action_parameter_preset_right";
    }
 #endif
    else if (type >= MENU_SETTINGS_INPUT_DESC_BEGIN
          && type <= MENU_SETTINGS_INPUT_DESC_END)
    {
-      BIND_ACTION_RIGHT(cbs, action_right_input_desc);
+      cbs->action_right = action_right_input_desc;
+      cbs->action_right_ident = "action_right_input_desc";
    }
    else if ((type >= MENU_SETTINGS_PLAYLIST_ASSOCIATION_START))
    {
-      BIND_ACTION_RIGHT(cbs, playlist_association_right);
+      cbs->action_right = playlist_association_right;
+      cbs->action_right_ident = "playlist_association_right";
    }
    else if ((type >= MENU_SETTINGS_CORE_OPTION_START))
    {
-      BIND_ACTION_RIGHT(cbs, core_setting_right);
+      cbs->action_right = core_setting_right;
+      cbs->action_right_ident = "core_setting_right";
    }
    else
    {
       switch (type)
       {
          case MENU_SETTINGS_CORE_DISK_OPTIONS_DISK_INDEX:
-            BIND_ACTION_RIGHT(cbs, disk_options_disk_idx_right);
+              cbs->action_right = disk_options_disk_idx_right;
+              cbs->action_right_ident = "disk_options_disk_idx_right";
             break;
          case FILE_TYPE_PLAIN:
          case FILE_TYPE_DIRECTORY:
@@ -468,14 +467,17 @@ static int menu_cbs_init_bind_right_compare_type(menu_file_list_cbs_t *cbs,
                   string_is_equal(menu_label, msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS_TAB))
                   )
             {
-               BIND_ACTION_RIGHT(cbs, action_right_mainmenu);
+               cbs->action_right = action_right_mainmenu;
+               cbs->action_right_ident = "action_right_mainmenu";
                break;
             }
-            BIND_ACTION_RIGHT(cbs, action_right_scroll);
+              cbs->action_right = action_right_scroll;
+              cbs->action_right_ident = "action_right_scroll";
             break;
          case MENU_SETTING_ACTION:
          case FILE_TYPE_CONTENTLIST_ENTRY:
-            BIND_ACTION_RIGHT(cbs, action_right_mainmenu);
+              cbs->action_right = action_right_mainmenu;
+              cbs->action_right_ident = "action_right_mainmenu";
             break;
          default:
             return -1;
@@ -497,7 +499,8 @@ static int menu_cbs_init_bind_right_compare_label(menu_file_list_cbs_t *cbs,
       if (string_is_equal(parent_group, msg_hash_to_str(MENU_ENUM_LABEL_MAIN_MENU))
                && (setting_get_type(cbs->setting) == ST_GROUP))
       {
-         BIND_ACTION_RIGHT(cbs, action_right_scroll);
+         cbs->action_right = action_right_scroll;
+         cbs->action_right_ident = "action_right_scroll";
          return 0;
       }
    }
@@ -515,19 +518,22 @@ static int menu_cbs_init_bind_right_compare_label(menu_file_list_cbs_t *cbs,
       if (label_hash != label_setting_hash)
          continue;
 
-      BIND_ACTION_RIGHT(cbs, bind_right_generic);
+      cbs->action_right = bind_right_generic;
+      cbs->action_right_ident = "bind_right_generic";
       return 0;
    }
 
    if (string_is_equal(menu_label, msg_hash_to_str(MENU_ENUM_LABEL_PLAYLISTS_TAB)))
    {
-      BIND_ACTION_RIGHT(cbs, action_right_mainmenu);
+      cbs->action_right = action_right_mainmenu;
+      cbs->action_right_ident = "action_right_mainmenu";
       return 0;
    }
 
    if (strstr(label, "rdb_entry"))
    {
-      BIND_ACTION_RIGHT(cbs, action_right_scroll);
+      cbs->action_right = action_right_scroll;
+      cbs->action_right_ident = "action_right_scroll";
    }
    else
    {
@@ -536,29 +542,37 @@ static int menu_cbs_init_bind_right_compare_label(menu_file_list_cbs_t *cbs,
          switch (cbs->enum_idx)
          {
             case MENU_ENUM_LABEL_CONNECT_NETPLAY_ROOM:
-               BIND_ACTION_RIGHT(cbs, action_right_mainmenu);
+                 cbs->action_right = action_right_mainmenu;
+                 cbs->action_right_ident = "action_right_mainmenu";
                break;
             case MENU_ENUM_LABEL_VIDEO_SHADER_SCALE_PASS:
-               BIND_ACTION_RIGHT(cbs, action_right_shader_scale_pass);
+                 cbs->action_right = action_right_shader_scale_pass;
+                 cbs->action_right_ident = "action_right_shader_scale_pass";
                break;
             case MENU_ENUM_LABEL_VIDEO_SHADER_FILTER_PASS:
-               BIND_ACTION_RIGHT(cbs, action_right_shader_filter_pass);
+                 cbs->action_right = action_right_shader_filter_pass;
+                 cbs->action_right_ident = "action_right_shader_filter_pass";
                break;
             case MENU_ENUM_LABEL_VIDEO_SHADER_DEFAULT_FILTER:
-               BIND_ACTION_RIGHT(cbs, action_right_shader_filter_default);
+                 cbs->action_right = action_right_shader_filter_default;
+                 cbs->action_right_ident = "action_right_shader_filter_default";
                break;
             case MENU_ENUM_LABEL_VIDEO_SHADER_NUM_PASSES:
-               BIND_ACTION_RIGHT(cbs, action_right_shader_num_passes);
+                 cbs->action_right = action_right_shader_num_passes;
+                 cbs->action_right_ident = "action_right_shader_num_passes";
                break;
             case MENU_ENUM_LABEL_CHEAT_NUM_PASSES:
-               BIND_ACTION_RIGHT(cbs, action_right_cheat_num_passes);
+                 cbs->action_right = action_right_cheat_num_passes;
+                 cbs->action_right_ident = "action_right_cheat_num_passes";
                break;
             case MENU_ENUM_LABEL_SCREEN_RESOLUTION:
-               BIND_ACTION_RIGHT(cbs, action_right_video_resolution);
+                 cbs->action_right = action_right_video_resolution;
+                 cbs->action_right_ident = "action_right_video_resolution";
                break;
             case MENU_ENUM_LABEL_OPEN_ARCHIVE_DETECT_CORE:
             case MENU_ENUM_LABEL_LOAD_ARCHIVE_DETECT_CORE:
-               BIND_ACTION_RIGHT(cbs, action_right_scroll);
+                 cbs->action_right = action_right_scroll;
+                 cbs->action_right_ident = "action_right_scroll";
                break;
             case MENU_ENUM_LABEL_NO_ITEMS:
             case MENU_ENUM_LABEL_NO_PLAYLIST_ENTRIES_AVAILABLE:
@@ -572,11 +586,13 @@ static int menu_cbs_init_bind_right_compare_label(menu_file_list_cbs_t *cbs,
                      string_is_equal(menu_label, msg_hash_to_str(MENU_ENUM_LABEL_HORIZONTAL_MENU))
                   )
                {
-                  BIND_ACTION_RIGHT(cbs, action_right_mainmenu);
+                  cbs->action_right = action_right_mainmenu;
+                  cbs->action_right_ident = "action_right_mainmenu";
                }
                else
                {
-                  BIND_ACTION_RIGHT(cbs, action_right_scroll);
+                  cbs->action_right = action_right_scroll;
+                  cbs->action_right_ident = "action_right_scroll";
                }
                break;
             case MENU_ENUM_LABEL_START_VIDEO_PROCESSOR:
@@ -592,7 +608,8 @@ static int menu_cbs_init_bind_right_compare_label(menu_file_list_cbs_t *cbs,
                      string_is_equal(menu_label, msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS_TAB))
                   )
                {
-                  BIND_ACTION_RIGHT(cbs, action_right_mainmenu);
+                  cbs->action_right = action_right_mainmenu;
+                  cbs->action_right_ident = "action_right_mainmenu";
                   break;
                }
             default:
@@ -616,7 +633,8 @@ int menu_cbs_init_bind_right(menu_file_list_cbs_t *cbs,
    if (!cbs)
       return menu_cbs_exit();
 
-   BIND_ACTION_RIGHT(cbs, bind_right_generic);
+   cbs->action_right = bind_right_generic;
+   cbs->action_right_ident = "bind_right_generic";
 
    if (type == MENU_SETTING_NO_ITEM)
    {
@@ -632,7 +650,8 @@ int menu_cbs_init_bind_right(menu_file_list_cbs_t *cbs,
             string_is_equal(menu_label, msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS_TAB))
          )
       {
-            BIND_ACTION_RIGHT(cbs, action_right_mainmenu);
+         cbs->action_right = action_right_mainmenu;
+         cbs->action_right_ident = "action_right_mainmenu";
             return 0;
       }
    }

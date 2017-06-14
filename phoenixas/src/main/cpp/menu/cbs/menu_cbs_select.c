@@ -197,7 +197,8 @@ int menu_cbs_init_bind_select(menu_file_list_cbs_t *cbs,
    if (!cbs)
       return -1;
 
-   BIND_ACTION_SELECT(cbs, action_select_default);
+   cbs->action_select = action_select_default;
+   cbs->action_select_ident = "action_select_default";
 
    if (cbs->setting)
    {
@@ -205,14 +206,16 @@ int menu_cbs_init_bind_select(menu_file_list_cbs_t *cbs,
 
       if (flags & SD_FLAG_IS_DRIVER)
       {
-         BIND_ACTION_SELECT(cbs, action_select_driver_setting);
+         cbs->action_select = action_select_driver_setting;
+         cbs->action_select_ident = "action_select_driver_setting";
          return 0;
       }
    }
 
    if ((type >= MENU_SETTINGS_CORE_OPTION_START))
    {
-      BIND_ACTION_SELECT(cbs, action_select_core_setting);
+      cbs->action_select = action_select_core_setting;
+      cbs->action_select_ident = "action_select_core_setting";
       return 0;
    }
 

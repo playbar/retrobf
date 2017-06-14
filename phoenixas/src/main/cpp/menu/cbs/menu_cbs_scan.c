@@ -180,13 +180,15 @@ int menu_cbs_init_bind_scan(menu_file_list_cbs_t *cbs,
    if (!cbs)
       return -1;
 
-   BIND_ACTION_SCAN(cbs, NULL);
+   cbs->action_scan = NULL;
+   cbs->action_scan_ident = "NULL";
 
    if (cbs->setting)
    {
       if (setting_get_type(cbs->setting) == ST_BIND)
       {
-         BIND_ACTION_SCAN(cbs, action_scan_input_desc);
+         cbs->action_scan = action_scan_input_desc;
+         cbs->action_scan_ident = "action_scan_input_desc";
          return 0;
       }
    }

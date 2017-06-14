@@ -28,21 +28,6 @@
 
 
 static const ui_companion_driver_t *ui_companion_drivers[] = {
-#ifdef HAVE_QT_WRAPPER
-   &ui_companion_qt,
-#endif
-#if defined(_WIN32) && !defined(_XBOX)
-   &ui_companion_win32,
-#endif
-#ifdef HAVE_COCOA
-   &ui_companion_cocoa,
-#endif
-#ifdef HAVE_COCOATOUCH
-   &ui_companion_cocoatouch,
-#endif
-#ifdef HAVE_QT
-   &ui_companion_qt,
-#endif
    &ui_companion_null,
    NULL
 };

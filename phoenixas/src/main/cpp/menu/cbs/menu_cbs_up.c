@@ -16,12 +16,6 @@
 #include "../menu_driver.h"
 #include "../menu_cbs.h"
 
-#ifndef BIND_ACTION_UP
-#define BIND_ACTION_UP(cbs, name) \
-   cbs->action_up = name; \
-   cbs->action_up_ident = #name;
-#endif
-
 static int action_bind_up_generic(unsigned type, const char *label)
 {
    size_t scroll_accel    = 0;
@@ -45,7 +39,8 @@ int menu_cbs_init_bind_up(menu_file_list_cbs_t *cbs,
    if (!cbs)
       return -1;
 
-   BIND_ACTION_UP(cbs, action_bind_up_generic);
+   cbs->action_up = action_bind_up_generic;
+   cbs->action_up_ident = "action_bind_up_generic";
 
    return -1;
 }

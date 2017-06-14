@@ -74,12 +74,14 @@ int menu_cbs_init_bind_info(menu_file_list_cbs_t *cbs,
 #ifdef HAVE_CHEEVOS
    if ((type >= MENU_SETTINGS_CHEEVOS_START))
    {
-      BIND_ACTION_INFO(cbs, action_info_cheevos);
+      cbs->action_info = action_info_cheevos;
+      cbs->action_info_ident = "action_info_cheevos";
       return 0;
    }
 #endif
 
-   BIND_ACTION_INFO(cbs, action_info_default);
+   cbs->action_info = action_info_default;
+   cbs->action_info_ident = "action_info_default";
 
    return -1;
 }

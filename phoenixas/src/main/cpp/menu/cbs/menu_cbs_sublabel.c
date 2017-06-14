@@ -397,7 +397,8 @@ int menu_cbs_init_bind_sublabel(menu_file_list_cbs_t *cbs,
    if (!cbs)
       return -1;
 
-   BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_generic);
+   cbs->action_sublabel = action_bind_sublabel_generic;
+   cbs->action_sublabel_ident = "action_bind_sublabel_generic";
 
    if (cbs->enum_idx != MSG_UNKNOWN)
    {
@@ -1278,7 +1279,6 @@ int menu_cbs_init_bind_sublabel(menu_file_list_cbs_t *cbs,
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_content_history_size);
             break;
          case MENU_ENUM_LABEL_NETPLAY_USE_MITM_SERVER:
-//            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_netplay_use_mitm_server);
               cbs->action_sublabel = action_bind_sublabel_netplay_use_mitm_server;
               cbs->action_sublabel_ident = "action_bind_sublabel_netplay_use_mitm_server";
             break;

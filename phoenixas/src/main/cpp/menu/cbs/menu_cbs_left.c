@@ -397,7 +397,8 @@ static int menu_cbs_init_bind_left_compare_label(menu_file_list_cbs_t *cbs,
       if (string_is_equal(parent_group, msg_hash_to_str(MENU_ENUM_LABEL_MAIN_MENU))
                && (setting_get_type(cbs->setting) == ST_GROUP))
       {
-         BIND_ACTION_LEFT(cbs, action_left_mainmenu);
+         cbs->action_left = action_left_mainmenu;
+         cbs->action_left_ident = "action_left_mainmenu";
          return 0;
       }
    }
@@ -415,19 +416,22 @@ static int menu_cbs_init_bind_left_compare_label(menu_file_list_cbs_t *cbs,
       if (label_hash != label_setting_hash)
          continue;
 
-      BIND_ACTION_LEFT(cbs, bind_left_generic);
+      cbs->action_left = bind_left_generic;
+      cbs->action_left_ident = "bind_left_generic";
       return 0;
    }
 
    if (string_is_equal(menu_label, msg_hash_to_str(MENU_ENUM_LABEL_PLAYLISTS_TAB)))
    {
-      BIND_ACTION_LEFT(cbs, action_left_mainmenu);
+      cbs->action_left = action_left_mainmenu;
+      cbs->action_left_ident = "action_left_mainmenu";
       return 0;
    }
 
    if (strstr(label, "rdb_entry"))
    {
-      BIND_ACTION_LEFT(cbs, action_left_scroll);
+      cbs->action_left = action_left_scroll;
+      cbs->action_left_ident = "action_left_scroll";
    }
    else
    {
@@ -619,7 +623,8 @@ int menu_cbs_init_bind_left(menu_file_list_cbs_t *cbs,
    if (!cbs)
       return -1;
 
-   BIND_ACTION_LEFT(cbs, bind_left_generic);
+   cbs->action_left = bind_left_generic;
+   cbs->action_left_ident = "bind_left_generic";
 
    if (type == MENU_SETTING_NO_ITEM)
    {
@@ -635,8 +640,9 @@ int menu_cbs_init_bind_left(menu_file_list_cbs_t *cbs,
             string_is_equal(menu_label, msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS_TAB))
          )
       {
-            BIND_ACTION_LEFT(cbs, action_left_mainmenu);
-            return 0;
+          cbs->action_left = action_left_mainmenu;
+          cbs->action_left_ident = "action_left_mainmenu";
+          return 0;
       }
    }
 

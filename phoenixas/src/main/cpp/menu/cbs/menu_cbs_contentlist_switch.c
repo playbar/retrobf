@@ -16,12 +16,6 @@
 #include "../menu_driver.h"
 #include "../menu_cbs.h"
 
-#ifndef BIND_ACTION_CONTENT_LIST_SWITCH
-#define BIND_ACTION_CONTENT_LIST_SWITCH(cbs, name) \
-   cbs->action_content_list_switch = name; \
-   cbs->action_content_list_switch_ident = #name;
-#endif
-
 static int deferred_push_content_list(void *data, void *userdata,
       const char *path,
       const char *label, unsigned type)
@@ -37,7 +31,8 @@ int menu_cbs_init_bind_content_list_switch(menu_file_list_cbs_t *cbs,
    if (!cbs)
       return -1;
 
-   BIND_ACTION_CONTENT_LIST_SWITCH(cbs, deferred_push_content_list);
+   cbs->action_content_list_switch = deferred_push_content_list;
+   cbs->action_content_list_switch_ident = "deferred_push_content_list";
 
    return -1;
 }

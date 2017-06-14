@@ -366,9 +366,7 @@ typedef struct menu_ctx_driver
    void  (*free)(void*);
    void  (*context_reset)(void *data, bool video_is_threaded);
    void  (*context_destroy)(void *data);
-   void  (*populate_entries)(void *data,
-         const char *path, const char *label,
-         unsigned k);
+   void  (*populate_entries)(void *data, const char *path, const char *label, unsigned k);
    void  (*toggle)(void *userdata, bool);
    void  (*navigation_clear)(void *, bool);
    void  (*navigation_decrement)(void *data);
@@ -378,10 +376,8 @@ typedef struct menu_ctx_driver
    void  (*navigation_descend_alphabet)(void *, size_t *);
    void  (*navigation_ascend_alphabet)(void *, size_t *);
    bool  (*lists_init)(void*);
-   void  (*list_insert)(void *userdata,
-         file_list_t *list, const char *, const char *, const char *, size_t);
-   int   (*list_prepend)(void *userdata,
-         file_list_t *list, const char *, const char *, size_t);
+   void  (*list_insert)(void *userdata, file_list_t *list, const char *, const char *, const char *, size_t);
+   int   (*list_prepend)(void *userdata, file_list_t *list, const char *, const char *, size_t);
    void  (*list_free)(file_list_t *list, size_t, size_t);
    void  (*list_clear)(file_list_t *list);
    void  (*list_cache)(void *data, enum menu_list_type, unsigned);
@@ -390,14 +386,11 @@ typedef struct menu_ctx_driver
    size_t(*list_get_size)(void *data, enum menu_list_type type);
    void *(*list_get_entry)(void *data, enum menu_list_type type, unsigned i);
    void  (*list_set_selection)(void *data, file_list_t *list);
-   int   (*bind_init)(menu_file_list_cbs_t *cbs,
-         const char *path, const char *label, unsigned type, size_t idx);
+   int   (*bind_init)(menu_file_list_cbs_t *cbs, const char *path, const char *label, unsigned type, size_t idx);
    bool  (*load_image)(void *userdata, void *data, enum menu_image_type type);
    const char *ident;
    int (*environ_cb)(enum menu_environ_cb type, void *data, void *userdata);
-   int (*pointer_tap)(void *data, unsigned x, unsigned y, unsigned ptr,
-         menu_file_list_cbs_t *cbs,
-         menu_entry_t *entry, unsigned action);
+   int (*pointer_tap)(void *data, unsigned x, unsigned y, unsigned ptr, menu_file_list_cbs_t *cbs, menu_entry_t *entry, unsigned action);
    void (*update_thumbnail_path)(void *data, unsigned i);
    void (*update_thumbnail_image)(void *data);
    void (*set_thumbnail_system)(void *data, char* s, size_t len);
@@ -405,12 +398,8 @@ typedef struct menu_ctx_driver
    int  (*osk_ptr_at_pos)(void *data, int x, int y, unsigned width, unsigned height);
    void (*update_savestate_thumbnail_path)(void *data, unsigned i);
    void (*update_savestate_thumbnail_image)(void *data);
-   int (*pointer_down)(void *data, unsigned x, unsigned y, unsigned ptr,
-         menu_file_list_cbs_t *cbs,
-         menu_entry_t *entry, unsigned action);
-   int (*pointer_up)(void *data, unsigned x, unsigned y, unsigned ptr,
-         menu_file_list_cbs_t *cbs,
-         menu_entry_t *entry, unsigned action);
+   int (*pointer_down)(void *data, unsigned x, unsigned y, unsigned ptr, menu_file_list_cbs_t *cbs, menu_entry_t *entry, unsigned action);
+   int (*pointer_up)(void *data, unsigned x, unsigned y, unsigned ptr, menu_file_list_cbs_t *cbs, menu_entry_t *entry, unsigned action);
 } menu_ctx_driver_t;
 
 typedef struct menu_ctx_load_image
