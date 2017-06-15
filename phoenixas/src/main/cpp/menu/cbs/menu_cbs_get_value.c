@@ -1764,7 +1764,6 @@ static int menu_cbs_init_bind_get_string_representation_compare_type(
             BIND_ACTION_GET_VALUE(cbs,
                menu_action_setting_disp_set_label_menu_file_in_carchive);
             break;
-         case FILE_TYPE_VIDEOFILTER:
          case FILE_TYPE_AUDIOFILTER:
             BIND_ACTION_GET_VALUE(cbs,
                menu_action_setting_disp_set_label_menu_file_filter);
@@ -1810,10 +1809,6 @@ static int menu_cbs_init_bind_get_string_representation_compare_type(
             break;
          case MENU_SETTING_NO_ITEM:
             BIND_ACTION_GET_VALUE(cbs, menu_action_setting_disp_set_label_no_items);
-            break;
-         case 32: /* Recent history entry */
-         case 65535: /* System info entry */
-            BIND_ACTION_GET_VALUE(cbs, menu_action_setting_disp_set_label_entry);
             break;
          default:
 #if 0

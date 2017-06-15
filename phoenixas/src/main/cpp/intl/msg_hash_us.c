@@ -651,9 +651,7 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
                              "'%s'. Let it run for\n"
                              "2048 frames, then press 'OK'.",
                      msg_hash_to_str(MENU_ENUM_LABEL_VALUE_SETTINGS),
-                     msg_hash_to_str(MENU_ENUM_LABEL_VALUE_VIDEO_SETTINGS),
                      msg_hash_to_str(MENU_ENUM_LABEL_VALUE_SETTINGS),
-                     msg_hash_to_str(MENU_ENUM_LABEL_VALUE_VIDEO_SETTINGS),
                      msg_hash_to_str(MENU_ENUM_LABEL_VALUE_VIDEO_REFRESH_RATE_AUTO));
             strlcpy(s, t, len);
             strlcat(s, u, len);
@@ -2137,8 +2135,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "deferred_user_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_VIDEO_FILTER,
                 "deferred_video_filter")
-       MSG_HASH(MENU_ENUM_LABEL_DEFERRED_VIDEO_SETTINGS_LIST,
-                "deferred_video_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_WIFI_SETTINGS_LIST,
                 "deferred_wifi_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DELETE_ENTRY,
@@ -2843,8 +2839,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "video_scale")
        MSG_HASH(MENU_ENUM_LABEL_VIDEO_SCALE_INTEGER,
                 "video_scale_integer")
-       MSG_HASH(MENU_ENUM_LABEL_VIDEO_SETTINGS,
-                "video_settings")
        MSG_HASH(MENU_ENUM_LABEL_VIDEO_SHADER_DIR,
                 "video_shader_dir")
        MSG_HASH(MENU_ENUM_LABEL_VIDEO_SHADER_FILTER_PASS,
@@ -4630,8 +4624,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Windowed Scale")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_VIDEO_SCALE_INTEGER,
                 "Integer Scale")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_VIDEO_SETTINGS,
-                "Video")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_VIDEO_SHADER_DIR,
                 "Video Shader")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_VIDEO_SHADER_NUM_PASSES,
@@ -4846,8 +4838,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Selects which display screen to use.")
        MSG_HASH(MENU_ENUM_SUBLABEL_VIDEO_REFRESH_RATE_AUTO,
                 "The accurate estimated refresh rate of the screen in Hz.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_VIDEO_SETTINGS,
-                "Change video output settings.")
        MSG_HASH(MENU_ENUM_SUBLABEL_WIFI_SETTINGS,
                 "Scans for wireless networks and establishes connection.")
        MSG_HASH(MENU_ENUM_SUBLABEL_HELP_LIST,

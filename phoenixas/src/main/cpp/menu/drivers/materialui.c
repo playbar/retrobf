@@ -80,7 +80,6 @@ enum
 enum
 {
    MUI_SYSTEM_TAB_MAIN = 0,
-   MUI_SYSTEM_TAB_PLAYLISTS,
    MUI_SYSTEM_TAB_SETTINGS
 };
 
@@ -241,11 +240,6 @@ static void mui_draw_tab(mui_handle_t *mui,
    {
       case MUI_SYSTEM_TAB_MAIN:
          tab_icon = MUI_TEXTURE_TAB_MAIN;
-         if (i == mui->categories.selection_ptr)
-            tab_color = active_tab_color;
-         break;
-      case MUI_SYSTEM_TAB_PLAYLISTS:
-         tab_icon = MUI_TEXTURE_TAB_PLAYLISTS;
          if (i == mui->categories.selection_ptr)
             tab_color = active_tab_color;
          break;
@@ -1536,10 +1530,6 @@ static void mui_preswitch_tabs(mui_handle_t *mui, unsigned action)
       case MUI_SYSTEM_TAB_MAIN:
          menu_stack->list[stack_size - 1].label = strdup(msg_hash_to_str(MENU_ENUM_LABEL_MAIN_MENU));
          menu_stack->list[stack_size - 1].type = MENU_SETTINGS;
-         break;
-      case MUI_SYSTEM_TAB_PLAYLISTS:
-         menu_stack->list[stack_size - 1].label = strdup(msg_hash_to_str(MENU_ENUM_LABEL_PLAYLISTS_TAB));
-         menu_stack->list[stack_size - 1].type = MENU_PLAYLISTS_TAB;
          break;
       case MUI_SYSTEM_TAB_SETTINGS:
          menu_stack->list[stack_size - 1].label = strdup(msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS_TAB));

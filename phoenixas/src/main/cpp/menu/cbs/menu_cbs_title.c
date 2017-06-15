@@ -105,7 +105,6 @@ default_title_macro(action_get_recording_settings_list,         MENU_ENUM_LABEL_
 default_title_macro(action_get_playlist_settings_list,          MENU_ENUM_LABEL_VALUE_PLAYLIST_SETTINGS)
 default_title_macro(action_get_input_hotkey_binds_settings_list,MENU_ENUM_LABEL_VALUE_INPUT_HOTKEY_BINDS)
 default_title_macro(action_get_core_settings_list,              MENU_ENUM_LABEL_VALUE_CORE_SETTINGS)
-default_title_macro(action_get_video_settings_list,             MENU_ENUM_LABEL_VALUE_VIDEO_SETTINGS)
 default_title_macro(action_get_configuration_settings_list,     MENU_ENUM_LABEL_VALUE_CONFIGURATION_SETTINGS)
 default_title_macro(action_get_saving_settings_list,            MENU_ENUM_LABEL_VALUE_SAVING_SETTINGS)
 default_title_macro(action_get_logging_settings_list,           MENU_ENUM_LABEL_VALUE_LOGGING_SETTINGS)
@@ -665,9 +664,6 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_DEFERRED_INPUT_HOTKEY_BINDS_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_input_hotkey_binds_settings_list);
             break;
-         case MENU_ENUM_LABEL_DEFERRED_VIDEO_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_video_settings_list);
-            break;
          case MENU_ENUM_LABEL_DEFERRED_CONFIGURATION_SETTINGS_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_configuration_settings_list);
             break;
@@ -969,9 +965,6 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
             break;
          case MENU_LABEL_DEFERRED_INPUT_HOTKEY_BINDS_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_input_hotkey_binds_settings_list);
-            break;
-         case MENU_LABEL_DEFERRED_VIDEO_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_video_settings_list);
             break;
          case MENU_LABEL_DEFERRED_AUDIO_SETTINGS_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_audio_settings_list);

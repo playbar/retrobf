@@ -2198,17 +2198,6 @@ static bool setting_append_list(
                &subgroup_info,
                parent_group);
 
-//         if (settings->bools.history_list_enable)
-//         {
-//            CONFIG_ACTION(
-//                  list, list_info,
-//                  MENU_ENUM_LABEL_LOAD_CONTENT_HISTORY,
-//                  MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_HISTORY,
-//                  &group_info,
-//                  &subgroup_info,
-//                  parent_group);
-//         }
-
             if (string_is_not_equal_fast(settings->arrays.menu_driver, "xmb", 3))
             {
                 CONFIG_ACTION(
@@ -2220,32 +2209,6 @@ static bool setting_append_list(
                         parent_group);
             }
 
-#if defined(HAVE_NETWORKING)
-//         CONFIG_ACTION(
-//               list, list_info,
-//               MENU_ENUM_LABEL_NETPLAY,
-//               MENU_ENUM_LABEL_VALUE_NETPLAY,
-//               &group_info,
-//               &subgroup_info,
-//               parent_group);
-
-//         CONFIG_ACTION(
-//               list, list_info,
-//               MENU_ENUM_LABEL_ONLINE_UPDATER,
-//               MENU_ENUM_LABEL_VALUE_ONLINE_UPDATER,
-//               &group_info,
-//               &subgroup_info,
-//               parent_group);
-#endif
-
-//            CONFIG_ACTION(
-//                    list, list_info,
-//                    MENU_ENUM_LABEL_SETTINGS,
-//                    MENU_ENUM_LABEL_VALUE_SETTINGS,
-//                    &group_info,
-//                    &subgroup_info,
-//                    parent_group);
-
             CONFIG_ACTION(
                     list, list_info,
                     MENU_ENUM_LABEL_INFORMATION_LIST,
@@ -2254,7 +2217,6 @@ static bool setting_append_list(
                     &subgroup_info,
                     parent_group);
 
-#ifndef __CELLOS_LV2__
             CONFIG_ACTION(
                     list, list_info,
                     MENU_ENUM_LABEL_RESTART_RETROARCH,
@@ -2263,16 +2225,6 @@ static bool setting_append_list(
                     &subgroup_info,
                     parent_group);
             menu_settings_list_current_add_cmd(list, list_info, CMD_EVENT_RESTART_RETROARCH);
-#endif
-
-//         CONFIG_ACTION(
-//               list, list_info,
-//               MENU_ENUM_LABEL_CONFIGURATIONS_LIST,
-//               MENU_ENUM_LABEL_VALUE_CONFIGURATIONS_LIST,
-//               &group_info,
-//               &subgroup_info,
-//               parent_group);
-            settings_data_list_current_add_flags(list, list_info, SD_FLAG_LAKKA_ADVANCED);
 
             CONFIG_ACTION(
                     list, list_info,
@@ -2334,14 +2286,6 @@ static bool setting_append_list(
                     &subgroup_info,
                     parent_group);
             menu_settings_list_current_add_cmd(list, list_info, CMD_EVENT_QUIT);
-
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_VIDEO_SETTINGS,
-                    MENU_ENUM_LABEL_VALUE_VIDEO_SETTINGS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
 
             CONFIG_ACTION(
                     list, list_info,
