@@ -172,9 +172,6 @@ int generic_menu_iterate(void *data, void *userdata, enum menu_action action)
                   case FILE_TYPE_REMAP:
                      enum_idx = MENU_ENUM_LABEL_FILE_BROWSER_REMAP;
                      break;
-                  case FILE_TYPE_RECORD_CONFIG:
-                     enum_idx = MENU_ENUM_LABEL_FILE_BROWSER_RECORD_CONFIG;
-                     break;
                   case FILE_TYPE_CURSOR:
                      enum_idx = MENU_ENUM_LABEL_FILE_BROWSER_CURSOR;
                      break;
@@ -187,7 +184,6 @@ int generic_menu_iterate(void *data, void *userdata, enum menu_action action)
                   case FILE_TYPE_DIRECTORY:
                      enum_idx = MENU_ENUM_LABEL_FILE_BROWSER_DIRECTORY;
                      break;
-                  case FILE_TYPE_AUDIOFILTER:            /* TODO/FIXME */
                   case FILE_TYPE_SHADER_SLANG:           /* TODO/FIXME */
                   case FILE_TYPE_SHADER_GLSL:            /* TODO/FIXME */
                   case FILE_TYPE_SHADER_HLSL:            /* TODO/FIXME */

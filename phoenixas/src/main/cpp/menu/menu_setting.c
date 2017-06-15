@@ -2289,91 +2289,11 @@ static bool setting_append_list(
 
             CONFIG_ACTION(
                     list, list_info,
-                    MENU_ENUM_LABEL_AUDIO_SETTINGS,
-                    MENU_ENUM_LABEL_VALUE_AUDIO_SETTINGS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
-
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_INPUT_SETTINGS,
-                    MENU_ENUM_LABEL_VALUE_INPUT_SETTINGS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
-
-            CONFIG_ACTION(
-                    list, list_info,
                     MENU_ENUM_LABEL_CORE_SETTINGS,
                     MENU_ENUM_LABEL_VALUE_CORE_SETTINGS,
                     &group_info,
                     &subgroup_info,
                     parent_group);
-            settings_data_list_current_add_flags(list, list_info, SD_FLAG_ADVANCED);
-
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_CONFIGURATION_SETTINGS,
-                    MENU_ENUM_LABEL_VALUE_CONFIGURATION_SETTINGS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
-            settings_data_list_current_add_flags(list, list_info, SD_FLAG_LAKKA_ADVANCED);
-
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_SAVING_SETTINGS,
-                    MENU_ENUM_LABEL_VALUE_SAVING_SETTINGS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
-            settings_data_list_current_add_flags(list, list_info, SD_FLAG_LAKKA_ADVANCED);
-
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_LOGGING_SETTINGS,
-                    MENU_ENUM_LABEL_VALUE_LOGGING_SETTINGS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
-            settings_data_list_current_add_flags(list, list_info, SD_FLAG_ADVANCED);
-
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_FRAME_THROTTLE_SETTINGS,
-                    MENU_ENUM_LABEL_VALUE_FRAME_THROTTLE_SETTINGS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
-            settings_data_list_current_add_flags(list, list_info, SD_FLAG_LAKKA_ADVANCED);
-
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_REWIND_SETTINGS,
-                    MENU_ENUM_LABEL_VALUE_REWIND_SETTINGS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
-            settings_data_list_current_add_flags(list, list_info, SD_FLAG_LAKKA_ADVANCED);
-
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_RECORDING_SETTINGS,
-                    MENU_ENUM_LABEL_VALUE_RECORDING_SETTINGS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
-            settings_data_list_current_add_flags(list, list_info, SD_FLAG_LAKKA_ADVANCED);
-
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_ONSCREEN_DISPLAY_SETTINGS,
-                    MENU_ENUM_LABEL_VALUE_ONSCREEN_DISPLAY_SETTINGS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
-            settings_data_list_current_add_flags(list, list_info, SD_FLAG_LAKKA_ADVANCED);
 
             CONFIG_ACTION(
                     list, list_info,
@@ -2401,13 +2321,6 @@ static bool setting_append_list(
                     &subgroup_info,
                     parent_group);
 
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_USER_INTERFACE_SETTINGS,
-                    MENU_ENUM_LABEL_VALUE_USER_INTERFACE_SETTINGS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
             settings_data_list_current_add_flags(list, list_info, SD_FLAG_LAKKA_ADVANCED);
 
             CONFIG_ACTION(
@@ -2418,14 +2331,6 @@ static bool setting_append_list(
                     &subgroup_info,
                     parent_group);
             settings_data_list_current_add_flags(list, list_info, SD_FLAG_LAKKA_ADVANCED);
-
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_RETRO_ACHIEVEMENTS_SETTINGS,
-                    MENU_ENUM_LABEL_VALUE_RETRO_ACHIEVEMENTS_SETTINGS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
 
             CONFIG_ACTION(
                     list, list_info,
@@ -2455,23 +2360,6 @@ static bool setting_append_list(
                     &subgroup_info,
                     parent_group);
             settings_data_list_current_add_flags(list, list_info, SD_FLAG_LAKKA_ADVANCED);
-
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_PLAYLIST_SETTINGS,
-                    MENU_ENUM_LABEL_VALUE_PLAYLIST_SETTINGS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
-            settings_data_list_current_add_flags(list, list_info, SD_FLAG_LAKKA_ADVANCED);
-
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_USER_SETTINGS,
-                    MENU_ENUM_LABEL_VALUE_USER_SETTINGS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
 
             CONFIG_ACTION(
                     list, list_info,

@@ -101,32 +101,19 @@ default_title_macro(action_get_shader_options_list,             MENU_ENUM_LABEL_
 default_title_macro(action_get_disk_options_list,               MENU_ENUM_LABEL_VALUE_DISK_OPTIONS)
 default_title_macro(action_get_frontend_counters_list,          MENU_ENUM_LABEL_VALUE_FRONTEND_COUNTERS)
 default_title_macro(action_get_core_counters_list,              MENU_ENUM_LABEL_VALUE_CORE_COUNTERS)
-default_title_macro(action_get_recording_settings_list,         MENU_ENUM_LABEL_VALUE_RECORDING_SETTINGS)
-default_title_macro(action_get_playlist_settings_list,          MENU_ENUM_LABEL_VALUE_PLAYLIST_SETTINGS)
 default_title_macro(action_get_input_hotkey_binds_settings_list,MENU_ENUM_LABEL_VALUE_INPUT_HOTKEY_BINDS)
 default_title_macro(action_get_core_settings_list,              MENU_ENUM_LABEL_VALUE_CORE_SETTINGS)
-default_title_macro(action_get_configuration_settings_list,     MENU_ENUM_LABEL_VALUE_CONFIGURATION_SETTINGS)
-default_title_macro(action_get_saving_settings_list,            MENU_ENUM_LABEL_VALUE_SAVING_SETTINGS)
-default_title_macro(action_get_logging_settings_list,           MENU_ENUM_LABEL_VALUE_LOGGING_SETTINGS)
-default_title_macro(action_get_frame_throttle_settings_list,    MENU_ENUM_LABEL_VALUE_FRAME_THROTTLE_SETTINGS)
-default_title_macro(action_get_rewind_settings_list,            MENU_ENUM_LABEL_VALUE_REWIND_SETTINGS)
-default_title_macro(action_get_onscreen_display_settings_list,  MENU_ENUM_LABEL_VALUE_ONSCREEN_DISPLAY_SETTINGS)
 default_title_macro(action_get_onscreen_notifications_settings_list,  MENU_ENUM_LABEL_VALUE_ONSCREEN_NOTIFICATIONS_SETTINGS)
 default_title_macro(action_get_onscreen_overlay_settings_list,  MENU_ENUM_LABEL_VALUE_ONSCREEN_OVERLAY_SETTINGS)
 default_title_macro(action_get_menu_settings_list,              MENU_ENUM_LABEL_VALUE_MENU_SETTINGS)
-default_title_macro(action_get_user_interface_settings_list,    MENU_ENUM_LABEL_VALUE_USER_INTERFACE_SETTINGS)
 default_title_macro(action_get_menu_file_browser_settings_list, MENU_ENUM_LABEL_VALUE_MENU_FILE_BROWSER_SETTINGS)
-default_title_macro(action_get_retro_achievements_settings_list,MENU_ENUM_LABEL_VALUE_RETRO_ACHIEVEMENTS_SETTINGS)
 default_title_macro(action_get_wifi_settings_list,              MENU_ENUM_LABEL_VALUE_WIFI_SETTINGS)
 default_title_macro(action_get_network_settings_list,           MENU_ENUM_LABEL_VALUE_NETWORK_SETTINGS)
 default_title_macro(action_get_netplay_lan_scan_settings_list,  MENU_ENUM_LABEL_VALUE_NETPLAY_LAN_SCAN_SETTINGS)
 default_title_macro(action_get_lakka_services_list,             MENU_ENUM_LABEL_VALUE_LAKKA_SERVICES)
-default_title_macro(action_get_user_settings_list,              MENU_ENUM_LABEL_VALUE_USER_SETTINGS)
 default_title_macro(action_get_directory_settings_list,         MENU_ENUM_LABEL_VALUE_DIRECTORY_SETTINGS)
 default_title_macro(action_get_privacy_settings_list,           MENU_ENUM_LABEL_VALUE_PRIVACY_SETTINGS)
 default_title_macro(action_get_updater_settings_list,           MENU_ENUM_LABEL_VALUE_UPDATER_SETTINGS)
-default_title_macro(action_get_audio_settings_list,             MENU_ENUM_LABEL_VALUE_AUDIO_SETTINGS)
-default_title_macro(action_get_input_settings_list,             MENU_ENUM_LABEL_VALUE_INPUT_SETTINGS)
 default_title_macro(action_get_core_cheat_options_list,         MENU_ENUM_LABEL_VALUE_CORE_CHEAT_OPTIONS)
 default_title_macro(action_get_load_content_list,               MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_LIST)
 default_title_macro(action_get_cursor_manager_list,             MENU_ENUM_LABEL_VALUE_CURSOR_MANAGER)
@@ -181,7 +168,6 @@ default_fill_title_macro(action_get_title_font_path,              MENU_ENUM_LABE
 default_fill_title_macro(action_get_title_collection,             MENU_ENUM_LABEL_VALUE_SELECT_FROM_COLLECTION)
 
 default_title_copy_macro(action_get_title_help,                   MENU_ENUM_LABEL_VALUE_HELP_LIST)
-default_title_copy_macro(action_get_title_input_settings,         MENU_ENUM_LABEL_VALUE_INPUT_SETTINGS)
 default_title_copy_macro(action_get_title_cheevos_list,           MENU_ENUM_LABEL_VALUE_ACHIEVEMENT_LIST)
 default_title_copy_macro(action_get_title_cheevos_list_hardcore,  MENU_ENUM_LABEL_VALUE_ACHIEVEMENT_LIST_HARDCORE)
 default_title_copy_macro(action_get_title_video_shader_parameters,MENU_ENUM_LABEL_VALUE_VIDEO_SHADER_PARAMETERS)
@@ -325,42 +311,6 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
       return 0;
    }
 
-   if (string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_CONFIGURATION_SETTINGS_LIST)))
-   {
-      BIND_ACTION_GET_TITLE(cbs, action_get_configuration_settings_list);
-      return 0;
-   }
-
-   if (string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_SAVING_SETTINGS_LIST)))
-   {
-      BIND_ACTION_GET_TITLE(cbs, action_get_saving_settings_list);
-      return 0;
-   }
-
-   if (string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_LOGGING_SETTINGS_LIST)))
-   {
-      BIND_ACTION_GET_TITLE(cbs, action_get_logging_settings_list);
-      return 0;
-   }
-
-   if (string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_FRAME_THROTTLE_SETTINGS_LIST)))
-   {
-      BIND_ACTION_GET_TITLE(cbs, action_get_frame_throttle_settings_list);
-      return 0;
-   }
-
-   if (string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_REWIND_SETTINGS_LIST)))
-   {
-      BIND_ACTION_GET_TITLE(cbs, action_get_rewind_settings_list);
-      return 0;
-   }
-
-   if (string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_ONSCREEN_DISPLAY_SETTINGS_LIST)))
-   {
-      BIND_ACTION_GET_TITLE(cbs, action_get_onscreen_display_settings_list);
-      return 0;
-   }
-
    if (string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_ONSCREEN_NOTIFICATIONS_SETTINGS_LIST)))
    {
       BIND_ACTION_GET_TITLE(cbs, action_get_onscreen_notifications_settings_list);
@@ -379,21 +329,9 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
       return 0;
    }
 
-   if (string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_USER_INTERFACE_SETTINGS_LIST)))
-   {
-      BIND_ACTION_GET_TITLE(cbs, action_get_user_interface_settings_list);
-      return 0;
-   }
-
    if (string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_MENU_FILE_BROWSER_SETTINGS_LIST)))
    {
       BIND_ACTION_GET_TITLE(cbs, action_get_menu_file_browser_settings_list);
-      return 0;
-   }
-
-   if (string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_RETRO_ACHIEVEMENTS_SETTINGS_LIST)))
-   {
-      BIND_ACTION_GET_TITLE(cbs, action_get_retro_achievements_settings_list);
       return 0;
    }
 
@@ -424,12 +362,6 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
    if (string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_LAKKA_SERVICES_LIST)))
    {
       BIND_ACTION_GET_TITLE(cbs, action_get_lakka_services_list);
-      return 0;
-   }
-
-   if (string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_USER_SETTINGS_LIST)))
-   {
-      BIND_ACTION_GET_TITLE(cbs, action_get_user_settings_list);
       return 0;
    }
 
@@ -664,41 +596,11 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_DEFERRED_INPUT_HOTKEY_BINDS_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_input_hotkey_binds_settings_list);
             break;
-         case MENU_ENUM_LABEL_DEFERRED_CONFIGURATION_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_configuration_settings_list);
-            break;
-         case MENU_ENUM_LABEL_DEFERRED_LOGGING_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_logging_settings_list);
-            break;
-         case MENU_ENUM_LABEL_DEFERRED_SAVING_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_saving_settings_list);
-            break;
-         case MENU_ENUM_LABEL_DEFERRED_FRAME_THROTTLE_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_frame_throttle_settings_list);
-            break;
-         case MENU_ENUM_LABEL_DEFERRED_REWIND_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_rewind_settings_list);
-            break;
-         case MENU_ENUM_LABEL_DEFERRED_ONSCREEN_DISPLAY_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_onscreen_display_settings_list);
-            break;
          case MENU_ENUM_LABEL_DEFERRED_ONSCREEN_OVERLAY_SETTINGS_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_onscreen_overlay_settings_list);
             break;
          case MENU_ENUM_LABEL_DEFERRED_CORE_SETTINGS_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_core_settings_list);
-            break;
-         case MENU_ENUM_LABEL_DEFERRED_AUDIO_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_audio_settings_list);
-            break;
-         case MENU_ENUM_LABEL_DEFERRED_INPUT_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_input_settings_list);
-            break;
-         case MENU_ENUM_LABEL_DEFERRED_RECORDING_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_recording_settings_list);
-            break;
-         case MENU_ENUM_LABEL_DEFERRED_PLAYLIST_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_playlist_settings_list);
             break;
          case MENU_ENUM_LABEL_MANAGEMENT:
          case MENU_ENUM_LABEL_ACHIEVEMENT_LIST:
@@ -966,18 +868,6 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_LABEL_DEFERRED_INPUT_HOTKEY_BINDS_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_input_hotkey_binds_settings_list);
             break;
-         case MENU_LABEL_DEFERRED_AUDIO_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_audio_settings_list);
-            break;
-         case MENU_LABEL_DEFERRED_INPUT_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_input_settings_list);
-            break;
-         case MENU_LABEL_DEFERRED_RECORDING_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_recording_settings_list);
-            break;
-         case MENU_LABEL_DEFERRED_PLAYLIST_SETTINGS_LIST:
-            BIND_ACTION_GET_TITLE(cbs, action_get_playlist_settings_list);
-            break;
          case MENU_LABEL_CONTENT_COLLECTION_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_title_collection);
             break;
@@ -1058,10 +948,6 @@ static int menu_cbs_init_bind_title_compare_type(menu_file_list_cbs_t *cbs,
    {
       case MENU_SETTINGS:
          BIND_ACTION_GET_TITLE(cbs, action_get_title_menu);
-         break;
-      case MENU_SETTINGS_CUSTOM_BIND:
-      case MENU_SETTINGS_CUSTOM_BIND_KEYBOARD:
-         BIND_ACTION_GET_TITLE(cbs, action_get_title_input_settings);
          break;
       case MENU_SETTING_ACTION_CORE_DISK_OPTIONS:
          BIND_ACTION_GET_TITLE(cbs, action_get_title_action_generic);

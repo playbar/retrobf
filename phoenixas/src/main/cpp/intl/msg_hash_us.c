@@ -243,15 +243,6 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
             snprintf(s, len, "Change the font that is used \n"
                     "for the Onscreen Display text.");
             break;
-        case MENU_ENUM_LABEL_GAME_SPECIFIC_OPTIONS:
-            snprintf(s, len, "Automatically load content-specific core options.");
-            break;
-        case MENU_ENUM_LABEL_AUTO_OVERRIDES_ENABLE:
-            snprintf(s, len, "Automatically load override configurations.");
-            break;
-        case MENU_ENUM_LABEL_AUTO_REMAPS_ENABLE:
-            snprintf(s, len, "Automatically load input remapping files.");
-            break;
         case MENU_ENUM_LABEL_SORT_SAVESTATES_ENABLE:
             snprintf(s, len, "Sort save states in folders \n"
                     "named after the libretro core used.");
@@ -455,12 +446,6 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
                              "Content decompressed by RetroArch will be \n"
                              "temporarily extracted to this directory.");
             break;
-        case MENU_ENUM_LABEL_HISTORY_LIST_ENABLE:
-            snprintf(s, len,
-                     "If enabled, every content loaded \n"
-                             "in RetroArch will be automatically \n"
-                             "added to the recent history list.");
-            break;
         case MENU_ENUM_LABEL_RGUI_BROWSER_DIRECTORY:
             snprintf(s, len,
                      "File Browser Directory. \n"
@@ -526,11 +511,6 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
             snprintf(s, len,
                      "Show the input descriptors set by the core \n"
                              "instead of the default ones.");
-            break;
-        case MENU_ENUM_LABEL_CONTENT_HISTORY_SIZE:
-            snprintf(s, len,
-                     "Number of entries that will be kept in \n"
-                             "content history playlist.");
             break;
         case MENU_ENUM_LABEL_VIDEO_WINDOWED_FULLSCREEN:
             snprintf(s, len,
@@ -790,33 +770,6 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
                              "Set Shader Directory to set where \n"
                              "the browser starts to look for \n"
                              "shaders."
-            );
-            break;
-        case MENU_ENUM_LABEL_CONFIGURATION_SETTINGS:
-            snprintf(s, len,
-                     "Determines how configuration files \n"
-                             "are loaded and prioritized.");
-            break;
-        case MENU_ENUM_LABEL_CONFIG_SAVE_ON_EXIT:
-            snprintf(s, len,
-                     "Saves config to disk on exit.\n"
-                             "Useful for menu as settings can be\n"
-                             "modified. Overwrites the config.\n"
-                             " \n"
-                             "#include's and comments are not \n"
-                             "preserved. \n"
-                             " \n"
-                             "By design, the config file is \n"
-                             "considered immutable as it is \n"
-                             "likely maintained by the user, \n"
-                             "and should not be overwritten \n"
-                             "behind the user's back."
-#if defined(RARCH_CONSOLE) || defined(RARCH_MOBILE)
-            "\nThis is not not the case on \n"
-            "consoles however, where \n"
-            "looking at the config file \n"
-            "manually isn't really an option."
-#endif
             );
             break;
         case MENU_ENUM_LABEL_CONFIRM_ON_EXIT:
@@ -1862,8 +1815,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "audio_output_rate")
        MSG_HASH(MENU_ENUM_LABEL_AUDIO_RATE_CONTROL_DELTA,
                 "audio_rate_control_delta")
-       MSG_HASH(MENU_ENUM_LABEL_AUDIO_SETTINGS,
-                "audio_settings")
        MSG_HASH(MENU_ENUM_LABEL_AUDIO_SYNC,
                 "audio_sync")
        MSG_HASH(MENU_ENUM_LABEL_AUDIO_VOLUME,
@@ -1876,10 +1827,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "audio_wasapi_sh_buffer_length")
        MSG_HASH(MENU_ENUM_LABEL_AUTOSAVE_INTERVAL,
                 "autosave_interval")
-       MSG_HASH(MENU_ENUM_LABEL_AUTO_OVERRIDES_ENABLE,
-                "auto_overrides_enable")
-       MSG_HASH(MENU_ENUM_LABEL_AUTO_REMAPS_ENABLE,
-                "auto_remaps_enable")
        MSG_HASH(MENU_ENUM_LABEL_AUTO_SHADERS_ENABLE,
                 "auto_shaders_enable")
        MSG_HASH(MENU_ENUM_LABEL_BLOCK_SRAM_OVERWRITE,
@@ -1970,11 +1917,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "collection")
        MSG_HASH(MENU_ENUM_LABEL_CONFIGURATIONS,
                 "configurations")
-       MSG_HASH(MENU_ENUM_LABEL_CONFIGURATION_SETTINGS,
-                "Determines how configuration files \n"
-                        "are loaded and prioritized.")
-       MSG_HASH(MENU_ENUM_LABEL_CONFIG_SAVE_ON_EXIT,
-                "config_save_on_exit")
        MSG_HASH(MENU_ENUM_LABEL_CONNECT_WIFI,
                 "connect_wifi")
        MSG_HASH(MENU_ENUM_LABEL_CONNECT_NETPLAY_ROOM,
@@ -1987,10 +1929,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "browse_url_list")
        MSG_HASH(MENU_ENUM_LABEL_CONTENT_DATABASE_DIRECTORY,
                 "content_database_path")
-       MSG_HASH(MENU_ENUM_LABEL_CONTENT_HISTORY_SIZE,
-                "content_history_size")
-       MSG_HASH(MENU_ENUM_LABEL_PLAYLIST_ENTRY_REMOVE,
-                "playlist_entry_remove")
        MSG_HASH(MENU_ENUM_LABEL_CONTENT_SETTINGS,
                 "quick_menu")
        MSG_HASH(MENU_ENUM_LABEL_CORE_ASSETS_DIRECTORY,
@@ -2061,10 +1999,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "deferred_archive_open")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_ARCHIVE_OPEN_DETECT_CORE,
                 "deferred_archive_open_detect_core")
-       MSG_HASH(MENU_ENUM_LABEL_DEFERRED_AUDIO_SETTINGS_LIST,
-                "deferred_audio_settings_list")
-       MSG_HASH(MENU_ENUM_LABEL_DEFERRED_CONFIGURATION_SETTINGS_LIST,
-                "deferred_configuration_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_CORE_CONTENT_DIRS_LIST,
                 "deferred_core_content_dirs_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_CORE_CONTENT_DIRS_SUBDIR_LIST,
@@ -2085,54 +2019,32 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "deferred_database_manager_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_DIRECTORY_SETTINGS_LIST,
                 "deferred_directory_settings_list")
-       MSG_HASH(MENU_ENUM_LABEL_DEFERRED_FRAME_THROTTLE_SETTINGS_LIST,
-                "deferred_frame_throttle_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_INPUT_HOTKEY_BINDS_LIST,
                 "deferred_input_hotkey_binds")
-       MSG_HASH(MENU_ENUM_LABEL_DEFERRED_INPUT_SETTINGS_LIST,
-                "deferred_input_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_LAKKA_LIST,
                 "deferred_lakka_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_LAKKA_SERVICES_LIST,
                 "deferred_lakka_services_list")
-       MSG_HASH(MENU_ENUM_LABEL_DEFERRED_LOGGING_SETTINGS_LIST,
-                "deferred_logging_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_MENU_FILE_BROWSER_SETTINGS_LIST,
                 "deferred_menu_file_browser_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_MENU_SETTINGS_LIST,
                 "deferred_menu_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_NETWORK_SETTINGS_LIST,
                 "deferred_network_settings_list")
-       MSG_HASH(MENU_ENUM_LABEL_DEFERRED_ONSCREEN_DISPLAY_SETTINGS_LIST,
-                "deferred_onscreen_display_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_ONSCREEN_OVERLAY_SETTINGS_LIST,
                 "deferred_onscreen_overlay_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_ONSCREEN_NOTIFICATIONS_SETTINGS_LIST,
                 "deferred_onscreen_notifications_settings_list")
-       MSG_HASH(MENU_ENUM_LABEL_DEFERRED_PLAYLIST_SETTINGS_LIST,
-                "deferred_playlist_settings")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_PRIVACY_SETTINGS_LIST,
                 "deferred_privacy_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_RDB_ENTRY_DETAIL,
                 "deferred_rdb_entry_detail")
-       MSG_HASH(MENU_ENUM_LABEL_DEFERRED_RECORDING_SETTINGS_LIST,
-                "deferred_recording_settings")
-       MSG_HASH(MENU_ENUM_LABEL_DEFERRED_RETRO_ACHIEVEMENTS_SETTINGS_LIST,
-                "deferred_retro_achievements_settings_list")
-       MSG_HASH(MENU_ENUM_LABEL_DEFERRED_REWIND_SETTINGS_LIST,
-                "deferred_rewind_settings_list")
-       MSG_HASH(MENU_ENUM_LABEL_DEFERRED_SAVING_SETTINGS_LIST,
-                "deferred_saving_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_THUMBNAILS_UPDATER_LIST,
                 "deferred_thumbnails_updater_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_UPDATER_SETTINGS_LIST,
                 "deferred_updater_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_USER_BINDS_LIST,
                 "deferred_user_binds_list")
-       MSG_HASH(MENU_ENUM_LABEL_DEFERRED_USER_INTERFACE_SETTINGS_LIST,
-                "deferred_user_interface_settings_list")
-       MSG_HASH(MENU_ENUM_LABEL_DEFERRED_USER_SETTINGS_LIST,
-                "deferred_user_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_VIDEO_FILTER,
                 "deferred_video_filter")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_WIFI_SETTINGS_LIST,
@@ -2205,12 +2117,8 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "fps_show")
        MSG_HASH(MENU_ENUM_LABEL_FRAME_THROTTLE_ENABLE,
                 "fastforward_ratio_throttle_enable")
-       MSG_HASH(MENU_ENUM_LABEL_FRAME_THROTTLE_SETTINGS,
-                "frame_throttle_settings")
        MSG_HASH(MENU_ENUM_LABEL_FRONTEND_COUNTERS,
                 "frontend_counters")
-       MSG_HASH(MENU_ENUM_LABEL_GAME_SPECIFIC_OPTIONS,
-                "game_specific_options")
        MSG_HASH(MENU_ENUM_LABEL_GAME_SPECIFIC_OPTIONS_CREATE,
                 "game_specific_options_create")
        MSG_HASH(MENU_ENUM_LABEL_GAME_SPECIFIC_OPTIONS_IN_USE,
@@ -2231,8 +2139,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "help_scanning_content")
        MSG_HASH(MENU_ENUM_LABEL_HELP_WHAT_IS_A_CORE,
                 "help_what_is_a_core")
-       MSG_HASH(MENU_ENUM_LABEL_HISTORY_LIST_ENABLE,
-                "history_list_enable")
        MSG_HASH(MENU_ENUM_LABEL_HORIZONTAL_MENU,
                 "horizontal_menu")
        MSG_HASH(MENU_ENUM_LABEL_IMAGES_TAB,
@@ -2289,8 +2195,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "input_remapping_directory")
        MSG_HASH(MENU_ENUM_LABEL_INPUT_REMAP_BINDS_ENABLE,
                 "input_remap_binds_enable")
-       MSG_HASH(MENU_ENUM_LABEL_INPUT_SETTINGS,
-                "input_settings")
        MSG_HASH(MENU_ENUM_LABEL_INPUT_SETTINGS_BEGIN,
                 "input_settings_begin")
        MSG_HASH(MENU_ENUM_LABEL_INPUT_SMALL_KEYBOARD_ENABLE,
@@ -2351,8 +2255,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "loadstate")
        MSG_HASH(MENU_ENUM_LABEL_LOCATION_ALLOW,
                 "location_allow")
-       MSG_HASH(MENU_ENUM_LABEL_LOGGING_SETTINGS,
-                "logging_settings")
        MSG_HASH(MENU_ENUM_LABEL_LOG_VERBOSITY,
                 "log_verbosity")
        case MENU_ENUM_LABEL_MAIN_MENU:
@@ -2481,8 +2383,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "online")
        MSG_HASH(MENU_ENUM_LABEL_ONLINE_UPDATER,
                 "online_updater")
-       MSG_HASH(MENU_ENUM_LABEL_ONSCREEN_DISPLAY_SETTINGS,
-                "onscreen_display_settings")
        MSG_HASH(MENU_ENUM_LABEL_ONSCREEN_OVERLAY_SETTINGS,
                 "onscreen_overlay_settings")
        MSG_HASH(MENU_ENUM_LABEL_ONSCREEN_NOTIFICATIONS_SETTINGS,
@@ -2519,8 +2419,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "playlist_directory")
        MSG_HASH(MENU_ENUM_LABEL_PLAYLIST_ENTRY,
                 "playlist_entry")
-       MSG_HASH(MENU_ENUM_LABEL_PLAYLIST_SETTINGS,
-                "playlist_settings")
        MSG_HASH(MENU_ENUM_LABEL_PLAYLIST_SETTINGS_BEGIN,
                 "playlist_settings_begin")
        MSG_HASH(MENU_ENUM_LABEL_POINTER_ENABLE,
@@ -2591,8 +2489,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "recording_config_directory")
        MSG_HASH(MENU_ENUM_LABEL_RECORDING_OUTPUT_DIRECTORY,
                 "recording_output_directory")
-       MSG_HASH(MENU_ENUM_LABEL_RECORDING_SETTINGS,
-                "recording_settings")
        MSG_HASH(MENU_ENUM_LABEL_RECORD_CONFIG,
                 "record_config")
        MSG_HASH(MENU_ENUM_LABEL_RECORD_ENABLE,
@@ -2615,16 +2511,12 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "resume")
        MSG_HASH(MENU_ENUM_LABEL_RESUME_CONTENT,
                 "resume_content")
-       MSG_HASH(MENU_ENUM_LABEL_RETRO_ACHIEVEMENTS_SETTINGS,
-                "retro_achievements_settings")
        MSG_HASH(MENU_ENUM_LABEL_INPUT_META_REWIND,
                 "input_meta_rewind")
        MSG_HASH(MENU_ENUM_LABEL_REWIND_ENABLE,
                 "rewind_enable")
        MSG_HASH(MENU_ENUM_LABEL_REWIND_GRANULARITY,
                 "rewind_granularity")
-       MSG_HASH(MENU_ENUM_LABEL_REWIND_SETTINGS,
-                "rewind_settings")
        MSG_HASH(MENU_ENUM_LABEL_RGUI_BROWSER_DIRECTORY,
                 "rgui_browser_directory")
        MSG_HASH(MENU_ENUM_LABEL_RGUI_CONFIG_DIRECTORY,
@@ -2657,8 +2549,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "save_new_config")
        MSG_HASH(MENU_ENUM_LABEL_SAVE_STATE,
                 "savestate")
-       MSG_HASH(MENU_ENUM_LABEL_SAVING_SETTINGS,
-                "saving_settings")
        MSG_HASH(MENU_ENUM_LABEL_SCAN_DIRECTORY,
                 "scan_directory")
        MSG_HASH(MENU_ENUM_LABEL_SCAN_FILE,
@@ -2763,12 +2653,8 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "update_slang_shaders")
        MSG_HASH(MENU_ENUM_LABEL_URL_ENTRY,
                 "url_entry")
-       MSG_HASH(MENU_ENUM_LABEL_USER_INTERFACE_SETTINGS,
-                "user_interface_settings")
        MSG_HASH(MENU_ENUM_LABEL_USER_LANGUAGE,
                 "user_language")
-       MSG_HASH(MENU_ENUM_LABEL_USER_SETTINGS,
-                "user_settings")
        MSG_HASH(MENU_ENUM_LABEL_USE_BUILTIN_IMAGE_VIEWER,
                 "use_builtin_image_viewer")
        MSG_HASH(MENU_ENUM_LABEL_USE_BUILTIN_PLAYER,
@@ -3294,10 +3180,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
           "Dynamic Audio Rate Control"
        )
        MSG_HASH(
-          MENU_ENUM_LABEL_VALUE_AUDIO_SETTINGS,
-          "Audio"
-       )
-       MSG_HASH(
           MENU_ENUM_LABEL_VALUE_AUDIO_SYNC,
           "Audio Sync"
        )
@@ -3320,14 +3202,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
        MSG_HASH(
           MENU_ENUM_LABEL_VALUE_AUTOSAVE_INTERVAL,
           "SaveRAM Autosave Interval"
-       )
-       MSG_HASH(
-          MENU_ENUM_LABEL_VALUE_AUTO_OVERRIDES_ENABLE,
-          "Load Override Files Automatically"
-       )
-       MSG_HASH(
-          MENU_ENUM_LABEL_VALUE_AUTO_REMAPS_ENABLE,
-          "Load Remap Files Automatically"
        )
        MSG_HASH(
           MENU_ENUM_LABEL_VALUE_AUTO_SHADERS_ENABLE,
@@ -3494,14 +3368,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
           "Load Configuration"
        )
        MSG_HASH(
-          MENU_ENUM_LABEL_VALUE_CONFIGURATION_SETTINGS,
-          "Configuration"
-       )
-       MSG_HASH(
-          MENU_ENUM_LABEL_VALUE_CONFIG_SAVE_ON_EXIT,
-          "Save Configuration on Exit"
-       )
-       MSG_HASH(
           MENU_ENUM_LABEL_VALUE_CONTENT_COLLECTION_LIST,
           "Collections"
        )
@@ -3513,11 +3379,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
           MENU_ENUM_LABEL_VALUE_CONTENT_DIR,
           "Content"
        )
-       MSG_HASH(
-          MENU_ENUM_LABEL_VALUE_CONTENT_HISTORY_SIZE,
-          "History List Size")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_PLAYLIST_ENTRY_REMOVE,
-                "Allow to remove entries")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_CONTENT_SETTINGS,
                 "Quick Menu")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_CORE_ASSETS_DIR,
@@ -3640,12 +3501,8 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Display Framerate")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_FRAME_THROTTLE_ENABLE,
                 "Limit Maximum Run Speed")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_FRAME_THROTTLE_SETTINGS,
-                "Frame Throttle")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_FRONTEND_COUNTERS,
                 "Frontend Counters")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_GAME_SPECIFIC_OPTIONS,
-                "Load Content-Specific Core Options Automatically")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_GAME_SPECIFIC_OPTIONS_CREATE,
                 "Create game-options file")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_GAME_SPECIFIC_OPTIONS_IN_USE,
@@ -3666,8 +3523,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Scanning For Content")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_HELP_WHAT_IS_A_CORE,
                 "What Is A Core?")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_HISTORY_LIST_ENABLE,
-                "History List Enable")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_HORIZONTAL_MENU,
                 "Horizontal Menu")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_IMAGES_TAB,
@@ -3858,8 +3713,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Remap Binds Enable")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_SAVE_AUTOCONFIG,
                 "Save Autoconfig")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_SETTINGS,
-                "Input")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_SMALL_KEYBOARD_ENABLE,
                 "Small Keyboard Enable")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_TOUCH_ENABLE,
@@ -3926,8 +3779,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Load State")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_LOCATION_ALLOW,
                 "Allow Location")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_LOGGING_SETTINGS,
-                "Logging")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_LOG_VERBOSITY,
                 "Logging Verbosity")
         case MENU_ENUM_LABEL_VALUE_MAIN_MENU:
@@ -4090,8 +3941,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Online")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_ONLINE_UPDATER,
                 "Online Updater")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_ONSCREEN_DISPLAY_SETTINGS,
-                "Onscreen Display")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_ONSCREEN_OVERLAY_SETTINGS,
                 "Onscreen Overlay")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_ONSCREEN_NOTIFICATIONS_SETTINGS,
@@ -4128,8 +3977,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
             return "Playlists";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_PLAYLIST_DIRECTORY,
                 "Playlist")
-        case MENU_ENUM_LABEL_VALUE_PLAYLIST_SETTINGS:
-            return "Playlists";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_POINTER_ENABLE,
                 "Touch Support")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_PORT,
@@ -4202,8 +4049,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Recording Config")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RECORDING_OUTPUT_DIRECTORY,
                 "Recording Output")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_RECORDING_SETTINGS,
-                "Recording")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RECORD_CONFIG,
                 "Load Recording Config...")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RECORD_ENABLE,
@@ -4236,14 +4081,10 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "RetroPad")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RETROPAD_WITH_ANALOG,
                 "RetroPad w/ Analog")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_RETRO_ACHIEVEMENTS_SETTINGS,
-                "Achievements")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_REWIND_ENABLE,
                 "Rewind Enable")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_REWIND_GRANULARITY,
                 "Rewind Granularity")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_REWIND_SETTINGS,
-                "Rewind")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RGUI_BROWSER_DIRECTORY,
                 "File Browser")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RGUI_CONFIG_DIRECTORY,
@@ -4280,8 +4121,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Save New Configuration")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_SAVE_STATE,
                 "Save State")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_SAVING_SETTINGS,
-                "Saving")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_SCAN_DIRECTORY,
                 "Scan Directory")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_SCAN_FILE,
@@ -4548,12 +4387,8 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Update Slang Shaders")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_USER,
                 "User")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_USER_INTERFACE_SETTINGS,
-                "User Interface")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_USER_LANGUAGE,
                 "Language")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_USER_SETTINGS,
-                "User")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_USE_BUILTIN_IMAGE_VIEWER,
                 "Use Builtin Image Viewer")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_USE_BUILTIN_PLAYER,
@@ -4752,42 +4587,18 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Enable or disable unofficial achievements and/or beta features for testing purposes.")
        MSG_HASH(MENU_ENUM_SUBLABEL_CHEEVOS_HARDCORE_MODE_ENABLE,
                 "Enable or disable savestates, cheats, rewind, fast-forward, pause, and slow-motion for all games.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_RETRO_ACHIEVEMENTS_SETTINGS,
-                "Change achievement settings.")
        MSG_HASH(MENU_ENUM_SUBLABEL_CORE_SETTINGS,
                 "Change core settings.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_RECORDING_SETTINGS,
-                "Change recording settings.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_ONSCREEN_DISPLAY_SETTINGS,
-                "Change display overlay and keyboard overlay, and onscreen notification settings.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_FRAME_THROTTLE_SETTINGS,
-                "Change rewind, fast-forward, and slow-motion settings.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_SAVING_SETTINGS,
-                "Change saving settings.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_LOGGING_SETTINGS,
-                "Change logging settings.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_USER_INTERFACE_SETTINGS,
-                "Change user interface settings.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_USER_SETTINGS,
-                "Change account, username, and language settings.")
        MSG_HASH(MENU_ENUM_SUBLABEL_PRIVACY_SETTINGS,
                 "Change your privacy settings.")
        MSG_HASH(MENU_ENUM_SUBLABEL_DIRECTORY_SETTINGS,
                 "Change default directories where files are located.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_PLAYLIST_SETTINGS,
-                "Change playlist settings.")
        MSG_HASH(MENU_ENUM_SUBLABEL_NETWORK_SETTINGS,
                 "Configure server and network settings.")
        MSG_HASH(MENU_ENUM_SUBLABEL_ADD_CONTENT_LIST,
                 "Scan content and add to the database.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_AUDIO_SETTINGS,
-                "Change audio output settings.")
        MSG_HASH(MENU_ENUM_SUBLABEL_BLUETOOTH_ENABLE,
                 "Enable or disable bluetooth.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_CONFIG_SAVE_ON_EXIT,
-                "Saves changes to the configuration file on exit.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_CONFIGURATION_SETTINGS,
-                "Change default settings for configuration files.")
        MSG_HASH(MENU_ENUM_SUBLABEL_CONFIGURATIONS_LIST,
                 "Manage and create configuration files.")
        MSG_HASH(MENU_ENUM_SUBLABEL_CPU_CORES,
@@ -4798,8 +4609,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Configure hotkey settings.")
        MSG_HASH(MENU_ENUM_SUBLABEL_INPUT_MENU_ENUM_TOGGLE_GAMEPAD_COMBO,
                 "Gamepad button combination to toggle menu.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_INPUT_SETTINGS,
-                "Change joypad, keyboard, and mouse settings.")
        MSG_HASH(MENU_ENUM_SUBLABEL_INPUT_USER_BINDS,
                 "Configure controls for this user.")
        MSG_HASH(MENU_ENUM_SUBLABEL_LOG_VERBOSITY,
@@ -5397,10 +5206,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Pause gameplay when RetroArch is not the active window.")
        MSG_HASH(MENU_ENUM_SUBLABEL_VIDEO_DISABLE_COMPOSITION,
                 "Enable or disable composition (Windows only).")
-       MSG_HASH(MENU_ENUM_SUBLABEL_HISTORY_LIST_ENABLE,
-                "Enable or disable recent playlist for games, images, music, and videos.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_CONTENT_HISTORY_SIZE,
-                "Limit the number of entries in recent playlist for games, images, music, and videos.")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_UNIFIED_MENU_CONTROLS,
                 "Unified Menu Controls")
        MSG_HASH(MENU_ENUM_SUBLABEL_INPUT_UNIFIED_MENU_CONTROLS,
@@ -5735,16 +5540,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Start the content.")
        MSG_HASH(MENU_ENUM_SUBLABEL_MENU_FILE_BROWSER_SETTINGS,
                 "Adjusts filebrowser settings.")
-       MSG_HASH(
-          MENU_ENUM_SUBLABEL_AUTO_REMAPS_ENABLE,
-          "Enable customized controls by default at startup."
-       )
-       MSG_HASH(
-          MENU_ENUM_SUBLABEL_AUTO_OVERRIDES_ENABLE,
-          "Enable customized configuration by default at startup."
-       )
-       MSG_HASH(MENU_ENUM_SUBLABEL_GAME_SPECIFIC_OPTIONS,
-                "Enable customized core options by default at startup.")
        MSG_HASH(MENU_ENUM_SUBLABEL_CORE_ENABLE,
                 "Shows current core name inside menu.")
        MSG_HASH(MENU_ENUM_SUBLABEL_DATABASE_MANAGER,
@@ -5799,8 +5594,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Show advanced settings for power users (hidden by default).")
        MSG_HASH(MENU_ENUM_SUBLABEL_THREADED_DATA_RUNLOOP_ENABLE,
                 "Perform tasks on a separate thread.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_PLAYLIST_ENTRY_REMOVE,
-                "Allow the user to remove entries from collections.")
        MSG_HASH(MENU_ENUM_SUBLABEL_SYSTEM_DIRECTORY,
                 "Sets the System directory. Cores can query for this directory to load BIOSes, system-specific configs, etc.")
        MSG_HASH(MENU_ENUM_SUBLABEL_RGUI_BROWSER_DIRECTORY,

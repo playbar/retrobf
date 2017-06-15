@@ -59,7 +59,7 @@ enum
 {
    ACTION_OK_LOAD_PRESET = 0,
    ACTION_OK_LOAD_SHADER_PASS,
-   ACTION_OK_LOAD_RECORD_CONFIGFILE,
+//   ACTION_OK_LOAD_RECORD_CONFIGFILE,
    ACTION_OK_LOAD_REMAPPING_FILE,
    ACTION_OK_LOAD_CHEAT_FILE,
    ACTION_OK_APPEND_DISK_IMAGE,
@@ -67,7 +67,7 @@ enum
    ACTION_OK_LOAD_CORE,
    ACTION_OK_LOAD_WALLPAPER,
    ACTION_OK_SET_PATH,
-   ACTION_OK_SET_PATH_AUDIO_FILTER,
+//   ACTION_OK_SET_PATH_AUDIO_FILTER,
    ACTION_OK_SET_PATH_OVERLAY,
    ACTION_OK_SET_DIRECTORY
 };
@@ -549,69 +549,12 @@ int generic_action_ok_displaylist_push(const char *path,
          info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_ACCOUNTS_LIST;
          dl_type            = DISPLAYLIST_GENERIC;
          break;
-      case ACTION_OK_DL_INPUT_SETTINGS_LIST:
-         info.directory_ptr = idx;
-         info.type          = type;
-         info_path          = path;
-         info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_INPUT_SETTINGS_LIST);
-         info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_INPUT_SETTINGS_LIST;
-         dl_type            = DISPLAYLIST_GENERIC;
-         break;
       case ACTION_OK_DL_CORE_SETTINGS_LIST:
          info.directory_ptr = idx;
          info.type          = type;
          info_path          = path;
          info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_CORE_SETTINGS_LIST);
          info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_CORE_SETTINGS_LIST;
-         dl_type            = DISPLAYLIST_GENERIC;
-         break;
-
-      case ACTION_OK_DL_CONFIGURATION_SETTINGS_LIST:
-         info.directory_ptr = idx;
-         info.type          = type;
-         info_path          = path;
-         info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_CONFIGURATION_SETTINGS_LIST);
-         info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_CONFIGURATION_SETTINGS_LIST;
-         dl_type            = DISPLAYLIST_GENERIC;
-         break;
-      case ACTION_OK_DL_SAVING_SETTINGS_LIST:
-         info.directory_ptr = idx;
-         info.type          = type;
-         info_path          = path;
-         info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_SAVING_SETTINGS_LIST);
-         info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_SAVING_SETTINGS_LIST;
-         dl_type            = DISPLAYLIST_GENERIC;
-         break;
-      case ACTION_OK_DL_LOGGING_SETTINGS_LIST:
-         info.directory_ptr = idx;
-         info.type          = type;
-         info_path          = path;
-         info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_LOGGING_SETTINGS_LIST);
-         info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_LOGGING_SETTINGS_LIST;
-         dl_type            = DISPLAYLIST_GENERIC;
-         break;
-      case ACTION_OK_DL_FRAME_THROTTLE_SETTINGS_LIST:
-         info.directory_ptr = idx;
-         info.type          = type;
-         info_path          = path;
-         info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_FRAME_THROTTLE_SETTINGS_LIST);
-         info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_FRAME_THROTTLE_SETTINGS_LIST;
-         dl_type            = DISPLAYLIST_GENERIC;
-         break;
-      case ACTION_OK_DL_REWIND_SETTINGS_LIST:
-         info.directory_ptr = idx;
-         info.type          = type;
-         info_path          = path;
-         info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_REWIND_SETTINGS_LIST);
-         info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_REWIND_SETTINGS_LIST;
-         dl_type            = DISPLAYLIST_GENERIC;
-         break;
-      case ACTION_OK_DL_ONSCREEN_DISPLAY_SETTINGS_LIST:
-         info.directory_ptr = idx;
-         info.type          = type;
-         info_path          = path;
-         info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_ONSCREEN_DISPLAY_SETTINGS_LIST);
-         info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_ONSCREEN_DISPLAY_SETTINGS_LIST;
          dl_type            = DISPLAYLIST_GENERIC;
          break;
       case ACTION_OK_DL_ONSCREEN_NOTIFICATIONS_SETTINGS_LIST:
@@ -638,28 +581,12 @@ int generic_action_ok_displaylist_push(const char *path,
          info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_MENU_SETTINGS_LIST;
          dl_type            = DISPLAYLIST_GENERIC;
          break;
-      case ACTION_OK_DL_USER_INTERFACE_SETTINGS_LIST:
-         info.directory_ptr = idx;
-         info.type          = type;
-         info_path          = path;
-         info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_USER_INTERFACE_SETTINGS_LIST);
-         info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_USER_INTERFACE_SETTINGS_LIST;
-         dl_type            = DISPLAYLIST_GENERIC;
-         break;
       case ACTION_OK_DL_MENU_FILE_BROWSER_SETTINGS_LIST:
          info.directory_ptr = idx;
          info.type          = type;
          info_path          = path;
          info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_MENU_FILE_BROWSER_SETTINGS_LIST);
          info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_MENU_FILE_BROWSER_SETTINGS_LIST;
-         dl_type            = DISPLAYLIST_GENERIC;
-         break;
-      case ACTION_OK_DL_RETRO_ACHIEVEMENTS_SETTINGS_LIST:
-         info.directory_ptr = idx;
-         info.type          = type;
-         info_path          = path;
-         info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_RETRO_ACHIEVEMENTS_SETTINGS_LIST);
-         info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_RETRO_ACHIEVEMENTS_SETTINGS_LIST;
          dl_type            = DISPLAYLIST_GENERIC;
          break;
       case ACTION_OK_DL_UPDATER_SETTINGS_LIST:
@@ -702,14 +629,6 @@ int generic_action_ok_displaylist_push(const char *path,
          info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_LAKKA_SERVICES_LIST;
          dl_type            = DISPLAYLIST_GENERIC;
          break;
-      case ACTION_OK_DL_USER_SETTINGS_LIST:
-         info.directory_ptr = idx;
-         info.type          = type;
-         info_path          = path;
-         info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_USER_SETTINGS_LIST);
-         info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_USER_SETTINGS_LIST;
-         dl_type            = DISPLAYLIST_GENERIC;
-         break;
       case ACTION_OK_DL_DIRECTORY_SETTINGS_LIST:
          info.directory_ptr = idx;
          info.type          = type;
@@ -726,36 +645,12 @@ int generic_action_ok_displaylist_push(const char *path,
          info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_PRIVACY_SETTINGS_LIST;
          dl_type            = DISPLAYLIST_GENERIC;
          break;
-      case ACTION_OK_DL_AUDIO_SETTINGS_LIST:
-         info.directory_ptr = idx;
-         info.type          = type;
-         info_path          = path;
-         info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_AUDIO_SETTINGS_LIST);
-         info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_AUDIO_SETTINGS_LIST;
-         dl_type            = DISPLAYLIST_GENERIC;
-         break;
       case ACTION_OK_DL_INPUT_HOTKEY_BINDS_LIST:
          info.directory_ptr = idx;
          info.type          = type;
          info_path          = path;
          info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_INPUT_HOTKEY_BINDS_LIST);
          info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_INPUT_HOTKEY_BINDS_LIST;
-         dl_type            = DISPLAYLIST_GENERIC;
-         break;
-      case ACTION_OK_DL_RECORDING_SETTINGS_LIST:
-         info.directory_ptr = idx;
-         info.type          = type;
-         info_path          = path;
-         info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_RECORDING_SETTINGS_LIST);
-         info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_RECORDING_SETTINGS_LIST;
-         dl_type            = DISPLAYLIST_GENERIC;
-         break;
-      case ACTION_OK_DL_PLAYLIST_SETTINGS_LIST:
-         info.directory_ptr = idx;
-         info.type          = type;
-         info_path          = path;
-         info_label         = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_PLAYLIST_SETTINGS_LIST);
-         info.enum_idx      = MENU_ENUM_LABEL_DEFERRED_PLAYLIST_SETTINGS_LIST;
          dl_type            = DISPLAYLIST_GENERIC;
          break;
       case ACTION_OK_DL_ACCOUNTS_CHEEVOS_LIST:
@@ -1125,7 +1020,6 @@ static int generic_action_ok(const char *path,
             }
          }
          break;
-#ifdef HAVE_SHADER_MANAGER
       case ACTION_OK_LOAD_PRESET:
          {
             struct video_shader      *shader  = menu_shader_get();
@@ -1146,15 +1040,7 @@ static int generic_action_ok(const char *path,
             video_shader_resolve_parameters(NULL, menu_shader_get());
          }
          break;
-#endif
-      case ACTION_OK_LOAD_RECORD_CONFIGFILE:
-         {
-            global_t *global = global_get_ptr();
-            flush_char = msg_hash_to_str(flush_id);
-            strlcpy(global->record.config, action_path,
-                  sizeof(global->record.config));
-         }
-         break;
+
       case ACTION_OK_LOAD_REMAPPING_FILE:
          {
             config_file_t *conf = config_file_new(action_path);
@@ -1190,19 +1076,6 @@ static int generic_action_ok(const char *path,
          }
          break;
 
-      case ACTION_OK_SET_PATH_AUDIO_FILTER:
-         flush_char = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_AUDIO_SETTINGS_LIST);
-         {
-            rarch_setting_t *setting = menu_setting_find(menu_label);
-
-            if (setting)
-            {
-               setting_set_with_string_representation(
-                     setting, action_path);
-               ret = menu_setting_generic(setting, false);
-            }
-         }
-         break;
       case ACTION_OK_SET_PATH_OVERLAY:
          flush_char = msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_ONSCREEN_OVERLAY_SETTINGS_LIST);
          {
@@ -1240,13 +1113,6 @@ static int generic_action_ok(const char *path,
 
 error:
    return menu_cbs_exit();
-}
-
-static int action_ok_set_path_audiofilter(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok(path, label, type, idx, entry_idx,
-         ACTION_OK_SET_PATH_AUDIO_FILTER, MSG_UNKNOWN);
 }
 
 static int action_ok_set_path_overlay(const char *path,
@@ -1778,14 +1644,6 @@ static int action_ok_cheat_file_load(const char *path,
    return generic_action_ok(path, label, type, idx, entry_idx,
          ACTION_OK_LOAD_CHEAT_FILE,
          MENU_ENUM_LABEL_CORE_CHEAT_OPTIONS);
-}
-
-static int action_ok_record_configfile_load(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok(path, label, type, idx, entry_idx,
-         ACTION_OK_LOAD_RECORD_CONFIGFILE,
-         MENU_ENUM_LABEL_RECORDING_SETTINGS);
 }
 
 static int action_ok_remap_file_load(const char *path,
@@ -3222,41 +3080,6 @@ static int action_ok_configurations_list(const char *path,
          entry_idx, ACTION_OK_DL_CONFIGURATIONS_LIST);
 }
 
-static int action_ok_saving_list(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok_displaylist_push(path, NULL, label, type, idx,
-         entry_idx, ACTION_OK_DL_SAVING_SETTINGS_LIST);
-}
-
-static int action_ok_logging_list(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok_displaylist_push(path, NULL, label, type, idx,
-         entry_idx, ACTION_OK_DL_LOGGING_SETTINGS_LIST);
-}
-
-static int action_ok_frame_throttle_list(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok_displaylist_push(path, NULL, label, type, idx,
-         entry_idx, ACTION_OK_DL_FRAME_THROTTLE_SETTINGS_LIST);
-}
-
-static int action_ok_rewind_list(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok_displaylist_push(path, NULL, label, type, idx,
-         entry_idx, ACTION_OK_DL_REWIND_SETTINGS_LIST);
-}
-
-static int action_ok_onscreen_display_list(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok_displaylist_push(path, NULL, label, type, idx,
-         entry_idx, ACTION_OK_DL_ONSCREEN_DISPLAY_SETTINGS_LIST);
-}
-
 static int action_ok_onscreen_notifications_list(const char *path,
       const char *label, unsigned type, size_t idx, size_t entry_idx)
 {
@@ -3278,25 +3101,11 @@ static int action_ok_menu_list(const char *path,
          entry_idx, ACTION_OK_DL_MENU_SETTINGS_LIST);
 }
 
-static int action_ok_user_interface_list(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok_displaylist_push(path, NULL, label, type, idx,
-         entry_idx, ACTION_OK_DL_USER_INTERFACE_SETTINGS_LIST);
-}
-
 static int action_ok_menu_file_browser_list(const char *path,
       const char *label, unsigned type, size_t idx, size_t entry_idx)
 {
    return generic_action_ok_displaylist_push(path, NULL, label, type, idx,
          entry_idx, ACTION_OK_DL_MENU_FILE_BROWSER_SETTINGS_LIST);
-}
-
-static int action_ok_retro_achievements_list(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok_displaylist_push(path, NULL, label, type, idx,
-         entry_idx, ACTION_OK_DL_RETRO_ACHIEVEMENTS_SETTINGS_LIST);
 }
 
 static int action_ok_updater_list(const char *path,
@@ -3370,13 +3179,6 @@ static int action_ok_lakka_services(const char *path,
 {
    return generic_action_ok_displaylist_push(path, NULL, label, type, idx,
          entry_idx, ACTION_OK_DL_LAKKA_SERVICES_LIST);
-}
-
-static int action_ok_user_list(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok_displaylist_push(path, NULL, label, type, idx,
-         entry_idx, ACTION_OK_DL_USER_SETTINGS_LIST);
 }
 
 static int action_ok_directory_list(const char *path,
@@ -3926,52 +3728,12 @@ static int action_ok_push_accounts_list(const char *path,
          ACTION_OK_DL_ACCOUNTS_LIST);
 }
 
-static int action_ok_push_configuration_settings_list(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok_displaylist_push(path, NULL,
-         label, type, idx, entry_idx,
-         ACTION_OK_DL_CONFIGURATION_SETTINGS_LIST);
-}
-
 static int action_ok_push_core_settings_list(const char *path,
       const char *label, unsigned type, size_t idx, size_t entry_idx)
 {
    return generic_action_ok_displaylist_push(path, NULL,
          label, type, idx, entry_idx,
          ACTION_OK_DL_CORE_SETTINGS_LIST);
-}
-
-static int action_ok_push_audio_settings_list(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok_displaylist_push(path, NULL,
-         label, type, idx, entry_idx,
-         ACTION_OK_DL_AUDIO_SETTINGS_LIST);
-}
-
-static int action_ok_push_input_settings_list(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok_displaylist_push(path, NULL,
-         label, type, idx, entry_idx,
-         ACTION_OK_DL_INPUT_SETTINGS_LIST);
-}
-
-static int action_ok_push_recording_settings_list(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok_displaylist_push(path, NULL,
-         label, type, idx, entry_idx,
-         ACTION_OK_DL_RECORDING_SETTINGS_LIST);
-}
-
-static int action_ok_push_playlist_settings_list(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
-{
-   return generic_action_ok_displaylist_push(path, NULL,
-         label, type, idx, entry_idx,
-         ACTION_OK_DL_PLAYLIST_SETTINGS_LIST);
 }
 
 static int action_ok_push_input_hotkey_binds_list(const char *path,
@@ -4516,23 +4278,8 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_ACCOUNTS_LIST:
             BIND_ACTION_OK(cbs, action_ok_push_accounts_list);
             break;
-         case MENU_ENUM_LABEL_INPUT_SETTINGS:
-            BIND_ACTION_OK(cbs, action_ok_push_input_settings_list);
-            break;
-         case MENU_ENUM_LABEL_AUDIO_SETTINGS:
-            BIND_ACTION_OK(cbs, action_ok_push_audio_settings_list);
-            break;
          case MENU_ENUM_LABEL_CORE_SETTINGS:
             BIND_ACTION_OK(cbs, action_ok_push_core_settings_list);
-            break;
-         case MENU_ENUM_LABEL_CONFIGURATION_SETTINGS:
-            BIND_ACTION_OK(cbs, action_ok_push_configuration_settings_list);
-            break;
-         case MENU_ENUM_LABEL_PLAYLIST_SETTINGS:
-            BIND_ACTION_OK(cbs, action_ok_push_playlist_settings_list);
-            break;
-         case MENU_ENUM_LABEL_RECORDING_SETTINGS:
-            BIND_ACTION_OK(cbs, action_ok_push_recording_settings_list);
             break;
          case MENU_ENUM_LABEL_INPUT_HOTKEY_BINDS:
             BIND_ACTION_OK(cbs, action_ok_push_input_hotkey_binds_list);
@@ -4635,21 +4382,6 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_CONFIGURATIONS:
             BIND_ACTION_OK(cbs, action_ok_configurations_list);
             break;
-         case MENU_ENUM_LABEL_SAVING_SETTINGS:
-            BIND_ACTION_OK(cbs, action_ok_saving_list);
-            break;
-         case MENU_ENUM_LABEL_LOGGING_SETTINGS:
-            BIND_ACTION_OK(cbs, action_ok_logging_list);
-            break;
-         case MENU_ENUM_LABEL_FRAME_THROTTLE_SETTINGS:
-            BIND_ACTION_OK(cbs, action_ok_frame_throttle_list);
-            break;
-         case MENU_ENUM_LABEL_REWIND_SETTINGS:
-            BIND_ACTION_OK(cbs, action_ok_rewind_list);
-            break;
-         case MENU_ENUM_LABEL_ONSCREEN_DISPLAY_SETTINGS:
-            BIND_ACTION_OK(cbs, action_ok_onscreen_display_list);
-            break;
          case MENU_ENUM_LABEL_ONSCREEN_NOTIFICATIONS_SETTINGS:
             BIND_ACTION_OK(cbs, action_ok_onscreen_notifications_list);
             break;
@@ -4659,14 +4391,8 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_MENU_SETTINGS:
             BIND_ACTION_OK(cbs, action_ok_menu_list);
             break;
-         case MENU_ENUM_LABEL_USER_INTERFACE_SETTINGS:
-            BIND_ACTION_OK(cbs, action_ok_user_interface_list);
-            break;
          case MENU_ENUM_LABEL_MENU_FILE_BROWSER_SETTINGS:
             BIND_ACTION_OK(cbs, action_ok_menu_file_browser_list);
-            break;
-         case MENU_ENUM_LABEL_RETRO_ACHIEVEMENTS_SETTINGS:
-            BIND_ACTION_OK(cbs, action_ok_retro_achievements_list);
             break;
          case MENU_ENUM_LABEL_UPDATER_SETTINGS:
             BIND_ACTION_OK(cbs, action_ok_updater_list);
@@ -4682,9 +4408,6 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
             break;
          case MENU_ENUM_LABEL_LAKKA_SERVICES:
             BIND_ACTION_OK(cbs, action_ok_lakka_services);
-            break;
-         case MENU_ENUM_LABEL_USER_SETTINGS:
-            BIND_ACTION_OK(cbs, action_ok_user_list);
             break;
          case MENU_ENUM_LABEL_DIRECTORY_SETTINGS:
             BIND_ACTION_OK(cbs, action_ok_directory_list);
@@ -4888,9 +4611,6 @@ static int menu_cbs_init_bind_ok_compare_type(menu_file_list_cbs_t *cbs,
          case FILE_TYPE_CHEAT:
             BIND_ACTION_OK(cbs, action_ok_cheat_file_load);
             break;
-         case FILE_TYPE_RECORD_CONFIG:
-            BIND_ACTION_OK(cbs, action_ok_record_configfile_load);
-            break;
          case FILE_TYPE_REMAP:
             BIND_ACTION_OK(cbs, action_ok_remap_file_load);
             break;
@@ -5026,9 +4746,7 @@ static int menu_cbs_init_bind_ok_compare_type(menu_file_list_cbs_t *cbs,
          case FILE_TYPE_OVERLAY:
             BIND_ACTION_OK(cbs, action_ok_set_path_overlay);
             break;
-         case FILE_TYPE_AUDIOFILTER:
-            BIND_ACTION_OK(cbs, action_ok_set_path_audiofilter);
-            break;
+
          case FILE_TYPE_IN_CARCHIVE:
          case FILE_TYPE_PLAIN:
             if (cbs->enum_idx != MSG_UNKNOWN)
