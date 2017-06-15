@@ -2339,8 +2339,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "network_cmd_enable")
        MSG_HASH(MENU_ENUM_LABEL_NETWORK_CMD_PORT,
                 "network_cmd_port")
-       MSG_HASH(MENU_ENUM_LABEL_NETWORK_INFORMATION,
-                "network_information")
        MSG_HASH(MENU_ENUM_LABEL_NETWORK_INFO_ENTRY,
                 "network_info_entry")
        MSG_HASH(MENU_ENUM_LABEL_NETWORK_REMOTE_ENABLE,
@@ -2601,8 +2599,8 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "system_bgm_enable")
        MSG_HASH(MENU_ENUM_LABEL_SYSTEM_DIRECTORY,
                 "system_directory")
-       MSG_HASH(MENU_ENUM_LABEL_SYSTEM_INFORMATION,
-                "system_information")
+       case MENU_ENUM_LABEL_SYSTEM_INFORMATION:
+           return "system_information";
        MSG_HASH(MENU_ENUM_LABEL_SYSTEM_INFO_ENTRY,
                 "system_info_entry")
        MSG_HASH(MENU_ENUM_LABEL_TAKE_SCREENSHOT,
@@ -3889,8 +3887,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Network Commands")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_NETWORK_CMD_PORT,
                 "Network Command Port")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_NETWORK_INFORMATION,
-                "Network Information")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_NETWORK_REMOTE_ENABLE,
                 "Network Gamepad")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_NETWORK_REMOTE_PORT,
@@ -4187,8 +4183,8 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "System BGM Enable")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_SYSTEM_DIRECTORY,
                 "System/BIOS")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_SYSTEM_INFORMATION,
-                "System Information")
+        case MENU_ENUM_LABEL_VALUE_SYSTEM_INFORMATION:
+            return "System Information";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_7ZIP_SUPPORT,
                 "7zip support")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_ALSA_SUPPORT,
@@ -5264,16 +5260,12 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Input your user name here. This will be used for netplay sessions, among other things.")
        MSG_HASH(MENU_ENUM_SUBLABEL_VIDEO_POST_FILTER_RECORD,
                 "Capture the image after filters (but not shaders) are applied. Your video will look as fancy as what you see on your screen.")
-//       MSG_HASH(MENU_ENUM_SUBLABEL_CORE_LIST,
-//                "Select which core to use.")
         case MENU_ENUM_SUBLABEL_CORE_LIST:
             return "Select which core to use.";
        MSG_HASH(MENU_ENUM_SUBLABEL_LOAD_CONTENT_LIST,
                 "Select which content to start.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_NETWORK_INFORMATION,
-                "Show network interface(s) and associated IP addresses.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_SYSTEM_INFORMATION,
-                "Show information specific to the device.")
+        case MENU_ENUM_SUBLABEL_SYSTEM_INFORMATION:
+            return "Show information specific to the device.";
        MSG_HASH(MENU_ENUM_SUBLABEL_QUIT_RETROARCH,
                 "Quit the program.")
        MSG_HASH(MENU_ENUM_SUBLABEL_VIDEO_WINDOW_WIDTH,

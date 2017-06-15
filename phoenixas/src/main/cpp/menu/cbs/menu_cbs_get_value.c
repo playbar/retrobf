@@ -1634,14 +1634,15 @@ static int menu_cbs_init_bind_get_string_representation_compare_label(
          case MENU_ENUM_LABEL_TAKE_SCREENSHOT:
          case MENU_ENUM_LABEL_CORE_INPUT_REMAPPING_OPTIONS:
          case MENU_ENUM_LABEL_CORE_INFORMATION:
-         case MENU_ENUM_LABEL_SYSTEM_INFORMATION:
          case MENU_ENUM_LABEL_ACHIEVEMENT_LIST:
          case MENU_ENUM_LABEL_ACHIEVEMENT_LIST_HARDCORE:
          case MENU_ENUM_LABEL_SAVE_STATE:
          case MENU_ENUM_LABEL_LOAD_STATE:
-            BIND_ACTION_GET_VALUE(cbs,
-                  menu_action_setting_disp_set_label_menu_more);
+            BIND_ACTION_GET_VALUE(cbs, menu_action_setting_disp_set_label_menu_more);
             break;
+         case MENU_ENUM_LABEL_SYSTEM_INFORMATION:
+              BIND_ACTION_GET_VALUE(cbs, menu_action_setting_disp_set_label_menu_more);
+              break;
          default:
             return - 1;
       }

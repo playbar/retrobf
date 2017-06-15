@@ -125,8 +125,11 @@ static int action_bind_sublabel_core_list(file_list_t *list, unsigned type, unsi
 }
 
 default_sublabel_macro(action_bind_sublabel_content_list,                  MENU_ENUM_SUBLABEL_LOAD_CONTENT_LIST)
-default_sublabel_macro(action_bind_sublabel_network_information,           MENU_ENUM_SUBLABEL_NETWORK_INFORMATION)
-default_sublabel_macro(action_bind_sublabel_system_information,            MENU_ENUM_SUBLABEL_SYSTEM_INFORMATION)
+static int action_bind_sublabel_system_information(file_list_t *list, unsigned type, unsigned i, const char *label, const char *path, char *s, size_t len)
+{
+   strlcpy(s, msg_hash_to_str(MENU_ENUM_SUBLABEL_SYSTEM_INFORMATION), len);
+   return 0;
+}
 default_sublabel_macro(action_bind_sublabel_quit_retroarch,                MENU_ENUM_SUBLABEL_QUIT_RETROARCH)
 default_sublabel_macro(action_bind_sublabel_video_window_width,            MENU_ENUM_SUBLABEL_VIDEO_WINDOW_WIDTH)
 default_sublabel_macro(action_bind_sublabel_video_window_height,           MENU_ENUM_SUBLABEL_VIDEO_WINDOW_HEIGHT)
@@ -898,9 +901,6 @@ int menu_cbs_init_bind_sublabel(menu_file_list_cbs_t *cbs,
             break;
          case MENU_ENUM_LABEL_QUIT_RETROARCH:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_quit_retroarch);
-            break;
-         case MENU_ENUM_LABEL_NETWORK_INFORMATION:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_network_information);
             break;
          case MENU_ENUM_LABEL_SYSTEM_INFORMATION:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_system_information);

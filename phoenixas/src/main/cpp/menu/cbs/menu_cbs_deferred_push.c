@@ -68,11 +68,6 @@ static int deferred_push_system_information(menu_displaylist_info_t *info)
    return deferred_push_dlist(info, DISPLAYLIST_SYSTEM_INFO);
 }
 
-static int deferred_push_network_information(menu_displaylist_info_t *info)
-{
-   return deferred_push_dlist(info, DISPLAYLIST_NETWORK_INFO);
-}
-
 static int deferred_push_achievement_list(menu_displaylist_info_t *info)
 {
    return deferred_push_dlist(info, DISPLAYLIST_ACHIEVEMENT_LIST);
@@ -1095,9 +1090,6 @@ static int menu_cbs_init_bind_deferred_push_compare_label(
             case MENU_ENUM_LABEL_SYSTEM_INFORMATION:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_system_information);
                break;
-            case MENU_ENUM_LABEL_NETWORK_INFORMATION:
-               BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_network_information);
-               break;
             case MENU_ENUM_LABEL_ACHIEVEMENT_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_achievement_list);
                break;
@@ -1284,7 +1276,6 @@ static int menu_cbs_init_bind_deferred_push_compare_label(
             case MENU_LABEL_DEFERRED_DATABASE_MANAGER_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_database_manager_list_deferred);
                break;
-#ifdef HAVE_LIBRETRODB
             case MENU_LABEL_DEFERRED_CURSOR_MANAGER_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_cursor_manager_list_deferred);
                break;
@@ -1336,15 +1327,11 @@ static int menu_cbs_init_bind_deferred_push_compare_label(
             case MENU_LABEL_DEFERRED_CURSOR_MANAGER_LIST_RDB_ENTRY_RELEASEYEAR:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_cursor_manager_list_deferred_query_rdb_entry_releaseyear);
                break;
-#endif
             case MENU_LABEL_CORE_INFORMATION:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_core_information);
                break;
             case MENU_LABEL_SYSTEM_INFORMATION:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_system_information);
-               break;
-            case MENU_LABEL_NETWORK_INFORMATION:
-               BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_network_information);
                break;
             case MENU_LABEL_ACHIEVEMENT_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_achievement_list);

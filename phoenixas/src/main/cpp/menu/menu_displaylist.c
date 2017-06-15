@@ -2970,28 +2970,14 @@ static int menu_displaylist_parse_information_list(
 
    core_info_get_current_core(&core_info);
 
-   if (  system &&
-         (!string_is_empty(system->info.library_name) &&
-          !string_is_equal(system->info.library_name,
-             msg_hash_to_str(MENU_ENUM_LABEL_VALUE_NO_CORE))
-         )
-         && core_info && core_info->config_data
-      )
-      menu_entries_append_enum(info->list,
-            msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CORE_INFORMATION),
-            msg_hash_to_str(MENU_ENUM_LABEL_CORE_INFORMATION),
-            MENU_ENUM_LABEL_CORE_INFORMATION,
-            MENU_SETTING_ACTION, 0, 0);
-
-#ifdef HAVE_NETWORKING
-#ifndef HAVE_SOCKET_LEGACY
-   menu_entries_append_enum(info->list,
-         msg_hash_to_str(MENU_ENUM_LABEL_VALUE_NETWORK_INFORMATION),
-         msg_hash_to_str(MENU_ENUM_LABEL_NETWORK_INFORMATION),
-         MENU_ENUM_LABEL_NETWORK_INFORMATION,
-         MENU_SETTING_ACTION, 0, 0);
-#endif
-#endif
+   if (  system && (!string_is_empty(system->info.library_name) && !string_is_equal(system->info.library_name,
+             msg_hash_to_str(MENU_ENUM_LABEL_VALUE_NO_CORE))) && core_info && core_info->config_data) {
+       menu_entries_append_enum(info->list,
+                                msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CORE_INFORMATION),
+                                msg_hash_to_str(MENU_ENUM_LABEL_CORE_INFORMATION),
+                                MENU_ENUM_LABEL_CORE_INFORMATION,
+                                MENU_SETTING_ACTION, 0, 0);
+   }
 
    menu_entries_append_enum(info->list,
          msg_hash_to_str(MENU_ENUM_LABEL_VALUE_SYSTEM_INFORMATION),
@@ -4218,14 +4204,6 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type, void *data)
                MENU_SETTINGS_CORE_DISK_OPTIONS_DISK_IMAGE_APPEND, 0, 0);
 
          info->need_push    = true;
-         break;
-      case DISPLAYLIST_NETWORK_INFO:
-         menu_entries_ctl(MENU_ENTRIES_CTL_CLEAR, info->list);
-#if defined(HAVE_NETWORKING) && !defined(HAVE_SOCKET_LEGACY) && !defined(WIIU)
-         menu_displaylist_parse_network_info(info);
-#endif
-         info->need_push    = true;
-         info->need_refresh = true;
          break;
       case DISPLAYLIST_SYSTEM_INFO:
          menu_entries_ctl(MENU_ENTRIES_CTL_CLEAR, info->list);
