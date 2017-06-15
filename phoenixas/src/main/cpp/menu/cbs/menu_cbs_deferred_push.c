@@ -108,10 +108,10 @@ static int deferred_push_accounts_list(menu_displaylist_info_t *info)
    return deferred_push_dlist(info, DISPLAYLIST_ACCOUNTS_LIST);
 }
 
-static int deferred_push_driver_settings_list(menu_displaylist_info_t *info)
-{
-   return deferred_push_dlist(info, DISPLAYLIST_DRIVER_SETTINGS_LIST);
-}
+//static int deferred_push_driver_settings_list(menu_displaylist_info_t *info)
+//{
+//   return deferred_push_dlist(info, DISPLAYLIST_DRIVER_SETTINGS_LIST);
+//}
 
 static int deferred_push_core_settings_list(menu_displaylist_info_t *info)
 {
@@ -1343,9 +1343,6 @@ static int menu_cbs_init_bind_deferred_push_compare_label(
                break;
             case MENU_LABEL_DEFERRED_ACCOUNTS_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_accounts_list);
-               break;
-            case MENU_LABEL_DEFERRED_DRIVER_SETTINGS_LIST:
-               BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_driver_settings_list);
                break;
             case MENU_LABEL_DEFERRED_VIDEO_SETTINGS_LIST:
                BIND_ACTION_DEFERRED_PUSH(cbs, deferred_push_video_settings_list);

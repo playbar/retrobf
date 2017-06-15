@@ -2588,16 +2588,9 @@ static int menu_displaylist_parse_settings_internal_enum(void *data,
             goto loop;
       }
 
-#ifdef HAVE_LAKKA
-      if ((flags & SD_FLAG_ADVANCED || flags & SD_FLAG_LAKKA_ADVANCED) &&
-            !settings->bools.menu_show_advanced_settings)
-         goto loop;
-#else
       if (flags & SD_FLAG_ADVANCED &&
             !settings->bools.menu_show_advanced_settings)
          goto loop;
-#endif
-
 
       menu_entries_append_enum(info->list, short_description,
             name, enum_idx, menu_setting_set_flags(setting), 0, 0);
@@ -3823,11 +3816,10 @@ static bool menu_displaylist_push_internal(
       if (string_is_empty(settings->paths.directory_playlist))
       {
          menu_entries_ctl(MENU_ENTRIES_CTL_CLEAR, info->list);
+         //todo
          menu_entries_append_enum(info->list,
-               msg_hash_to_str(
-                  MENU_ENUM_LABEL_VALUE_NO_PLAYLIST_ENTRIES_AVAILABLE),
-               msg_hash_to_str(
-                  MENU_ENUM_LABEL_NO_PLAYLIST_ENTRIES_AVAILABLE),
+               msg_hash_to_str(MENU_ENUM_LABEL_VALUE_NO_PLAYLIST_ENTRIES_AVAILABLE),
+               msg_hash_to_str(MENU_ENUM_LABEL_NO_PLAYLIST_ENTRIES_AVAILABLE),
                MENU_ENUM_LABEL_NO_PLAYLIST_ENTRIES_AVAILABLE,
                MENU_INFO_MESSAGE, 0, 0);
          info->need_refresh = true;
@@ -4571,42 +4563,6 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type, void *data)
                (void)ret;
             }
          }
-         info->need_push    = true;
-         break;
-      case DISPLAYLIST_DRIVER_SETTINGS_LIST:
-         menu_entries_ctl(MENU_ENTRIES_CTL_CLEAR, info->list);
-         ret = menu_displaylist_parse_settings_enum(menu, info,
-               MENU_ENUM_LABEL_INPUT_DRIVER,
-               PARSE_ONLY_STRING_OPTIONS, false);
-         ret = menu_displaylist_parse_settings_enum(menu, info,
-               MENU_ENUM_LABEL_JOYPAD_DRIVER,
-               PARSE_ONLY_STRING_OPTIONS, false);
-         ret = menu_displaylist_parse_settings_enum(menu, info,
-               MENU_ENUM_LABEL_VIDEO_DRIVER,
-               PARSE_ONLY_STRING_OPTIONS, false);
-         ret = menu_displaylist_parse_settings_enum(menu, info,
-               MENU_ENUM_LABEL_AUDIO_DRIVER,
-               PARSE_ONLY_STRING_OPTIONS, false);
-         ret = menu_displaylist_parse_settings_enum(menu, info,
-               MENU_ENUM_LABEL_AUDIO_RESAMPLER_DRIVER,
-               PARSE_ONLY_STRING_OPTIONS, false);
-         ret = menu_displaylist_parse_settings_enum(menu, info,
-               MENU_ENUM_LABEL_CAMERA_DRIVER,
-               PARSE_ONLY_STRING_OPTIONS, false);
-         ret = menu_displaylist_parse_settings_enum(menu, info,
-               MENU_ENUM_LABEL_LOCATION_DRIVER,
-               PARSE_ONLY_STRING_OPTIONS, false);
-         ret = menu_displaylist_parse_settings_enum(menu, info,
-               MENU_ENUM_LABEL_MENU_DRIVER,
-               PARSE_ONLY_STRING_OPTIONS, false);
-         ret = menu_displaylist_parse_settings_enum(menu, info,
-               MENU_ENUM_LABEL_RECORD_DRIVER,
-               PARSE_ONLY_STRING_OPTIONS, false);
-         ret = menu_displaylist_parse_settings_enum(menu, info,
-               MENU_ENUM_LABEL_WIFI_DRIVER,
-               PARSE_ONLY_STRING_OPTIONS, false);
-
-         info->need_refresh = true;
          info->need_push    = true;
          break;
       case DISPLAYLIST_CONFIGURATION_SETTINGS_LIST:
@@ -5552,8 +5508,6 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type, void *data)
       case DISPLAYLIST_SETTINGS_ALL:
          menu_entries_ctl(MENU_ENTRIES_CTL_CLEAR, info->list);
          ret = menu_displaylist_parse_settings_enum(menu, info,
-               MENU_ENUM_LABEL_DRIVER_SETTINGS,  PARSE_ACTION, false);
-         ret = menu_displaylist_parse_settings_enum(menu, info,
                MENU_ENUM_LABEL_VIDEO_SETTINGS,   PARSE_ACTION, false);
          ret = menu_displaylist_parse_settings_enum(menu, info,
                MENU_ENUM_LABEL_AUDIO_SETTINGS,   PARSE_ACTION, false);
@@ -5574,16 +5528,10 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type, void *data)
                   MENU_ENUM_LABEL_RECORDING_SETTINGS,   PARSE_ACTION, false);
          ret = menu_displaylist_parse_settings_enum(menu, info,
                MENU_ENUM_LABEL_ONSCREEN_DISPLAY_SETTINGS,   PARSE_ACTION, false);
-#ifdef HAVE_LAKKA
-         ret = menu_displaylist_parse_settings_enum(menu, info,
-               MENU_ENUM_LABEL_MENU_SETTINGS,   PARSE_ACTION, false);
-#endif
          ret = menu_displaylist_parse_settings_enum(menu, info,
                MENU_ENUM_LABEL_USER_INTERFACE_SETTINGS,   PARSE_ACTION, false);
-#ifdef HAVE_CHEEVOS
          ret = menu_displaylist_parse_settings_enum(menu, info,
                MENU_ENUM_LABEL_RETRO_ACHIEVEMENTS_SETTINGS,  PARSE_ACTION, false);
-#endif
          ret = menu_displaylist_parse_settings_enum(menu, info,
                MENU_ENUM_LABEL_WIFI_SETTINGS,   PARSE_ACTION, false);
          ret = menu_displaylist_parse_settings_enum(menu, info,

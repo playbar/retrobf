@@ -2325,7 +2325,6 @@ static bool setting_append_list(
 
             settings_data_list_current_add_flags(list, list_info, SD_FLAG_LAKKA_ADVANCED);
 
-#if !defined(IOS)
             /* Apple rejects iOS apps that lets you forcibly quit an application. */
             CONFIG_ACTION(
                     list, list_info,
@@ -2335,17 +2334,6 @@ static bool setting_append_list(
                     &subgroup_info,
                     parent_group);
             menu_settings_list_current_add_cmd(list, list_info, CMD_EVENT_QUIT);
-#endif
-
-
-            CONFIG_ACTION(
-                    list, list_info,
-                    MENU_ENUM_LABEL_DRIVER_SETTINGS,
-                    MENU_ENUM_LABEL_VALUE_DRIVER_SETTINGS,
-                    &group_info,
-                    &subgroup_info,
-                    parent_group);
-            settings_data_list_current_add_flags(list, list_info, SD_FLAG_LAKKA_ADVANCED);
 
             CONFIG_ACTION(
                     list, list_info,

@@ -643,6 +643,7 @@ bool menu_entries_ctl(enum menu_entries_ctl_state state, void *data)
             if (idx)
                menu_entries_begin = *idx;
          }
+           break;
       case MENU_ENTRIES_CTL_START_GET:
          {
             size_t *idx = (size_t*)data;

@@ -691,48 +691,7 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
                              "This might take a while...\n"
             );
             break;
-        case MENU_ENUM_LABEL_INPUT_DRIVER:
-            if (settings)
-                driver_hash = msg_hash_calculate(settings->arrays.input_driver);
 
-            switch (driver_hash) {
-                case MENU_LABEL_INPUT_DRIVER_UDEV:
-                    snprintf(s, len,
-                             "udev Input driver. \n"
-                                     " \n"
-                                     "It uses the recent evdev joypad API \n"
-                                     "for joystick support. It supports \n"
-                                     "hotplugging and force feedback. \n"
-                                     " \n"
-                                     "The driver reads evdev events for keyboard \n"
-                                     "support. It also supports keyboard callback, \n"
-                                     "mice and touchpads. \n"
-                                     " \n"
-                                     "By default in most distros, /dev/input nodes \n"
-                                     "are root-only (mode 600). You can set up a udev \n"
-                                     "rule which makes these accessible to non-root."
-                    );
-                    break;
-                case MENU_LABEL_INPUT_DRIVER_LINUXRAW:
-                    snprintf(s, len,
-                             "linuxraw Input driver. \n"
-                                     " \n"
-                                     "This driver requires an active TTY. Keyboard \n"
-                                     "events are read directly from the TTY which \n"
-                                     "makes it simpler, but not as flexible as udev. \n" "Mice, etc, are not supported at all. \n"
-                                     " \n"
-                                     "This driver uses the older joystick API \n"
-                                     "(/dev/input/js*).");
-                    break;
-                default:
-                    snprintf(s, len,
-                             "Input driver.\n"
-                                     " \n"
-                                     "Depending on video driver, it might \n"
-                                     "force a different input driver.");
-                    break;
-            }
-            break;
         case MENU_ENUM_LABEL_LOAD_CONTENT_LIST:
             snprintf(s, len,
                      "Load Content. \n"
@@ -753,86 +712,7 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
             );
             break;
 
-        case MENU_ENUM_LABEL_VIDEO_DRIVER:
-            snprintf(s, len,
-                     "Current Video driver.");
-
-            if (string_is_equal_fast(settings->arrays.video_driver, "gl", 2))
-            {
-                snprintf(s, len,
-                         "OpenGL Video driver. \n"
-                                 " \n"
-                                 "This driver allows libretro GL cores to  \n"
-                                 "be used in addition to software-rendered \n"
-                                 "core implementations.\n"
-                                 " \n"
-                                 "Performance for software-rendered and \n"
-                                 "libretro GL core implementations is \n"
-                                 "dependent on your graphics card's \n"
-                                 "underlying GL driver).");
-            }
-            else if (string_is_equal_fast(settings->arrays.video_driver, "sdl2", 4))
-            {
-                snprintf(s, len,
-                         "SDL 2 Video driver.\n"
-                                 " \n"
-                                 "This is an SDL 2 software-rendered video \n"
-                                 "driver.\n"
-                                 " \n"
-                                 "Performance for software-rendered libretro \n"
-                                 "core implementations is dependent \n"
-                                 "on your platform SDL implementation.");
-            }
-            else if (string_is_equal_fast(settings->arrays.video_driver, "sdl1", 4))
-            {
-                snprintf(s, len,
-                         "SDL Video driver.\n"
-                                 " \n"
-                                 "This is an SDL 1.2 software-rendered video \n"
-                                 "driver.\n"
-                                 " \n"
-                                 "Performance is considered to be suboptimal. \n"
-                                 "Consider using it only as a last resort.");
-            }
-            else if (string_is_equal_fast(settings->arrays.video_driver, "d3d", 3))
-            {
-                snprintf(s, len,
-                         "Direct3D Video driver. \n"
-                                 " \n"
-                                 "Performance for software-rendered cores \n"
-                                 "is dependent on your graphic card's \n"
-                                 "underlying D3D driver).");
-            }
-            else if (string_is_equal_fast(settings->arrays.video_driver, "exynos", 6))
-            {
-                snprintf(s, len,
-                         "Exynos-G2D Video Driver. \n"
-                                 " \n"
-                                 "This is a low-level Exynos video driver. \n"
-                                 "Uses the G2D block in Samsung Exynos SoC \n"
-                                 "for blit operations. \n"
-                                 " \n"
-                                 "Performance for software rendered cores \n"
-                                 "should be optimal.");
-            }
-            else if (string_is_equal_fast(settings->arrays.video_driver, "drm", 3))
-            {
-                snprintf(s, len,
-                         "Plain DRM Video Driver. \n"
-                                 " \n"
-                                 "This is a low-level video driver using. \n"
-                                 "libdrm for hardware scaling using \n"
-                                 "GPU overlays.");
-            }
-            else if (string_is_equal_fast(settings->arrays.video_driver, "sunxi", 5))
-            {
-                snprintf(s, len,
-                         "Sunxi-G2D Video Driver. \n"
-                                 " \n"
-                                 "This is a low-level Sunxi video driver. \n"
-                                 "Uses the G2D block in Allwinner SoCs.");
-            }
-            break;
+   ;
         case MENU_ENUM_LABEL_AUDIO_DSP_PLUGIN:
             snprintf(s, len,
                      "Audio DSP plugin.\n"
@@ -840,25 +720,7 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
                              "the driver."
             );
             break;
-        case MENU_ENUM_LABEL_AUDIO_RESAMPLER_DRIVER:
-            if (settings)
-                driver_hash = msg_hash_calculate(settings->arrays.audio_resampler);
 
-            switch (driver_hash) {
-                case MENU_LABEL_AUDIO_RESAMPLER_DRIVER_SINC:
-                    snprintf(s, len,
-                             "Windowed SINC implementation.");
-                    break;
-                case MENU_LABEL_AUDIO_RESAMPLER_DRIVER_CC:
-                    snprintf(s, len,
-                             "Convoluted Cosine implementation.");
-                    break;
-                default:
-                    if (string_is_empty(s))
-                        strlcpy(s, msg_hash_to_str(MENU_ENUM_LABEL_VALUE_NO_INFORMATION_AVAILABLE), len);
-                    break;
-            }
-            break;
         case MENU_ENUM_LABEL_VIDEO_SHADER_PRESET:
             snprintf(s, len,
                      "Load Shader Preset. \n"
@@ -1082,24 +944,9 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
                      "Override the default audio device \n"
                              "the audio driver uses.\n"
                              "This is driver dependent. E.g.\n"
-#ifdef HAVE_ALSA
-            " \n"
-            "ALSA wants a PCM device."
-#endif
-#ifdef HAVE_OSS
-            " \n"
-            "OSS wants a path (e.g. /dev/dsp)."
-#endif
-#ifdef HAVE_JACK
-            " \n"
-            "JACK wants portnames (e.g. system:playback1\n"
-            ",system:playback_2)."
-#endif
-#ifdef HAVE_RSOUND
             " \n"
             "RSound wants an IP address to an RSound \n"
             "server."
-#endif
             );
             break;
         case MENU_ENUM_LABEL_DISK_EJECT_TOGGLE:
@@ -1756,9 +1603,6 @@ int menu_hash_get_help_us_enum(enum msg_hash_enums msg, char *s, size_t len) {
                      "Start User Interface companion driver \n"
                              "on boot (if available).");
             break;
-        case MENU_ENUM_LABEL_MENU_DRIVER:
-            snprintf(s, len, "Menu driver to use.");
-            break;
         case MENU_ENUM_LABEL_INPUT_MENU_ENUM_TOGGLE_GAMEPAD_COMBO:
             snprintf(s, len,
                      "Gamepad button combination to toggle menu. \n"
@@ -2002,8 +1846,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "audio_block_frames")
        MSG_HASH(MENU_ENUM_LABEL_AUDIO_DEVICE,
                 "audio_device")
-       MSG_HASH(MENU_ENUM_LABEL_AUDIO_DRIVER,
-                "audio_driver")
        MSG_HASH(MENU_ENUM_LABEL_AUDIO_DSP_PLUGIN,
                 "audio_dsp_plugin")
        MSG_HASH(MENU_ENUM_LABEL_AUDIO_ENABLE,
@@ -2022,8 +1864,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "audio_output_rate")
        MSG_HASH(MENU_ENUM_LABEL_AUDIO_RATE_CONTROL_DELTA,
                 "audio_rate_control_delta")
-       MSG_HASH(MENU_ENUM_LABEL_AUDIO_RESAMPLER_DRIVER,
-                "audio_resampler_driver")
        MSG_HASH(MENU_ENUM_LABEL_AUDIO_SETTINGS,
                 "audio_settings")
        MSG_HASH(MENU_ENUM_LABEL_AUDIO_SYNC,
@@ -2054,8 +1894,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "cache_directory")
        MSG_HASH(MENU_ENUM_LABEL_CAMERA_ALLOW,
                 "camera_allow")
-       MSG_HASH(MENU_ENUM_LABEL_CAMERA_DRIVER,
-                "camera_driver")
        MSG_HASH(MENU_ENUM_LABEL_CB_CORE_CONTENT_DIRS_LIST,
                 "cb_core_content_dirs_list")
        MSG_HASH(MENU_ENUM_LABEL_CB_CORE_CONTENT_DOWNLOAD,
@@ -2249,8 +2087,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "deferred_database_manager_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_DIRECTORY_SETTINGS_LIST,
                 "deferred_directory_settings_list")
-       MSG_HASH(MENU_ENUM_LABEL_DEFERRED_DRIVER_SETTINGS_LIST,
-                "deferred_driver_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_FRAME_THROTTLE_SETTINGS_LIST,
                 "deferred_frame_throttle_settings_list")
        MSG_HASH(MENU_ENUM_LABEL_DEFERRED_INPUT_HOTKEY_BINDS_LIST,
@@ -2329,8 +2165,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "dpi_override_enable")
        MSG_HASH(MENU_ENUM_LABEL_DPI_OVERRIDE_VALUE,
                 "dpi_override_value")
-       MSG_HASH(MENU_ENUM_LABEL_DRIVER_SETTINGS,
-                "driver_settings")
        MSG_HASH(MENU_ENUM_LABEL_CHECK_FOR_MISSING_FIRMWARE,
                 "check_for_missing_firmware")
        MSG_HASH(MENU_ENUM_LABEL_DUMMY_ON_CORE_SHUTDOWN,
@@ -2429,8 +2263,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "input_descriptor_hide_unbound")
        MSG_HASH(MENU_ENUM_LABEL_INPUT_DESCRIPTOR_LABEL_SHOW,
                 "input_descriptor_label_show")
-       MSG_HASH(MENU_ENUM_LABEL_INPUT_DRIVER,
-                "input_driver")
        MSG_HASH(MENU_ENUM_LABEL_INPUT_DUTY_CYCLE,
                 "input_duty_cycle")
        MSG_HASH(MENU_ENUM_LABEL_INPUT_HOTKEY_BINDS,
@@ -2505,8 +2337,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "9_input_binds_list")
        MSG_HASH(MENU_ENUM_LABEL_JOYPAD_AUTOCONFIG_DIR,
                 "joypad_autoconfig_dir")
-       MSG_HASH(MENU_ENUM_LABEL_JOYPAD_DRIVER,
-                "input_joypad_driver")
        MSG_HASH(MENU_ENUM_LABEL_LAKKA_SERVICES,
                 "lakka_services")
        MSG_HASH(MENU_ENUM_LABEL_LIBRETRO_DIR_PATH,
@@ -2525,8 +2355,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "loadstate")
        MSG_HASH(MENU_ENUM_LABEL_LOCATION_ALLOW,
                 "location_allow")
-       MSG_HASH(MENU_ENUM_LABEL_LOCATION_DRIVER,
-                "location_driver")
        MSG_HASH(MENU_ENUM_LABEL_LOGGING_SETTINGS,
                 "logging_settings")
        MSG_HASH(MENU_ENUM_LABEL_LOG_VERBOSITY,
@@ -2541,8 +2369,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "materialui_menu_footer_opacity")
        MSG_HASH(MENU_ENUM_LABEL_MATERIALUI_MENU_HEADER_OPACITY,
                 "materialui_menu_header_opacity")
-       MSG_HASH(MENU_ENUM_LABEL_MENU_DRIVER,
-                "menu_driver")
        MSG_HASH(MENU_ENUM_LABEL_MENU_ENUM_THROTTLE_FRAMERATE,
                 "menu_throttle_framerate")
        MSG_HASH(MENU_ENUM_LABEL_MENU_FILE_BROWSER_SETTINGS,
@@ -2651,8 +2477,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "no_performance_counters")
        MSG_HASH(MENU_ENUM_LABEL_NO_PLAYLISTS,
                 "no_playlists")
-       MSG_HASH(MENU_ENUM_LABEL_NO_PLAYLIST_ENTRIES_AVAILABLE,
-                "no_playlist_entries_available")
        MSG_HASH(MENU_ENUM_LABEL_NO_SETTINGS_FOUND,
                 "menu_label_no_settings_found")
        MSG_HASH(MENU_ENUM_LABEL_NO_SHADER_PARAMETERS,
@@ -2775,8 +2599,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "recording_settings")
        MSG_HASH(MENU_ENUM_LABEL_RECORD_CONFIG,
                 "record_config")
-       MSG_HASH(MENU_ENUM_LABEL_RECORD_DRIVER,
-                "record_driver")
        MSG_HASH(MENU_ENUM_LABEL_RECORD_ENABLE,
                 "record_enable")
        MSG_HASH(MENU_ENUM_LABEL_RECORD_PATH,
@@ -2971,8 +2793,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "video_crop_overscan")
        MSG_HASH(MENU_ENUM_LABEL_VIDEO_DISABLE_COMPOSITION,
                 "video_disable_composition")
-       MSG_HASH(MENU_ENUM_LABEL_VIDEO_DRIVER,
-                "video_driver")
        MSG_HASH(MENU_ENUM_LABEL_VIDEO_FILTER,
                 "video_filter")
        MSG_HASH(MENU_ENUM_LABEL_VIDEO_FILTER_DIR,
@@ -3079,8 +2899,6 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "video_fullscreen_x")
        MSG_HASH(MENU_ENUM_LABEL_VIDEO_FULLSCREEN_Y,
                 "video_fullscreen_y")
-       MSG_HASH(MENU_ENUM_LABEL_WIFI_DRIVER,
-                "wifi_driver")
        MSG_HASH(MENU_ENUM_LABEL_WIFI_SETTINGS,
                 "wifi_settings")
        MSG_HASH(MENU_ENUM_LABEL_XMB_ALPHA_FACTOR,
@@ -3446,10 +3264,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
           "Audio Device"
        )
        MSG_HASH(
-          MENU_ENUM_LABEL_VALUE_AUDIO_DRIVER,
-          "Audio Driver"
-       )
-       MSG_HASH(
           MENU_ENUM_LABEL_VALUE_AUDIO_DSP_PLUGIN,
           "Audio DSP Plugin"
        )
@@ -3484,10 +3298,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
        MSG_HASH(
           MENU_ENUM_LABEL_VALUE_AUDIO_RATE_CONTROL_DELTA,
           "Dynamic Audio Rate Control"
-       )
-       MSG_HASH(
-          MENU_ENUM_LABEL_VALUE_AUDIO_RESAMPLER_DRIVER,
-          "Audio Resampler Driver"
        )
        MSG_HASH(
           MENU_ENUM_LABEL_VALUE_AUDIO_SETTINGS,
@@ -3616,10 +3426,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
        MSG_HASH(
           MENU_ENUM_LABEL_VALUE_CAMERA_ALLOW,
           "Allow Camera"
-       )
-       MSG_HASH(
-          MENU_ENUM_LABEL_VALUE_CAMERA_DRIVER,
-          "Camera Driver"
        )
        MSG_HASH(
           MENU_ENUM_LABEL_VALUE_CHEAT,
@@ -3818,8 +3624,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "DPI Override Enable")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_DPI_OVERRIDE_VALUE,
                 "DPI Override")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_DRIVER_SETTINGS,
-                "Driver")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_DUMMY_ON_CORE_SHUTDOWN,
                 "Load Dummy on Core Shutdown")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_CHECK_FOR_MISSING_FIRMWARE,
@@ -3926,8 +3730,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Device Index")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_DEVICE_TYPE,
                 "Device Type")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_DRIVER,
-                "Input Driver")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_DUTY_CYCLE,
                 "Duty Cycle")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_INPUT_HOTKEY_BINDS,
@@ -4078,8 +3880,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Internal storage status")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_JOYPAD_AUTOCONFIG_DIR,
                 "Input Autoconfig")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_JOYPAD_DRIVER,
-                "Joypad Driver")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_LAKKA_SERVICES,
                 "Services")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_LANG_CHINESE_SIMPLIFIED,
@@ -4132,8 +3932,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Load State")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_LOCATION_ALLOW,
                 "Allow Location")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_LOCATION_DRIVER,
-                "Location Driver")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_LOGGING_SETTINGS,
                 "Logging")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_LOG_VERBOSITY,
@@ -4162,8 +3960,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Footer Opacity")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_MATERIALUI_MENU_HEADER_OPACITY,
                 "Header Opacity")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_MENU_DRIVER,
-                "Menu Driver")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_MENU_ENUM_THROTTLE_FRAMERATE,
                 "Throttle Menu Framerate")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_MENU_FILE_BROWSER_SETTINGS,
@@ -4288,8 +4084,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "No performance counters.")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_NO_PLAYLISTS,
                 "No playlists.")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_NO_PLAYLIST_ENTRIES_AVAILABLE,
-                "No playlist entries available.")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_NO_SETTINGS_FOUND,
                 "No settings found.")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_NO_SHADER_PARAMETERS,
@@ -4418,8 +4212,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Recording")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RECORD_CONFIG,
                 "Load Recording Config...")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_RECORD_DRIVER,
-                "Record Driver")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RECORD_ENABLE,
                 "Enable Recording")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RECORD_PATH,
@@ -4788,8 +4580,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Crop Overscan (Reload)")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_VIDEO_DISABLE_COMPOSITION,
                 "Disable Desktop Composition")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_VIDEO_DRIVER,
-                "Video Driver")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_VIDEO_FILTER,
                 "Video Filter")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_VIDEO_FILTER_DIR,
@@ -4894,8 +4684,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Fullscreen Width")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_VIDEO_FULLSCREEN_Y,
                 "Fullscreen Height")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_WIFI_DRIVER,
-                "Wi-Fi Driver")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_WIFI_SETTINGS,
                 "Wi-Fi")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_XMB_ALPHA_FACTOR,
@@ -4972,8 +4760,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Enable or disable unofficial achievements and/or beta features for testing purposes.")
        MSG_HASH(MENU_ENUM_SUBLABEL_CHEEVOS_HARDCORE_MODE_ENABLE,
                 "Enable or disable savestates, cheats, rewind, fast-forward, pause, and slow-motion for all games.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_DRIVER_SETTINGS,
-                "Change drivers used by the system.")
        MSG_HASH(MENU_ENUM_SUBLABEL_RETRO_ACHIEVEMENTS_SETTINGS,
                 "Change achievement settings.")
        MSG_HASH(MENU_ENUM_SUBLABEL_CORE_SETTINGS,
@@ -5806,46 +5592,6 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
        MSG_HASH(
           MENU_ENUM_SUBLABEL_PAUSE_LIBRETRO,
           "If disabled, the content will keep running in the background when RetroArch's menu is toggled."
-       )
-       MSG_HASH(
-          MENU_ENUM_SUBLABEL_VIDEO_DRIVER,
-          "Video driver to use."
-       )
-       MSG_HASH(
-          MENU_ENUM_SUBLABEL_AUDIO_DRIVER,
-          "Audio driver to use."
-       )
-       MSG_HASH(
-          MENU_ENUM_SUBLABEL_INPUT_DRIVER,
-          "Input driver to use. Depending on the video driver, it might force a different input driver."
-       )
-       MSG_HASH(
-          MENU_ENUM_SUBLABEL_JOYPAD_DRIVER,
-          "Joypad driver to use."
-       )
-       MSG_HASH(
-          MENU_ENUM_SUBLABEL_AUDIO_RESAMPLER_DRIVER,
-          "Audio resampler driver to use."
-       )
-       MSG_HASH(
-          MENU_ENUM_SUBLABEL_CAMERA_DRIVER,
-          "Camera driver to use."
-       )
-       MSG_HASH(
-          MENU_ENUM_SUBLABEL_LOCATION_DRIVER,
-          "Location driver to use."
-       )
-       MSG_HASH(
-          MENU_ENUM_SUBLABEL_MENU_DRIVER,
-          "Menu driver to use."
-       )
-       MSG_HASH(
-          MENU_ENUM_SUBLABEL_RECORD_DRIVER,
-          "Record driver to use."
-       )
-       MSG_HASH(
-          MENU_ENUM_SUBLABEL_WIFI_DRIVER,
-          "WiFi driver to use."
        )
        MSG_HASH(
           MENU_ENUM_SUBLABEL_NAVIGATION_BROWSER_FILTER_SUPPORTED_EXTENSIONS_ENABLE,

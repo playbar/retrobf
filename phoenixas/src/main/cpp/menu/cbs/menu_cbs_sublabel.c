@@ -41,7 +41,6 @@
    return 0; \
 }
 
-default_sublabel_macro(action_bind_sublabel_driver_settings_list,             MENU_ENUM_SUBLABEL_DRIVER_SETTINGS)
 default_sublabel_macro(action_bind_sublabel_retro_achievements_settings_list, MENU_ENUM_SUBLABEL_RETRO_ACHIEVEMENTS_SETTINGS)
 default_sublabel_macro(action_bind_sublabel_saving_settings_list,          MENU_ENUM_SUBLABEL_SAVING_SETTINGS)
 default_sublabel_macro(action_bind_sublabel_logging_settings_list,         MENU_ENUM_SUBLABEL_LOGGING_SETTINGS)
@@ -177,16 +176,6 @@ default_sublabel_macro(action_bind_sublabel_input_remap_binds_enable,      MENU_
 default_sublabel_macro(action_bind_sublabel_input_autodetect_enable,       MENU_ENUM_SUBLABEL_INPUT_AUTODETECT_ENABLE)
 default_sublabel_macro(action_bind_sublabel_input_swap_ok_cancel,          MENU_ENUM_SUBLABEL_MENU_INPUT_SWAP_OK_CANCEL)
 default_sublabel_macro(action_bind_sublabel_pause_libretro,                MENU_ENUM_SUBLABEL_PAUSE_LIBRETRO)
-default_sublabel_macro(action_bind_sublabel_video_driver,                  MENU_ENUM_SUBLABEL_VIDEO_DRIVER)
-default_sublabel_macro(action_bind_sublabel_audio_driver,                  MENU_ENUM_SUBLABEL_AUDIO_DRIVER)
-default_sublabel_macro(action_bind_sublabel_input_driver,                  MENU_ENUM_SUBLABEL_INPUT_DRIVER)
-default_sublabel_macro(action_bind_sublabel_joypad_driver,                 MENU_ENUM_SUBLABEL_JOYPAD_DRIVER)
-default_sublabel_macro(action_bind_sublabel_audio_resampler_driver,        MENU_ENUM_SUBLABEL_AUDIO_RESAMPLER_DRIVER)
-default_sublabel_macro(action_bind_sublabel_camera_driver,                 MENU_ENUM_SUBLABEL_CAMERA_DRIVER)
-default_sublabel_macro(action_bind_sublabel_location_driver,               MENU_ENUM_SUBLABEL_LOCATION_DRIVER)
-default_sublabel_macro(action_bind_sublabel_menu_driver,                   MENU_ENUM_SUBLABEL_MENU_DRIVER)
-default_sublabel_macro(action_bind_sublabel_record_driver,                 MENU_ENUM_SUBLABEL_RECORD_DRIVER)
-default_sublabel_macro(action_bind_sublabel_wifi_driver,                   MENU_ENUM_SUBLABEL_WIFI_DRIVER)
 default_sublabel_macro(action_bind_sublabel_filter_supported_extensions,   MENU_ENUM_SUBLABEL_NAVIGATION_BROWSER_FILTER_SUPPORTED_EXTENSIONS_ENABLE)
 default_sublabel_macro(action_bind_sublabel_wallpaper,                     MENU_ENUM_SUBLABEL_MENU_WALLPAPER)
 default_sublabel_macro(action_bind_sublabel_dynamic_wallpaper,             MENU_ENUM_SUBLABEL_DYNAMIC_WALLPAPER)
@@ -846,36 +835,6 @@ int menu_cbs_init_bind_sublabel(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_NAVIGATION_BROWSER_FILTER_SUPPORTED_EXTENSIONS_ENABLE:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_filter_supported_extensions);
             break;
-         case MENU_ENUM_LABEL_WIFI_DRIVER:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_wifi_driver);
-            break;
-         case MENU_ENUM_LABEL_RECORD_DRIVER:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_record_driver);
-            break;
-         case MENU_ENUM_LABEL_MENU_DRIVER:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_menu_driver);
-            break;
-         case MENU_ENUM_LABEL_LOCATION_DRIVER:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_location_driver);
-            break;
-         case MENU_ENUM_LABEL_CAMERA_DRIVER:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_camera_driver);
-            break;
-         case MENU_ENUM_LABEL_AUDIO_RESAMPLER_DRIVER:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_audio_resampler_driver);
-            break;
-         case MENU_ENUM_LABEL_JOYPAD_DRIVER:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_joypad_driver);
-            break;
-         case MENU_ENUM_LABEL_INPUT_DRIVER:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_input_driver);
-            break;
-         case MENU_ENUM_LABEL_AUDIO_DRIVER:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_audio_driver);
-            break;
-         case MENU_ENUM_LABEL_VIDEO_DRIVER:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_video_driver);
-            break;
          case MENU_ENUM_LABEL_PAUSE_LIBRETRO:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_pause_libretro);
             break;
@@ -1196,9 +1155,6 @@ int menu_cbs_init_bind_sublabel(menu_file_list_cbs_t *cbs,
             break;
          case MENU_ENUM_LABEL_CORE_SETTINGS:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_core_settings_list);
-            break;
-         case MENU_ENUM_LABEL_DRIVER_SETTINGS:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_driver_settings_list);
             break;
          case MENU_ENUM_LABEL_SAVING_SETTINGS:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_saving_settings_list);
