@@ -15,14 +15,6 @@
  *  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef _WIN32
-#ifdef _XBOX
-#include <xtl.h>
-#else
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#endif
-#endif
 
 #include <stdlib.h>
 #include <stdarg.h>
@@ -411,9 +403,6 @@ static void retroarch_print_version(void)
          msg_hash_to_str(MSG_PROGRAM),
          msg_hash_to_str(MSG_LIBRETRO_FRONTEND),
          PACKAGE_VERSION);
-#ifdef HAVE_GIT_VERSION
-   printf(" -- %s --\n", retroarch_git_version);
-#endif
    retroarch_get_capabilities(RARCH_CAPABILITIES_COMPILER, str, sizeof(str));
    fprintf(stdout, "%s", str);
    fprintf(stdout, "Built: %s\n", __DATE__);
@@ -681,10 +670,6 @@ static void retroarch_parse_input(int argc, char *argv[])
    for (;;)
    {
       int c = getopt_long(argc, argv, optstring, opts, NULL);
-
-#if 0
-      fprintf(stderr, "c is: %c (%d), optarg is: [%s]\n", c, c, string_is_empty(optarg) ? "" : optarg);
-#endif
 
       if (c == -1)
          break;

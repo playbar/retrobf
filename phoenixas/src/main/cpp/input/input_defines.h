@@ -23,7 +23,7 @@
 
 RETRO_BEGIN_DECLS
 
-#define MAX_USERS                      16
+#define MAX_USERS                      8
 
 #define RARCH_FIRST_CUSTOM_BIND        16
 #define RARCH_FIRST_META_KEY           RARCH_CUSTOM_BIND_LIST_END

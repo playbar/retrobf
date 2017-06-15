@@ -130,11 +130,7 @@ struct scond
 #endif
 };
 
-#ifdef USE_WIN32_THREADS
-static DWORD CALLBACK thread_wrap(void *data_)
-#else
 static void *thread_wrap(void *data_)
-#endif
 {
    struct thread_data *data = (struct thread_data*)data_;
    if (!data)
@@ -169,21 +165,7 @@ sthread_t *sthread_create(void (*thread_func)(void*), void *userdata)
 
    data->func = thread_func;
    data->userdata = userdata;
-
-#ifdef USE_WIN32_THREADS
-   thread->thread = CreateThread(NULL, 0, thread_wrap, data, 0, NULL);
-   thread_created = !!thread->thread;
-#else
-#if defined(VITA)
-   pthread_attr_t thread_attr;
-   pthread_attr_init(&thread_attr);
-   pthread_attr_setstacksize(&thread_attr , 0x10000 );
-   thread_created = pthread_create(&thread->id, &thread_attr, thread_wrap, data) == 0;
-#else
    thread_created = pthread_create(&thread->id, NULL, thread_wrap, data) == 0;
-#endif
-#endif
-
    if (!thread_created)
       goto error;
 
