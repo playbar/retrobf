@@ -2505,10 +2505,8 @@ static const char *menu_hash_to_str_us_label_enum(enum msg_hash_enums msg)
                 "restart_content")
        MSG_HASH(MENU_ENUM_LABEL_RESTART_RETROARCH,
                 "restart_retroarch")
-       MSG_HASH(MENU_ENUM_LABEL_RESUME,
-                "resume")
-       MSG_HASH(MENU_ENUM_LABEL_RESUME_CONTENT,
-                "resume_content")
+       case MENU_ENUM_LABEL_RESUME_CONTENT:
+           return "resume_content";
        MSG_HASH(MENU_ENUM_LABEL_INPUT_META_REWIND,
                 "input_meta_rewind")
        MSG_HASH(MENU_ENUM_LABEL_REWIND_ENABLE,
@@ -4067,10 +4065,8 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Restart")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RESTART_RETROARCH,
                 "Restart RetroArch")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_RESUME,
-                "Resume")
-       MSG_HASH(MENU_ENUM_LABEL_VALUE_RESUME_CONTENT,
-                "Resume")
+        case MENU_ENUM_LABEL_VALUE_RESUME_CONTENT:
+            return "Resume";
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RETROKEYBOARD,
                 "RetroKeyboard")
        MSG_HASH(MENU_ENUM_LABEL_VALUE_RETROPAD,
@@ -5548,10 +5544,8 @@ const char *msg_hash_to_str_us(enum msg_hash_enums msg) {
                 "Load a saved state from the currently selected slot.")
        MSG_HASH(MENU_ENUM_SUBLABEL_SAVE_STATE,
                 "Save a state to the currently selected slot.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_RESUME,
-                "Resume the currently running content and leave the Quick Menu.")
-       MSG_HASH(MENU_ENUM_SUBLABEL_RESUME_CONTENT,
-                "Resume the currently running content and leave the Quick Menu.")
+        case MENU_ENUM_SUBLABEL_RESUME_CONTENT:
+            return "Resume the currently running content and leave the Quick Menu.";
        MSG_HASH(MENU_ENUM_SUBLABEL_STATE_SLOT,
                 "Changes the currently selected state slot.")
        MSG_HASH(MENU_ENUM_SUBLABEL_UNDO_LOAD_STATE,

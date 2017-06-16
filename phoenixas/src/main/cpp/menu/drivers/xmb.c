@@ -2001,8 +2001,7 @@ static void xmb_populate_entries(void *data,
       xmb_list_open(xmb);
 }
 
-static uintptr_t xmb_icon_get_id(xmb_handle_t *xmb,
-      xmb_node_t *core_node, xmb_node_t *node,
+static uintptr_t xmb_icon_get_id(xmb_handle_t *xmb, xmb_node_t *core_node, xmb_node_t *node,
       enum msg_hash_enums enum_idx, unsigned type, bool active)
 {
    switch (enum_idx)
@@ -2068,10 +2067,6 @@ static uintptr_t xmb_icon_get_id(xmb_handle_t *xmb,
 #ifdef HAVE_IMAGEVIEWER
             case XMB_SYSTEM_TAB_IMAGES:
                return xmb->textures.list[XMB_TEXTURE_IMAGE];
-#endif
-#ifdef HAVE_FFMPEG
-            case XMB_SYSTEM_TAB_VIDEO:
-               return xmb->textures.list[XMB_TEXTURE_MOVIE];
 #endif
             default:
                break;

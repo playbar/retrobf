@@ -2735,8 +2735,7 @@ static int menu_displaylist_parse_horizontal_list(
    return 0;
 }
 
-static int menu_displaylist_parse_load_content_settings(
-      menu_displaylist_info_t *info)
+static int menu_displaylist_parse_load_content_settings(menu_displaylist_info_t *info)
 {
    menu_handle_t *menu    = NULL;
 #if defined(HAVE_CHEEVOS) || defined(HAVE_LAKKA)
@@ -2748,9 +2747,7 @@ static int menu_displaylist_parse_load_content_settings(
 
    if (!rarch_ctl(RARCH_CTL_IS_DUMMY_CORE, NULL))
    {
-#ifdef HAVE_LAKKA
-      bool show_advanced_settings    = settings->bools.menu_show_advanced_settings;
-#endif
+
       rarch_system_info_t *system    = runloop_get_system_info();
 
       menu_entries_append_enum(info->list,
@@ -2792,18 +2789,12 @@ static int menu_displaylist_parse_load_content_settings(
             MENU_ENUM_LABEL_LOAD_STATE,
             MENU_SETTING_ACTION_LOADSTATE, 0, 0);
 
-#ifdef HAVE_LAKKA
-      if (show_advanced_settings)
-#endif
          menu_entries_append_enum(info->list,
                msg_hash_to_str(MENU_ENUM_LABEL_VALUE_UNDO_LOAD_STATE),
                msg_hash_to_str(MENU_ENUM_LABEL_UNDO_LOAD_STATE),
                MENU_ENUM_LABEL_UNDO_LOAD_STATE,
                MENU_SETTING_ACTION_LOADSTATE, 0, 0);
 
-#ifdef HAVE_LAKKA
-      if (show_advanced_settings)
-#endif
          menu_entries_append_enum(info->list,
                msg_hash_to_str(MENU_ENUM_LABEL_VALUE_UNDO_SAVE_STATE),
                msg_hash_to_str(MENU_ENUM_LABEL_UNDO_SAVE_STATE),
@@ -2823,9 +2814,6 @@ static int menu_displaylist_parse_load_content_settings(
                MENU_ENUM_LABEL_CORE_INPUT_REMAPPING_OPTIONS,
                MENU_SETTING_ACTION, 0, 0);
 
-#ifdef HAVE_LAKKA
-      if (show_advanced_settings)
-#endif
       menu_entries_append_enum(info->list,
             msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CORE_CHEAT_OPTIONS),
             msg_hash_to_str(MENU_ENUM_LABEL_CORE_CHEAT_OPTIONS),
@@ -2846,18 +2834,12 @@ static int menu_displaylist_parse_load_content_settings(
             MENU_SETTING_ACTION, 0, 0);
 #endif
 
-#ifdef HAVE_LAKKA
-      if (show_advanced_settings)
-#endif
       menu_entries_append_enum(info->list,
             msg_hash_to_str(MENU_ENUM_LABEL_VALUE_SAVE_CURRENT_CONFIG_OVERRIDE_CORE),
             msg_hash_to_str(MENU_ENUM_LABEL_SAVE_CURRENT_CONFIG_OVERRIDE_CORE),
             MENU_ENUM_LABEL_SAVE_CURRENT_CONFIG_OVERRIDE_CORE,
             MENU_SETTING_ACTION, 0, 0);
 
-#ifdef HAVE_LAKKA
-      if (show_advanced_settings)
-#endif
       menu_entries_append_enum(info->list,
             msg_hash_to_str(MENU_ENUM_LABEL_VALUE_SAVE_CURRENT_CONFIG_OVERRIDE_GAME),
             msg_hash_to_str(MENU_ENUM_LABEL_SAVE_CURRENT_CONFIG_OVERRIDE_GAME),
@@ -2890,8 +2872,7 @@ static int menu_displaylist_parse_load_content_settings(
    return 0;
 }
 
-static int menu_displaylist_parse_horizontal_content_actions(
-      menu_displaylist_info_t *info)
+static int menu_displaylist_parse_horizontal_content_actions(menu_displaylist_info_t *info)
 {
    unsigned idx                    = rpl_entry_selection_ptr;
    menu_handle_t *menu             = NULL;

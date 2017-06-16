@@ -218,7 +218,11 @@ default_sublabel_macro(action_bind_sublabel_take_screenshot,                    
 default_sublabel_macro(action_bind_sublabel_close_content,                         MENU_ENUM_SUBLABEL_CLOSE_CONTENT)
 default_sublabel_macro(action_bind_sublabel_load_state,                            MENU_ENUM_SUBLABEL_LOAD_STATE)
 default_sublabel_macro(action_bind_sublabel_save_state,                            MENU_ENUM_SUBLABEL_SAVE_STATE)
-default_sublabel_macro(action_bind_sublabel_resume_content,                        MENU_ENUM_SUBLABEL_RESUME_CONTENT)
+static int action_bind_sublabel_resume_content(file_list_t *list, unsigned type, unsigned i, const char *label, const char *path, char *s, size_t len)
+{
+   strlcpy(s, msg_hash_to_str(MENU_ENUM_SUBLABEL_RESUME_CONTENT), len);
+   return 0;
+}
 default_sublabel_macro(action_bind_sublabel_state_slot,                            MENU_ENUM_SUBLABEL_STATE_SLOT)
 default_sublabel_macro(action_bind_sublabel_undo_load_state,                       MENU_ENUM_SUBLABEL_UNDO_LOAD_STATE)
 default_sublabel_macro(action_bind_sublabel_undo_save_state,                       MENU_ENUM_SUBLABEL_UNDO_SAVE_STATE)
@@ -632,9 +636,9 @@ int menu_cbs_init_bind_sublabel(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_STATE_SLOT:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_state_slot);
             break;
-         case MENU_ENUM_LABEL_RESUME:
          case MENU_ENUM_LABEL_RESUME_CONTENT:
-            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_resume_content);
+            cbs->action_sublabel = action_bind_sublabel_resume_content;
+            cbs->action_sublabel_ident = "action_bind_sublabel_resume_content";
             break;
          case MENU_ENUM_LABEL_SAVE_STATE:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_save_state);

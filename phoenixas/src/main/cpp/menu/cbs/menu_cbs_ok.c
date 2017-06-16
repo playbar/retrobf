@@ -4195,8 +4195,9 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
             BIND_ACTION_OK(cbs, action_ok_undo_save_state);
             break;
          case MENU_ENUM_LABEL_RESUME_CONTENT:
-            BIND_ACTION_OK(cbs, action_ok_resume_content);
-            break;
+              cbs->action_ok = action_ok_resume_content;
+              cbs->action_ok_ident = "action_ok_resume_content";
+              break;
          case MENU_ENUM_LABEL_RESTART_CONTENT:
             BIND_ACTION_OK(cbs, action_ok_restart_content);
             break;
