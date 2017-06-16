@@ -1824,6 +1824,7 @@ bool video_driver_find_driver(void)
    driver_ctl(RARCH_DRIVER_CTL_FIND_INDEX, &drv);
 
    i = (int)drv.len;
+    //todo vulkan
 //   i = 0;
    if (i >= 0)
       current_video = (video_driver_t*)video_driver_find_handle(i);

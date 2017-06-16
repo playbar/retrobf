@@ -1219,7 +1219,9 @@ static bool gl_frame(void *data, const void *frame,
    coords.handle_data   = NULL;
    coords.data          = &gl->coords;
 
-   video_shader_driver_set_coords(coords);
+//   video_shader_driver_set_coords(coords);
+   if (!current_shader->set_coords(coords.handle_data, shader_data, (const struct video_coords*)coords.data) && current_shader->set_coords_fallback)
+      current_shader->set_coords_fallback(coords.handle_data, shader_data, (const struct video_coords*)coords.data);
 
    video_info->cb_shader_set_mvp(gl, video_info->shader_data, &gl->mvp);
 
@@ -1227,8 +1229,7 @@ static bool gl_frame(void *data, const void *frame,
 
 #ifdef HAVE_FBO
    if (gl->fbo_inited)
-      gl_renderchain_render(gl, video_info,
-            frame_count, &gl->tex_info, &feedback_info);
+      gl_renderchain_render(gl, video_info, frame_count, &gl->tex_info, &feedback_info);
 #endif
 
    /* Set prev textures. */
@@ -1251,8 +1252,7 @@ static bool gl_frame(void *data, const void *frame,
    gl_render_overlay(gl, video_info);
 #endif
 
-   video_info->cb_update_window_title(
-         video_info->context_data, video_info);
+   video_info->cb_update_window_title(video_info->context_data, video_info);
 
 #ifdef HAVE_FBO
    /* Reset state which could easily mess up libretro core. */
@@ -1276,9 +1276,7 @@ static bool gl_frame(void *data, const void *frame,
       glPixelStorei(GL_PACK_ROW_LENGTH, 0);
       glReadBuffer(GL_BACK);
 #endif
-      glReadPixels(gl->vp.x, gl->vp.y,
-            gl->vp.width, gl->vp.height,
-            GL_RGBA, GL_UNSIGNED_BYTE, gl->readback_buffer_screenshot);
+      glReadPixels(gl->vp.x, gl->vp.y, gl->vp.width, gl->vp.height, GL_RGBA, GL_UNSIGNED_BYTE, gl->readback_buffer_screenshot);
    }
 #ifdef HAVE_GL_ASYNC_READBACK
 #ifdef HAVE_MENU
@@ -1291,11 +1289,8 @@ static bool gl_frame(void *data, const void *frame,
 
    /* Disable BFI during fast forward, slow-motion,
     * and pause to prevent flicker. */
-   if (
-         video_info->black_frame_insertion
-         && !video_info->input_driver_nonblock_state
-         && !video_info->runloop_is_slowmotion
-         && !video_info->runloop_is_paused)
+   if (video_info->black_frame_insertion && !video_info->input_driver_nonblock_state
+       && !video_info->runloop_is_slowmotion && !video_info->runloop_is_paused)
    {
       video_info->cb_swap_buffers(video_info->context_data, video_info);
       glClear(GL_COLOR_BUFFER_BIT);

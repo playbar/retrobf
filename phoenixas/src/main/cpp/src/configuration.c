@@ -107,7 +107,7 @@ struct config_path_setting
 
 enum video_driver_enum
 {
-   VIDEO_GL                 = 0,
+   VIDEO_GL = 0,
    VIDEO_VULKAN,
    VIDEO_DRM,
    VIDEO_XVIDEO,
@@ -135,7 +135,7 @@ enum video_driver_enum
 
 enum audio_driver_enum
 {
-   AUDIO_RSOUND             = VIDEO_NULL + 1,
+   AUDIO_RSOUND = VIDEO_NULL + 1,
    AUDIO_OSS,
    AUDIO_ALSA,
    AUDIO_ALSATHREAD,
@@ -163,7 +163,7 @@ enum audio_driver_enum
 
 enum audio_resampler_driver_enum
 {
-   AUDIO_RESAMPLER_CC       = AUDIO_NULL + 1,
+   AUDIO_RESAMPLER_CC = AUDIO_NULL + 1,
    AUDIO_RESAMPLER_SINC,
    AUDIO_RESAMPLER_NEAREST,
    AUDIO_RESAMPLER_NULL
@@ -171,7 +171,7 @@ enum audio_resampler_driver_enum
 
 enum input_driver_enum
 {
-   INPUT_ANDROID            = AUDIO_RESAMPLER_NULL + 1,
+   INPUT_ANDROID = AUDIO_RESAMPLER_NULL + 1,
    INPUT_SDL,
    INPUT_SDL2,
    INPUT_X,
@@ -195,7 +195,7 @@ enum input_driver_enum
 
 enum joypad_driver_enum
 {
-   JOYPAD_PS3               = INPUT_NULL + 1,
+   JOYPAD_PS3 = INPUT_NULL + 1,
    JOYPAD_XINPUT,
    JOYPAD_GX,
    JOYPAD_WIIU,
@@ -215,7 +215,7 @@ enum joypad_driver_enum
 
 enum camera_driver_enum
 {
-   CAMERA_V4L2              = JOYPAD_NULL + 1,
+   CAMERA_V4L2 = JOYPAD_NULL + 1,
    CAMERA_RWEBCAM,
    CAMERA_ANDROID,
    CAMERA_AVFOUNDATION,
@@ -224,26 +224,26 @@ enum camera_driver_enum
 
 enum wifi_driver_enum
 {
-   WIFI_CONNMANCTL          = CAMERA_NULL + 1,
+   WIFI_CONNMANCTL = CAMERA_NULL + 1,
    WIFI_NULL
 };
 
 enum location_driver_enum
 {
-   LOCATION_ANDROID         = WIFI_NULL + 1,
+   LOCATION_ANDROID = WIFI_NULL + 1,
    LOCATION_CORELOCATION,
    LOCATION_NULL
 };
 
 enum osk_driver_enum
 {
-   OSK_PS3                  = LOCATION_NULL + 1,
+   OSK_PS3 = LOCATION_NULL + 1,
    OSK_NULL
 };
 
 enum menu_driver_enum
 {
-   MENU_RGUI                = OSK_NULL + 1,
+   MENU_RGUI = OSK_NULL + 1,
    MENU_XUI,
    MENU_MATERIALUI,
    MENU_XMB,
@@ -253,96 +253,16 @@ enum menu_driver_enum
 
 enum record_driver_enum
 {
-   RECORD_FFMPEG            = MENU_NULL + 1,
+   RECORD_FFMPEG = MENU_NULL + 1,
    RECORD_NULL
 };
 
 
 #if defined(HAVE_OPENGL) || defined(HAVE_OPENGLES) || defined(__CELLOS_LV2__)
 static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_GL;
-#elif defined(GEKKO)
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_WII;
-#elif defined(WIIU)
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_WIIU;
-#elif defined(XENON)
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_XENON360;
-#elif (defined(_XBOX1) || defined(_XBOX360)) && (defined(HAVE_D3D8) || defined(HAVE_D3D9))
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_XDK_D3D;
-#elif defined(HAVE_D3D9)
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_D3D9;
-#elif defined(HAVE_VG)
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_VG;
-#elif defined(HAVE_VITA2D)
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_VITA2D;
-#elif defined(PSP)
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_PSP1;
-#elif defined(_3DS)
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_CTR;
-#elif defined(HAVE_XVIDEO)
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_XVIDEO;
-#elif defined(HAVE_SDL)
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_SDL;
-#elif defined(HAVE_SDL2)
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_SDL2;
-#elif defined(_WIN32) && !defined(_XBOX)
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_GDI;
-#elif defined(DJGPP)
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_VGA;
-#elif defined(HAVE_DYLIB) && !defined(ANDROID)
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_EXT;
-#else
-static enum video_driver_enum VIDEO_DEFAULT_DRIVER = VIDEO_NULL;
 #endif
 
-#if defined(__CELLOS_LV2__)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_PS3;
-#elif defined(XENON)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_XENON360;
-#elif defined(GEKKO)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_WII;
-#elif defined(WIIU)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_WIIU;
-#elif defined(PSP) || defined(VITA)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_PSP;
-#elif defined(_3DS)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_CTR;
-#elif defined(HAVE_PULSE)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_PULSE;
-#elif defined(HAVE_ALSA) && defined(HAVE_VIDEOCORE)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_ALSATHREAD;
-#elif defined(HAVE_ALSA)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_ALSA;
-#elif defined(HAVE_OSS)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_OSS;
-#elif defined(HAVE_JACK)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_JACK;
-#elif defined(HAVE_COREAUDIO)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_COREAUDIO;
-#elif defined(HAVE_XAUDIO)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_XAUDIO;
-#elif defined(HAVE_DSOUND)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_DSOUND;
-#elif defined(HAVE_WASAPI)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_WASAPI;
-#elif defined(HAVE_AL)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_AL;
-#elif defined(HAVE_SL)
 static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_SL;
-#elif defined(EMSCRIPTEN)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_RWEBAUDIO;
-#elif defined(HAVE_SDL)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_SDL;
-#elif defined(HAVE_SDL2)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_SDL2;
-#elif defined(HAVE_RSOUND)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_RSOUND;
-#elif defined(HAVE_ROAR)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_ROAR;
-#elif defined(HAVE_DYLIB) && !defined(ANDROID)
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_EXT;
-#else
-static enum audio_driver_enum AUDIO_DEFAULT_DRIVER = AUDIO_NULL;
-#endif
 
 #if defined(PSP) || defined(EMSCRIPTEN)
 static enum audio_resampler_driver_enum AUDIO_DEFAULT_RESAMPLER_DRIVER = AUDIO_RESAMPLER_CC;
@@ -2037,8 +1957,7 @@ static void read_keybinds_axis(config_file_t *conf, unsigned user,
          input_config_bind_map_get_meta(idx));
 
    if (prefix)
-      input_config_parse_joy_axis(conf, prefix,
-            input_config_bind_map_get_base(idx), bind);
+      input_config_parse_joy_axis(conf, prefix, input_config_bind_map_get_base(idx), bind);
 }
 
 static void read_keybinds_user(config_file_t *conf, unsigned user)

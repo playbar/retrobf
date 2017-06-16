@@ -44,16 +44,13 @@ enum task_type
 
 
 typedef struct retro_task retro_task_t;
-typedef void (*retro_task_callback_t)(void *task_data,
-      void *user_data, const char *error);
+typedef void (*retro_task_callback_t)(void *task_data, void *user_data, const char *error);
 
 typedef void (*retro_task_handler_t)(retro_task_t *task);
 
-typedef bool (*retro_task_finder_t)(retro_task_t *task,
-      void *userdata);
+typedef bool (*retro_task_finder_t)(retro_task_t *task, void *userdata);
 
-typedef void (*retro_task_queue_msg_t)(const char *msg, 
-      unsigned prio, unsigned duration, bool flush);
+typedef void (*retro_task_queue_msg_t)(const char *msg, unsigned prio, unsigned duration, bool flush);
 
 typedef bool (*retro_task_retriever_t)(retro_task_t *task, void *data);
 

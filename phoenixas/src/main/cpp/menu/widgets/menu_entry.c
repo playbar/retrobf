@@ -205,7 +205,7 @@ unsigned menu_entry_get_type_new(uint32_t i)
 uint32_t menu_entry_get_bool_value(uint32_t i)
 {
    rarch_setting_t *setting = menu_entries_get_setting(i);
-   bool *ptr                = (bool*)setting_get_ptr(setting);
+   bool *ptr = (bool*)setting_get_ptr(setting);
    if (!ptr)
       return 0;
    return *ptr;
@@ -248,8 +248,7 @@ void menu_entry_bind_key_set(uint32_t i, int32_t value)
 void menu_entry_bind_joykey_set(uint32_t i, int32_t value)
 {
    rarch_setting_t      *setting = menu_entries_get_setting(i);
-   struct retro_keybind *keybind = (struct retro_keybind*)
-      setting_get_ptr(setting);
+   struct retro_keybind *keybind = (struct retro_keybind*) setting_get_ptr(setting);
    if (keybind)
       keybind->joykey = value;
 }
@@ -257,8 +256,7 @@ void menu_entry_bind_joykey_set(uint32_t i, int32_t value)
 void menu_entry_bind_joyaxis_set(uint32_t i, int32_t value)
 {
    rarch_setting_t *setting = menu_entries_get_setting(i);
-   struct retro_keybind *keybind = (struct retro_keybind*)
-      setting_get_ptr(setting);
+   struct retro_keybind *keybind = (struct retro_keybind*) setting_get_ptr(setting);
    if (keybind)
       keybind->joyaxis = value;
 }
@@ -266,7 +264,6 @@ void menu_entry_bind_joyaxis_set(uint32_t i, int32_t value)
 void menu_entry_pathdir_selected(uint32_t i)
 {
    rarch_setting_t *setting = menu_entries_get_setting(i);
-
    if (menu_setting_ctl(MENU_SETTING_CTL_IS_OF_PATH_TYPE, (void*)setting))
       menu_setting_ctl(MENU_SETTING_CTL_ACTION_RIGHT, setting);
 }
@@ -385,8 +382,7 @@ float menu_entry_num_max(uint32_t i)
    return (float)max;
 }
 
-void menu_entry_get(menu_entry_t *entry, size_t stack_idx,
-      size_t i, void *userdata, bool use_representation)
+void menu_entry_get(menu_entry_t *entry, size_t stack_idx, size_t i, void *userdata, bool use_representation)
 {
    const char *path           = NULL;
    const char *entry_label    = NULL;
@@ -400,49 +396,36 @@ void menu_entry_get(menu_entry_t *entry, size_t stack_idx,
    if (!list)
       return;
 
-   menu_entries_get_at_offset(list, i, &path, &entry_label, &entry->type,
-         &entry->entry_idx, NULL);
+   menu_entries_get_at_offset(list, i, &path, &entry_label, &entry->type, &entry->entry_idx, NULL);
 
    cbs = menu_entries_get_actiondata_at_offset(list, i);
 
    if (cbs)
    {
-      const char *label             = NULL;
+      const char *label = NULL;
       enum msg_hash_enums enum_idx  = MSG_UNKNOWN;
 
-      entry->enum_idx    = cbs->enum_idx;
+      entry->enum_idx = cbs->enum_idx;
 
       menu_entries_get_last_stack(NULL, &label, NULL, &enum_idx, NULL);
 
       if (cbs->action_get_value && use_representation)
-         cbs->action_get_value(list,
-               &entry->spacing, entry->type, (unsigned)i, label,
-               entry->value,  sizeof(entry->value), 
-               entry_label, path,
-               entry->path, sizeof(entry->path));
+         cbs->action_get_value(list, &entry->spacing, entry->type, (unsigned)i, label, entry->value,
+                               sizeof(entry->value), entry_label, path, entry->path, sizeof(entry->path));
 
       if (cbs->action_label)
-         cbs->action_label(list,
-               entry->type, (unsigned)i,
-               label, path, 
-               entry->rich_label,
-               sizeof(entry->rich_label));
+         cbs->action_label(list, entry->type, (unsigned)i, label, path, entry->rich_label, sizeof(entry->rich_label));
 
       if (cbs->action_sublabel)
-         cbs->action_sublabel(list,
-               entry->type, (unsigned)i,
-               label, path, 
-               entry->sublabel,
-               sizeof(entry->sublabel));
+         cbs->action_sublabel(list, entry->type, (unsigned)i, label, path, entry->sublabel, sizeof(entry->sublabel));
    }
 
-   entry->idx         = (unsigned)i;
+   entry->idx = (unsigned)i;
 
    if (path && !use_representation)
-      strlcpy(entry->path,  path,        sizeof(entry->path));
+      strlcpy(entry->path,  path, sizeof(entry->path));
 
-   if (cbs && cbs->setting && cbs->setting->enum_value_idx != MSG_UNKNOWN
-         && !cbs->setting->dont_use_enum_idx_representation)
+   if (cbs && cbs->setting && cbs->setting->enum_value_idx != MSG_UNKNOWN && !cbs->setting->dont_use_enum_idx_representation)
       strlcpy(entry->path, msg_hash_to_str(cbs->setting->enum_value_idx), sizeof(entry->path));
 
    if (entry_label)
@@ -486,10 +469,8 @@ int menu_entry_select(uint32_t i)
 int menu_entry_action(menu_entry_t *entry, unsigned i, enum menu_action action)
 {
    int ret                    = 0;
-   file_list_t *selection_buf = 
-      menu_entries_get_selection_buf_ptr(0);
-   menu_file_list_cbs_t *cbs  = 
-      menu_entries_get_actiondata_at_offset(selection_buf, i);
+   file_list_t *selection_buf = menu_entries_get_selection_buf_ptr(0);
+   menu_file_list_cbs_t *cbs  = menu_entries_get_actiondata_at_offset(selection_buf, i);
 
    switch (action)
    {
@@ -509,14 +490,12 @@ int menu_entry_action(menu_entry_t *entry, unsigned i, enum menu_action action)
          break;
       case MENU_ACTION_CANCEL:
          if (cbs && cbs->action_cancel)
-            ret = cbs->action_cancel(entry->path,
-                  entry->label, entry->type, i);
+            ret = cbs->action_cancel(entry->path, entry->label, entry->type, i);
          break;
 
       case MENU_ACTION_OK:
          if (cbs && cbs->action_ok)
-            ret = cbs->action_ok(entry->path,
-                  entry->label, entry->type, i, entry->entry_idx);
+            ret = cbs->action_ok(entry->path, entry->label, entry->type, i, entry->entry_idx);
          break;
       case MENU_ACTION_START:
          if (cbs && cbs->action_start)
@@ -536,8 +515,7 @@ int menu_entry_action(menu_entry_t *entry, unsigned i, enum menu_action action)
          break;
       case MENU_ACTION_SELECT:
          if (cbs && cbs->action_select)
-            ret = cbs->action_select(entry->path,
-                  entry->label, entry->type, i);
+            ret = cbs->action_select(entry->path, entry->label, entry->type, i);
          break;
       case MENU_ACTION_SEARCH:
          menu_input_dialog_start_search();
@@ -545,8 +523,7 @@ int menu_entry_action(menu_entry_t *entry, unsigned i, enum menu_action action)
 
       case MENU_ACTION_SCAN:
          if (cbs && cbs->action_scan)
-            ret = cbs->action_scan(entry->path,
-                  entry->label, entry->type, i);
+            ret = cbs->action_scan(entry->path, entry->label, entry->type, i);
          break;
 
       default:
@@ -559,7 +536,7 @@ int menu_entry_action(menu_entry_t *entry, unsigned i, enum menu_action action)
    {
       if (cbs && cbs->action_refresh)
       {
-         bool refresh               = false;
+         bool refresh = false;
          file_list_t *menu_stack    = menu_entries_get_menu_stack_ptr(0);
 
          cbs->action_refresh(selection_buf, menu_stack);

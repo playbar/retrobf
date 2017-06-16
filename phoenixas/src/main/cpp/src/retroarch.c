@@ -1201,19 +1201,13 @@ void rarch_menu_running(void)
 
 void rarch_menu_running_finished(void)
 {
-#ifdef HAVE_MENU
    menu_driver_ctl(RARCH_MENU_CTL_UNSET_TOGGLE, NULL);
    /* Prevent stray input */
    input_driver_set_flushing_input();
-#endif
    video_driver_set_texture_enable(false, false);
-#ifdef HAVE_OVERLAY
-   {
-      settings_t *settings                    = config_get_ptr();
-      if (settings && settings->bools.input_overlay_hide_in_menu)
-         command_event(CMD_EVENT_OVERLAY_INIT, NULL);
-   }
-#endif
+   settings_t *settings = config_get_ptr();
+   if (settings && settings->bools.input_overlay_hide_in_menu)
+      command_event(CMD_EVENT_OVERLAY_INIT, NULL);
 }
 
 /**

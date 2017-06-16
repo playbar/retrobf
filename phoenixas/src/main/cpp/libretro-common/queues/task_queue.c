@@ -62,9 +62,7 @@ static task_queue_t tasks_finished = {NULL, NULL};
 static struct retro_task_impl *impl_current = NULL;
 static bool task_threaded_enable            = false;
 
-static void task_queue_msg_push(retro_task_t *task,
-      unsigned prio, unsigned duration,
-      bool flush, const char *fmt, ...)
+static void task_queue_msg_push(retro_task_t *task, unsigned prio, unsigned duration, bool flush, const char *fmt, ...)
 {
    char buf[1024];
    va_list ap;

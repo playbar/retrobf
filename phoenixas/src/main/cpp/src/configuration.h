@@ -327,8 +327,6 @@ typedef struct settings
    struct
    {
       char placeholder;
-
-
       char browse_url[4096];
 
 #ifdef HAVE_MENU

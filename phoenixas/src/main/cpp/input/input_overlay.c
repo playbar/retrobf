@@ -115,9 +115,7 @@ static void input_overlay_set_vertex_geom(input_overlay_t *ol)
    size_t i;
 
    if (ol->active->image.pixels)
-      ol->iface->vertex_geom(ol->iface_data, 0,
-            ol->active->mod_x, ol->active->mod_y,
-            ol->active->mod_w, ol->active->mod_h);
+      ol->iface->vertex_geom(ol->iface_data, 0, ol->active->mod_x, ol->active->mod_y, ol->active->mod_w, ol->active->mod_h);
 
    for (i = 0; i < ol->active->size; i++)
    {
@@ -127,8 +125,7 @@ static void input_overlay_set_vertex_geom(input_overlay_t *ol)
          continue;
 
       if (ol->iface->vertex_geom)
-         ol->iface->vertex_geom(ol->iface_data, desc->image_index,
-               desc->mod_x, desc->mod_y, desc->mod_w, desc->mod_h);
+         ol->iface->vertex_geom(ol->iface_data, desc->image_index, desc->mod_x, desc->mod_y, desc->mod_w, desc->mod_h);
    }
 }
 
