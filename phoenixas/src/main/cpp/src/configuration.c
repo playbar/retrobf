@@ -109,27 +109,6 @@ enum video_driver_enum
 {
    VIDEO_GL = 0,
    VIDEO_VULKAN,
-   VIDEO_DRM,
-   VIDEO_XVIDEO,
-   VIDEO_SDL,
-   VIDEO_SDL2,
-   VIDEO_EXT,
-   VIDEO_WII,
-   VIDEO_WIIU,
-   VIDEO_XENON360,
-   VIDEO_XDK_D3D,
-   VIDEO_PSP1,
-   VIDEO_VITA2D,
-   VIDEO_CTR,
-   VIDEO_D3D9,
-   VIDEO_VG,
-   VIDEO_OMAP,
-   VIDEO_EXYNOS,
-   VIDEO_SUNXI,
-   VIDEO_DISPMANX,
-   VIDEO_CACA,
-   VIDEO_GDI,
-   VIDEO_VGA,
    VIDEO_NULL
 };
 
@@ -565,54 +544,12 @@ const char *config_get_default_audio_resampler(void)
 const char *config_get_default_video(void)
 {
    enum video_driver_enum default_driver = VIDEO_DEFAULT_DRIVER;
-
    switch (default_driver)
    {
       case VIDEO_GL:
          return "gl";
       case VIDEO_VULKAN:
          return "vulkan";
-      case VIDEO_DRM:
-         return "drm";
-      case VIDEO_WII:
-         return "gx";
-      case VIDEO_WIIU:
-         return "gx2";
-      case VIDEO_XENON360:
-         return "xenon360";
-      case VIDEO_XDK_D3D:
-      case VIDEO_D3D9:
-         return "d3d";
-      case VIDEO_PSP1:
-         return "psp1";
-      case VIDEO_VITA2D:
-         return "vita2d";
-      case VIDEO_CTR:
-         return "ctr";
-      case VIDEO_XVIDEO:
-         return "xvideo";
-      case VIDEO_SDL:
-         return "sdl";
-      case VIDEO_SDL2:
-         return "sdl2";
-      case VIDEO_EXT:
-         return "ext";
-      case VIDEO_VG:
-         return "vg";
-      case VIDEO_OMAP:
-         return "omap";
-      case VIDEO_EXYNOS:
-         return "exynos";
-      case VIDEO_DISPMANX:
-         return "dispmanx";
-      case VIDEO_SUNXI:
-         return "sunxi";
-      case VIDEO_CACA:
-         return "caca";
-      case VIDEO_GDI:
-         return "gdi";
-      case VIDEO_VGA:
-         return "vga";
       case VIDEO_NULL:
          break;
    }

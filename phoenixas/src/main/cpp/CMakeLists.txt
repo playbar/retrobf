@@ -69,7 +69,6 @@ add_library(retroarch-activity SHARED
                 ${RARCH_DIR}/libretro-common/utils/md5.c
                 ${RARCH_DIR}/managers/cheat_manager.c
                 ${RARCH_DIR}/libretro-common/hash/rhash.c
-                ${RARCH_DIR}/gfx/drivers_context/gfx_null_ctx.c
                 ${RARCH_DIR}/gfx/drivers_context/android_ctx.c
                 ${RARCH_DIR}/gfx/common/vulkan_common.c
                 ${RARCH_DIR}/libretro-common/vulkan/vulkan_symbol_wrapper.c

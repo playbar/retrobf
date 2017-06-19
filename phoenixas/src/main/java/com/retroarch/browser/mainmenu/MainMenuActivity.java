@@ -2,11 +2,9 @@ package com.retroarch.browser.mainmenu;
 
 import com.retroarch.browser.preferences.util.UserPreferences;
 import com.retroarch.browser.retroactivity.RetroActivityFuture;
-import com.retroarch.browser.retroactivity.RetroActivityPast;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,7 +12,6 @@ import android.os.Environment;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.util.Log;
 
 /**
  * {@link PreferenceActivity} subclass that provides all of the
@@ -50,16 +47,7 @@ public final class MainMenuActivity extends PreferenceActivity
 
 		UserPreferences.updateConfigFile(this);
 		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		Intent retro;
-		
-		if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB))
-		{
-		   retro = new Intent(this, RetroActivityFuture.class);
-		}
-		else
-		{
-		   retro = new Intent(this, RetroActivityPast.class);
-		}
+		Intent retro = new Intent(this, RetroActivityFuture.class);
 		retro.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 		startRetroActivity(

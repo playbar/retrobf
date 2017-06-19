@@ -264,17 +264,15 @@ static enum image_type_enum image_texture_convert_fmt_to_type(enum video_image_f
    return IMAGE_TYPE_NONE;
 }
 
-bool image_texture_load(struct texture_image *out_img, 
-      const char *path)
+bool image_texture_load(struct texture_image *out_img, const char *path)
 {
    unsigned r_shift, g_shift, b_shift, a_shift;
-   size_t file_len             = 0;
-   struct nbio_t      *handle  = NULL;
-   void                   *ptr = NULL;
+   size_t file_len = 0;
+   struct nbio_t *handle  = NULL;
+   void *ptr = NULL;
    enum video_image_format fmt = image_texture_get_type(path);
 
-   image_texture_set_color_shifts(&r_shift, &g_shift, &b_shift,
-         &a_shift, out_img);
+   image_texture_set_color_shifts(&r_shift, &g_shift, &b_shift, &a_shift, out_img);
 
    if (fmt != IMAGE_FORMAT_NONE)
    {

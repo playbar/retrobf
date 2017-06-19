@@ -2286,7 +2286,6 @@ static enum runloop_state runloop_check_state(settings_t *settings, bool input_n
       if (runloop_idle)
          return RUNLOOP_STATE_SLEEP;
 
-
    /* Check game focus toggle */
    {
       static bool old_pressed = false;

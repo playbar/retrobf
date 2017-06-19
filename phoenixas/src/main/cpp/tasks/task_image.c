@@ -177,28 +177,25 @@ static void task_image_load_free(retro_task_t *task)
 
 static int cb_nbio_image_menu_thumbnail(void *data, size_t len)
 {
-   void *ptr                       = NULL;
-   nbio_handle_t *nbio             = (nbio_handle_t*)data;
-   struct nbio_image_handle *image = nbio ?
-      (struct nbio_image_handle*)nbio->data : NULL;
-   void *handle                    = image ? image_transfer_new(image->type) : NULL;
+   void *ptr = NULL;
+   nbio_handle_t *nbio = (nbio_handle_t*)data;
+   struct nbio_image_handle *image = nbio ? (struct nbio_image_handle*)nbio->data : NULL;
+   void *handle = image ? image_transfer_new(image->type) : NULL;
 
    if (!handle)
       return -1;
 
-   image->handle                   = handle;
-   image->size                     = len;
-   image->cb                       = &cb_image_menu_thumbnail;
+   image->handle = handle;
+   image->size = len;
+   image->cb = &cb_image_menu_thumbnail;
 
-   ptr                             = nbio_get_ptr(nbio->handle, &len);
+   ptr = nbio_get_ptr(nbio->handle, &len);
 
    image_transfer_set_buffer_ptr(image->handle, image->type, ptr);
 
-   image->size                     = len;
-   image->pos_increment            = (len / 2) ?
-      ((unsigned)(len / 2)) : 1;
-   image->processing_pos_increment = (len / 4) ?
-       ((unsigned)(len / 4)) : 1;
+   image->size = len;
+   image->pos_increment = (len / 2) ? ((unsigned)(len / 2)) : 1;
+   image->processing_pos_increment = (len / 4) ? ((unsigned)(len / 4)) : 1;
 
    if (!image_transfer_start(image->handle, image->type))
    {
@@ -206,9 +203,9 @@ static int cb_nbio_image_menu_thumbnail(void *data, size_t len)
       return -1;
    }
 
-   image->is_blocking              = false;
-   image->is_finished              = false;
-   nbio->is_finished               = true;
+   image->is_blocking = false;
+   image->is_finished = false;
+   nbio->is_finished = true;
 
    return 0;
 }
@@ -216,7 +213,7 @@ static int cb_nbio_image_menu_thumbnail(void *data, size_t len)
 bool task_image_load_handler(retro_task_t *task)
 {
    unsigned i;
-   nbio_handle_t            *nbio  = (nbio_handle_t*)task->state;
+   nbio_handle_t *nbio  = (nbio_handle_t*)task->state;
    struct nbio_image_handle *image = (struct nbio_image_handle*)nbio->data;
 
    if (image)
