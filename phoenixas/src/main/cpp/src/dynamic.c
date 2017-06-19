@@ -1201,35 +1201,31 @@ bool rarch_environment_cb(unsigned cmd, void *data)
       {
          retro_keyboard_event_t *frontend_key_event = NULL;
          retro_keyboard_event_t *key_event          = NULL;
-         const struct retro_keyboard_callback *info =
-            (const struct retro_keyboard_callback*)data;
+         const struct retro_keyboard_callback *info = (const struct retro_keyboard_callback*)data;
 
          rarch_ctl(RARCH_CTL_FRONTEND_KEY_EVENT_GET, &frontend_key_event);
          rarch_ctl(RARCH_CTL_KEY_EVENT_GET, &key_event);
 
          RARCH_LOG("Environ SET_KEYBOARD_CALLBACK.\n");
          if (key_event)
-            *key_event                  = info->callback;
+            *key_event = info->callback;
 
          if (frontend_key_event && key_event)
-            *frontend_key_event         = *key_event;
+            *frontend_key_event = *key_event;
          break;
       }
 
       case RETRO_ENVIRONMENT_SET_DISK_CONTROL_INTERFACE:
          RARCH_LOG("Environ SET_DISK_CONTROL_INTERFACE.\n");
          if (system)
-            system->disk_control_cb =
-               *(const struct retro_disk_control_callback*)data;
+            system->disk_control_cb = *(const struct retro_disk_control_callback*)data;
          break;
 
       case RETRO_ENVIRONMENT_SET_HW_RENDER:
       case RETRO_ENVIRONMENT_SET_HW_RENDER | RETRO_ENVIRONMENT_EXPERIMENTAL:
       {
-         struct retro_hw_render_callback *cb =
-            (struct retro_hw_render_callback*)data;
-         struct retro_hw_render_callback *hwr = 
-            video_driver_get_hw_context();
+         struct retro_hw_render_callback *cb = (struct retro_hw_render_callback*)data;
+         struct retro_hw_render_callback *hwr = video_driver_get_hw_context();
 
          RARCH_LOG("Environ SET_HW_RENDER.\n");
 
@@ -1240,12 +1236,11 @@ bool rarch_environment_cb(unsigned cmd, void *data)
             return false;
 
          cb->get_current_framebuffer = video_driver_get_current_framebuffer;
-         cb->get_proc_address        = video_driver_get_proc_address;
+         cb->get_proc_address = video_driver_get_proc_address;
 
          /* Old ABI. Don't copy garbage. */
          if (cmd & RETRO_ENVIRONMENT_EXPERIMENTAL) 
-            memcpy(hwr,
-                  cb, offsetof(struct retro_hw_render_callback, stencil));
+            memcpy(hwr, cb, offsetof(struct retro_hw_render_callback, stencil));
          else
             memcpy(hwr, cb, sizeof(*cb));
          break;
@@ -1298,8 +1293,7 @@ bool rarch_environment_cb(unsigned cmd, void *data)
 
       case RETRO_ENVIRONMENT_GET_RUMBLE_INTERFACE:
       {
-         struct retro_rumble_interface *iface =
-            (struct retro_rumble_interface*)data;
+         struct retro_rumble_interface *iface = (struct retro_rumble_interface*)data;
 
          RARCH_LOG("Environ GET_RUMBLE_INTERFACE.\n");
          iface->set_rumble_state = input_driver_set_rumble_state;
@@ -1320,8 +1314,7 @@ bool rarch_environment_cb(unsigned cmd, void *data)
 
       case RETRO_ENVIRONMENT_GET_SENSOR_INTERFACE:
       {
-         struct retro_sensor_interface *iface =
-            (struct retro_sensor_interface*)data;
+         struct retro_sensor_interface *iface = (struct retro_sensor_interface*)data;
 
          RARCH_LOG("Environ GET_SENSOR_INTERFACE.\n");
          iface->set_sensor_state = input_sensor_set_state;
@@ -1330,12 +1323,11 @@ bool rarch_environment_cb(unsigned cmd, void *data)
       }
       case RETRO_ENVIRONMENT_GET_CAMERA_INTERFACE:
       {
-         struct retro_camera_callback *cb =
-            (struct retro_camera_callback*)data;
+         struct retro_camera_callback *cb = (struct retro_camera_callback*)data;
 
          RARCH_LOG("Environ GET_CAMERA_INTERFACE.\n");
-         cb->start                        = driver_camera_start;
-         cb->stop                         = driver_camera_stop;
+         cb->start = driver_camera_start;
+         cb->stop = driver_camera_stop;
 
          camera_driver_ctl(RARCH_CAMERA_CTL_SET_CB, cb);
 
@@ -1348,8 +1340,7 @@ bool rarch_environment_cb(unsigned cmd, void *data)
 
       case RETRO_ENVIRONMENT_GET_LOCATION_INTERFACE:
       {
-         struct retro_location_callback *cb =
-            (struct retro_location_callback*)data;
+         struct retro_location_callback *cb = (struct retro_location_callback*)data;
 
          RARCH_LOG("Environ GET_LOCATION_INTERFACE.\n");
          cb->start                 = driver_location_start;

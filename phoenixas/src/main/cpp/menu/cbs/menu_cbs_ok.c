@@ -1617,8 +1617,7 @@ static int action_ok_menu_wallpaper_load(const char *path,
          ACTION_OK_LOAD_WALLPAPER, MSG_UNKNOWN);
 }
 
-static int action_ok_load_core(const char *path,
-      const char *label, unsigned type, size_t idx, size_t entry_idx)
+static int action_ok_load_core(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx)
 {
    return generic_action_ok(path, label, type, idx, entry_idx,
          ACTION_OK_LOAD_CORE, MSG_UNKNOWN);
@@ -4149,8 +4148,9 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
             BIND_ACTION_OK(cbs, action_ok_browse_url_start);
             break;
          case MENU_ENUM_LABEL_FILE_BROWSER_CORE:
-            BIND_ACTION_OK(cbs, action_ok_load_core);
-            break;
+              cbs->action_ok = action_ok_load_core;
+              cbs->action_ok_ident = "action_ok_load_core";
+              break;
          case MENU_ENUM_LABEL_FILE_BROWSER_CORE_SELECT_FROM_COLLECTION:
             BIND_ACTION_OK(cbs, action_ok_core_deferred_set);
             break;

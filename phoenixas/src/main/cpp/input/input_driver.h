@@ -111,26 +111,22 @@ typedef struct input_driver
     * For digital inputs, pressed key is 1, not pressed key is 0.
     * Analog values have same range as a signed 16-bit integer.
     */
-   int16_t (*input_state)(void *data,
-         rarch_joypad_info_t joypad_info,
-         const struct retro_keybind **retro_keybinds,
-         unsigned port, unsigned device, unsigned index, unsigned id);
+   int16_t (*input_state)(void *data, rarch_joypad_info_t joypad_info, const struct retro_keybind **retro_keybinds,
+                          unsigned port, unsigned device, unsigned index, unsigned id);
 
    bool (*meta_key_pressed)(void *data, int key);
 
    /* Frees the input struct. */
    void (*free)(void *data);
 
-   bool (*set_sensor_state)(void *data, unsigned port,
-         enum retro_sensor_action action, unsigned rate);
+   bool (*set_sensor_state)(void *data, unsigned port, enum retro_sensor_action action, unsigned rate);
    float (*get_sensor_input)(void *data, unsigned port, unsigned id);
    uint64_t (*get_capabilities)(void *data);
    const char *ident;
 
    void (*grab_mouse)(void *data, bool state);
    bool (*grab_stdin)(void *data);
-   bool (*set_rumble)(void *data, unsigned port,
-         enum retro_rumble_effect effect, uint16_t state);
+   bool (*set_rumble)(void *data, unsigned port, enum retro_rumble_effect effect, uint16_t state);
    const input_device_driver_t *(*get_joypad_driver)(void *data);
    const input_device_driver_t *(*get_sec_joypad_driver)(void *data);
    bool (*keyboard_mapping_is_blocked)(void *data);
@@ -429,8 +425,7 @@ const input_device_driver_t *input_joypad_init_first(void *data);
  * Takes as input analog key identifiers and converts
  * them to corresponding bind IDs @ident_minus and @ident_plus.
  **/
-void input_conv_analog_id_to_bind_id(unsigned idx, unsigned ident,
-      unsigned *ident_minus, unsigned *ident_plus);
+void input_conv_analog_id_to_bind_id(unsigned idx, unsigned ident, unsigned *ident_minus, unsigned *ident_plus);
 
 /**
  * input_joypad_pressed:
@@ -453,10 +448,8 @@ static INLINE bool input_joypad_pressed(
       unsigned key)
 {
    /* Auto-binds are per joypad, not per user. */
-   uint64_t                        joykey = (binds[key].joykey != NO_BTN)
-      ? binds[key].joykey : joypad_info.auto_binds[key].joykey;
-   uint32_t                       joyaxis = (binds[key].joyaxis != AXIS_NONE) 
-      ? binds[key].joyaxis : joypad_info.auto_binds[key].joyaxis;
+   uint64_t joykey = (binds[key].joykey != NO_BTN) ? binds[key].joykey : joypad_info.auto_binds[key].joykey;
+   uint32_t joyaxis = (binds[key].joyaxis != AXIS_NONE) ? binds[key].joyaxis : joypad_info.auto_binds[key].joyaxis;
 
    if ((uint16_t)joykey != NO_BTN && drv->button(joypad_info.joy_idx, (uint16_t)joykey))
       return true;
@@ -484,10 +477,8 @@ static INLINE bool input_joypad_pressed(
  *
  * Returns: analog value on success, otherwise 0.
  **/
-int16_t input_joypad_analog(const input_device_driver_t *driver,
-      rarch_joypad_info_t joypad_info,
-      unsigned port, unsigned idx, unsigned ident,
-      const struct retro_keybind *binds);
+int16_t input_joypad_analog(const input_device_driver_t *driver, rarch_joypad_info_t joypad_info, unsigned port,
+                            unsigned idx, unsigned ident, const struct retro_keybind *binds);
 
 /**
  * input_joypad_set_rumble:
@@ -545,8 +536,7 @@ bool input_joypad_hat_raw(const input_device_driver_t *driver,
  *
  * Returns: name of joystick #port.
  **/
-const char *input_joypad_name(const input_device_driver_t *driver,
-      unsigned port);
+const char *input_joypad_name(const input_device_driver_t *driver, unsigned port);
 
 bool input_config_get_bind_idx(unsigned port, unsigned *joy_idx_real);
 

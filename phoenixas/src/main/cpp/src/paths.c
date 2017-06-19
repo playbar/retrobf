@@ -573,8 +573,7 @@ bool path_set(enum rarch_path_type type, const char *path)
          path_set_names(path);
          break;
       case RARCH_PATH_CORE:
-         strlcpy(path_libretro, path,
-               sizeof(path_libretro));
+         strlcpy(path_libretro, path, sizeof(path_libretro));
          break;
       case RARCH_PATH_DEFAULT_SHADER_PRESET:
          strlcpy(path_default_shader_preset, path,

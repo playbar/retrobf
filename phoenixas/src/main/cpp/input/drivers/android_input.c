@@ -1186,15 +1186,13 @@ static void android_input_poll_input(void *data)
                      }
                   }
                   else
-                     android_input_poll_event_type_key(android_app,
-                        event, port, keycode, source, type_event, &handled);
+                     android_input_poll_event_type_key(android_app, event, port, keycode, source, type_event, &handled);
                }
                break;
          }
 
          if (!predispatched)
-            AInputQueue_finishEvent(android_app->inputQueue, event,
-                  handled);
+            AInputQueue_finishEvent(android_app->inputQueue, event, handled);
       }
    }
 }
@@ -1266,10 +1264,7 @@ static void android_input_poll(void *data)
    unsigned key                    = RARCH_PAUSE_TOGGLE;
    struct android_app *android_app = (struct android_app*)g_android;
 
-   while ((ident =
-            ALooper_pollAll((android_input_key_pressed(data, key))
-               ? -1 : 1,
-               NULL, NULL, NULL)) >= 0)
+   while ((ident = ALooper_pollAll((android_input_key_pressed(data, key)) ? -1 : 1, NULL, NULL, NULL)) >= 0)
    {
       switch (ident)
       {

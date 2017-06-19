@@ -182,7 +182,7 @@ static command_t *input_driver_command            = NULL;
 static input_remote_t *input_driver_remote        = NULL;
 #endif
 const input_driver_t *current_input               = NULL;
-void *current_input_data                          = NULL;
+void *current_input_data                          = NULL;  //android_input_t
 static bool input_driver_block_hotkey             = false;
 static bool input_driver_block_libretro_input     = false;
 static bool input_driver_nonblock_state           = false;
@@ -257,8 +257,7 @@ bool input_driver_set_rumble_state(unsigned port,
 {
    if (!current_input || !current_input->set_rumble)
       return false;
-   return current_input->set_rumble(current_input_data,
-         port, effect, strength);
+   return current_input->set_rumble(current_input_data, port, effect, strength);
 }
 
 const input_device_driver_t *input_driver_get_joypad_driver(void)
@@ -311,19 +310,15 @@ void input_driver_keyboard_mapping_set_block(bool value)
 bool input_sensor_set_state(unsigned port,
       enum retro_sensor_action action, unsigned rate)
 {
-   if (current_input_data &&
-         current_input->set_sensor_state)
-      return current_input->set_sensor_state(current_input_data,
-            port, action, rate);
+   if (current_input_data && current_input->set_sensor_state)
+      return current_input->set_sensor_state(current_input_data, port, action, rate);
    return false;
 }
 
 float input_sensor_get_input(unsigned port, unsigned id)
 {
-   if (current_input_data &&
-         current_input->get_sensor_input)
-      return current_input->get_sensor_input(current_input_data,
-            port, id);
+   if (current_input_data && current_input->get_sensor_input)
+      return current_input->get_sensor_input(current_input_data, port, id);
    return 0.0f;
 }
 
@@ -396,10 +391,9 @@ void input_poll(void)
  * Returns: Non-zero if the given key (identified by @id)
  * was pressed by the user (assigned to @port).
  **/
-int16_t input_state(unsigned port, unsigned device,
-      unsigned idx, unsigned id)
+int16_t input_state(unsigned port, unsigned device, unsigned idx, unsigned id)
 {
-   int16_t res                     = 0;
+   int16_t res = 0;
 
    device &= RETRO_DEVICE_MASK;
 
@@ -450,8 +444,7 @@ int16_t input_state(unsigned port, unsigned device,
             joypad_info.joy_idx        = settings->uints.input_joypad_map[port];
             joypad_info.auto_binds     = input_autoconf_binds[joypad_info.joy_idx];
 
-            res = current_input->input_state(
-                  current_input_data, joypad_info, libretro_input_binds, port, device, idx, id);
+            res = current_input->input_state(current_input_data, joypad_info, libretro_input_binds, port, device, idx, id);
          }
       }
 
@@ -466,8 +459,7 @@ int16_t input_state(unsigned port, unsigned device,
 #endif
 
       /* Don't allow turbo for D-pad. */
-      if (device == RETRO_DEVICE_JOYPAD && (id < RETRO_DEVICE_ID_JOYPAD_UP ||
-               id > RETRO_DEVICE_ID_JOYPAD_RIGHT))
+      if (device == RETRO_DEVICE_JOYPAD && (id < RETRO_DEVICE_ID_JOYPAD_UP || id > RETRO_DEVICE_ID_JOYPAD_RIGHT))
       {
          /*
           * Apply turbo button if activated.
@@ -485,9 +477,7 @@ int16_t input_state(unsigned port, unsigned device,
          if (input_driver_turbo_btns.enable[port] & (1 << id))
          {
             /* if turbo button is enabled for this key ID */
-            res = res && ((input_driver_turbo_btns.count
-                     % settings->uints.input_turbo_period)
-                  < settings->uints.input_turbo_duty_cycle);
+            res = res && ((input_driver_turbo_btns.count % settings->uints.input_turbo_period) < settings->uints.input_turbo_duty_cycle);
          }
       }
    }
@@ -573,17 +563,13 @@ void state_tracker_update_input(uint16_t *input1, uint16_t *input2)
          {
             joypad_info.joy_idx        = settings->uints.input_joypad_map[0];
             joypad_info.auto_binds     = input_autoconf_binds[joypad_info.joy_idx];
-            *input1 |= (current_input->input_state(current_input_data, joypad_info,
-                     binds,
-                     0, RETRO_DEVICE_JOYPAD, 0, id) ? 1 : 0) << i;
+            *input1 |= (current_input->input_state(current_input_data, joypad_info, binds, 0, RETRO_DEVICE_JOYPAD, 0, id) ? 1 : 0) << i;
          }
          if (binds[1][id].valid)
          {
             joypad_info.joy_idx        = settings->uints.input_joypad_map[1];
             joypad_info.auto_binds     = input_autoconf_binds[joypad_info.joy_idx];
-            *input2 |= (current_input->input_state(current_input_data, joypad_info,
-                     binds,
-                     1, RETRO_DEVICE_JOYPAD, 0, id) ? 1 : 0) << i;
+            *input2 |= (current_input->input_state(current_input_data, joypad_info, binds, 1, RETRO_DEVICE_JOYPAD, 0, id) ? 1 : 0) << i;
          }
       }
    }
@@ -673,10 +659,8 @@ uint64_t input_menu_keys_pressed(void *data, uint64_t last_input)
          unsigned port_max                  =
             settings->bools.input_all_users_control_menu
             ? max_users : 1;
-         const input_device_driver_t *first = current_input->get_joypad_driver
-            ? current_input->get_joypad_driver(current_input_data) : NULL;
-         const input_device_driver_t *sec   = current_input->get_sec_joypad_driver
-            ? current_input->get_sec_joypad_driver(current_input_data) : NULL;
+         const input_device_driver_t *first = current_input->get_joypad_driver ? current_input->get_joypad_driver(current_input_data) : NULL;
+         const input_device_driver_t *sec   = current_input->get_sec_joypad_driver ? current_input->get_sec_joypad_driver(current_input_data) : NULL;
 
          for (port = 0; port < port_max; port++)
          {
@@ -1006,8 +990,7 @@ bool input_driver_grab_stdin(void)
 
 bool input_driver_keyboard_mapping_is_blocked(void)
 {
-   return current_input->keyboard_mapping_is_blocked(
-         current_input_data);
+   return current_input->keyboard_mapping_is_blocked(current_input_data);
 }
 
 bool input_driver_find_driver(void)
