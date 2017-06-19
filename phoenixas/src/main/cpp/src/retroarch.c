@@ -776,7 +776,7 @@ static void retroarch_parse_input(int argc, char *argv[])
             {
                settings_t *settings  = config_get_ptr();
 
-               path_clear(RARCH_PATH_CORE);
+//               path_clear(RARCH_PATH_CORE);
                strlcpy(settings->paths.directory_libretro, optarg, sizeof(settings->paths.directory_libretro));
 
                retroarch_override_setting_set(RARCH_OVERRIDE_SETTING_LIBRETRO, NULL);

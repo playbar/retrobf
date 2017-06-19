@@ -137,10 +137,10 @@ struct content_information_ctx
    struct string_list *temporary_content;
 };
 
-static struct string_list *temporary_content                  = NULL;
-static bool _content_is_inited                                = false;
-static bool core_does_not_need_content                        = false;
-static uint32_t content_rom_crc                               = 0;
+static struct string_list *temporary_content = NULL;
+static bool _content_is_inited = false;
+static bool core_does_not_need_content = false;
+static uint32_t content_rom_crc = 0;
 
 static int content_file_read(const char *path, void **buf, ssize_t *length)
 {
@@ -163,14 +163,8 @@ static int content_file_read(const char *path, void **buf, ssize_t *length)
  * Generates an @argc and @argv pair based on @args
  * of type rarch_main_wrap.
  **/
-static void content_load_init_wrap(
-      const struct rarch_main_wrap *args,
-      int *argc, char **argv)
+static void content_load_init_wrap(const struct rarch_main_wrap *args, int *argc, char **argv)
 {
-#ifdef HAVE_FILE_LOGGER
-   int i;
-#endif
-
    *argc = 0;
    argv[(*argc)++] = strdup("retroarch");
 
@@ -224,10 +218,6 @@ static void content_load_init_wrap(
    if (args->verbose)
       argv[(*argc)++] = strdup("-v");
 
-#ifdef HAVE_FILE_LOGGER
-   for (i = 0; i < *argc; i++)
-      RARCH_LOG("arg #%d: %s\n", i, argv[i]);
-#endif
 }
 
 /**
@@ -249,8 +239,7 @@ static bool content_load(content_ctx_info_t *info)
    char *argv_copy [MAX_ARGS]        = {NULL};
    char **rarch_argv_ptr             = (char**)info->argv;
    int *rarch_argc_ptr               = (int*)&info->argc;
-   struct rarch_main_wrap *wrap_args = (struct rarch_main_wrap*)
-      calloc(1, sizeof(*wrap_args));
+   struct rarch_main_wrap *wrap_args = (struct rarch_main_wrap*) calloc(1, sizeof(*wrap_args));
 
    if (!wrap_args)
       return false;
@@ -310,15 +299,11 @@ end:
  *
  * Returns: true if successful, false on error.
  **/
-static bool load_content_into_memory(
-      content_information_ctx_t *content_ctx,
-      unsigned i, const char *path, void **buf,
-      ssize_t *length)
+static bool load_content_into_memory(content_information_ctx_t *content_ctx, unsigned i, const char *path, void **buf, ssize_t *length)
 {
    uint8_t *ret_buf          = NULL;
 
-   RARCH_LOG("%s: %s.\n",
-         msg_hash_to_str(MSG_LOADING_CONTENT_FILE), path);
+   RARCH_LOG("%s: %s.\n", msg_hash_to_str(MSG_LOADING_CONTENT_FILE), path);
 
    if (!content_file_read(path, (void**) &ret_buf, length))
       return false;
@@ -338,15 +323,8 @@ static bool load_content_into_memory(
 
          /* Attempt to apply a patch. */
          if (!content_ctx->patch_is_blocked)
-            patch_content(
-                  content_ctx->is_ips_pref,
-                  content_ctx->is_bps_pref,
-                  content_ctx->is_ups_pref,
-                  content_ctx->name_ips,
-                  content_ctx->name_bps,
-                  content_ctx->name_ups,
-                  (uint8_t**)&ret_buf,
-                  (void*)length);
+            patch_content(content_ctx->is_ips_pref, content_ctx->is_bps_pref, content_ctx->is_ups_pref,
+                          content_ctx->name_ips, content_ctx->name_bps, content_ctx->name_ups, (uint8_t**)&ret_buf, (void*)length);
 
          content_rom_crc = encoding_crc32(0, ret_buf, *length);
 
@@ -381,12 +359,10 @@ static bool load_content_from_compressed_archive(
    new_basedir[0]                    = '\0';
    attributes.i                      = 0;
 
-   RARCH_LOG("Compressed file in case of need_fullpath."
-         " Now extracting to temporary directory.\n");
+   RARCH_LOG("Compressed file in case of need_fullpath. Now extracting to temporary directory.\n");
 
    if (!string_is_empty(content_ctx->directory_cache))
-      strlcpy(new_basedir, content_ctx->directory_cache,
-            sizeof(new_basedir));
+      strlcpy(new_basedir, content_ctx->directory_cache, sizeof(new_basedir));
 
    if (string_is_empty(new_basedir) || !path_is_directory(new_basedir))
    {
@@ -394,31 +370,26 @@ static bool load_content_from_compressed_archive(
             "cache directory was not set or found. "
             "Setting cache directory to directory "
             "derived by basename...\n");
-      fill_pathname_basedir(new_basedir, path,
-            sizeof(new_basedir));
+      fill_pathname_basedir(new_basedir, path, sizeof(new_basedir));
    }
 
    new_path[0]    = '\0';
    new_basedir[0] = '\0';
 
-   fill_pathname_join(new_path, new_basedir,
-         path_basename(path), sizeof(new_path));
+   fill_pathname_join(new_path, new_basedir, path_basename(path), sizeof(new_path));
 
    ret = file_archive_compressed_read(path, NULL, new_path, &new_path_len);
 
    if (!ret || new_path_len < 0)
    {
       char str[1024];
-      snprintf(str, sizeof(str), "%s \"%s\".\n",
-            msg_hash_to_str(MSG_COULD_NOT_READ_CONTENT_FILE),
-            path);
+      snprintf(str, sizeof(str), "%s \"%s\".\n", msg_hash_to_str(MSG_COULD_NOT_READ_CONTENT_FILE), path);
       *error_string = strdup(str);
       return false;
    }
 
    string_list_append(additional_path_allocs, new_path, attributes);
-   info[i].path =
-      additional_path_allocs->elems[additional_path_allocs->size -1 ].data;
+   info[i].path = additional_path_allocs->elems[additional_path_allocs->size -1 ].data;
 
    if (!string_list_append(content_ctx->temporary_content, new_path, attributes))
       return false;
@@ -431,8 +402,7 @@ static bool content_file_init_extract(
       content_information_ctx_t *content_ctx,
       const struct retro_subsystem_info *special,
       union string_list_elem_attr *attr,
-      char **error_string
-      )
+      char **error_string)
 {
    unsigned i;
 
@@ -440,12 +410,10 @@ static bool content_file_init_extract(
    {
       char temp_content[PATH_MAX_LENGTH];
       char new_path[PATH_MAX_LENGTH];
-      bool block_extract                 = content->elems[i].attr.i & 1;
-      const char *path                   = content->elems[i].data;
-      const char *valid_ext              = special ?
-                                           special->roms[i].valid_extensions :
-                                           content_ctx->valid_extensions;
-      bool contains_compressed           = path_contains_compressed_file(path);
+      bool block_extract = content->elems[i].attr.i & 1;
+      const char *path = content->elems[i].data;
+      const char *valid_ext = special ? special->roms[i].valid_extensions : content_ctx->valid_extensions;
+      bool contains_compressed = path_contains_compressed_file(path);
 
       /* Block extract check. */
       if (block_extract)
@@ -469,18 +437,13 @@ static bool content_file_init_extract(
                sizeof(new_path)))
       {
          char str[1024];
-
-         snprintf(str, sizeof(str), "%s: %s.\n",
-               msg_hash_to_str(
-                  MSG_FAILED_TO_EXTRACT_CONTENT_FROM_COMPRESSED_FILE),
-               temp_content);
+         snprintf(str, sizeof(str), "%s: %s.\n", msg_hash_to_str(MSG_FAILED_TO_EXTRACT_CONTENT_FROM_COMPRESSED_FILE), temp_content);
          return false;
       }
 
       string_list_set(content, i, new_path);
 
-      if (!string_list_append(content_ctx->temporary_content,
-               new_path, *attr))
+      if (!string_list_append(content_ctx->temporary_content, new_path, *attr))
          return false;
    }
 
@@ -521,10 +484,7 @@ static bool content_file_load(
 
       if (require_content && string_is_empty(path))
       {
-         strlcpy(msg,
-               msg_hash_to_str(MSG_ERROR_LIBRETRO_CORE_REQUIRES_CONTENT),
-               sizeof(msg)
-               );
+         strlcpy(msg, msg_hash_to_str(MSG_ERROR_LIBRETRO_CORE_REQUIRES_CONTENT), sizeof(msg));
          *error_string = strdup(msg);
          return false;
       }
@@ -540,14 +500,9 @@ static bool content_file_load(
 
          ssize_t len = 0;
 
-         if (!load_content_into_memory(
-                  content_ctx,
-                  i, path, (void**)&info[i].data, &len))
+         if (!load_content_into_memory(content_ctx, i, path, (void**)&info[i].data, &len))
          {
-            snprintf(msg, sizeof(msg),
-                  "%s \"%s\".\n",
-                  msg_hash_to_str(MSG_COULD_NOT_READ_CONTENT_FILE),
-                  path);
+            snprintf(msg, sizeof(msg), "%s \"%s\".\n", msg_hash_to_str(MSG_COULD_NOT_READ_CONTENT_FILE), path);
             *error_string = strdup(msg);
             return false;
          }
@@ -556,19 +511,13 @@ static bool content_file_load(
       }
       else
       {
-         RARCH_LOG("%s\n",
-               msg_hash_to_str(
-                  MSG_CONTENT_LOADING_SKIPPED_IMPLEMENTATION_WILL_DO_IT));
+         RARCH_LOG("%s\n", msg_hash_to_str(MSG_CONTENT_LOADING_SKIPPED_IMPLEMENTATION_WILL_DO_IT));
 
 #ifdef HAVE_COMPRESSION
-         if (     !content_ctx->block_extract
+         if (!content_ctx->block_extract
                && need_fullpath
                && path_contains_compressed_file(path)
-               && !load_content_from_compressed_archive(
-                  content_ctx,
-                  &info[i], i,
-                  additional_path_allocs, need_fullpath, path,
-                  error_string))
+               && !load_content_from_compressed_archive(content_ctx, &info[i], i, additional_path_allocs, need_fullpath, path, error_string))
             return false;
 #endif
       }
@@ -580,8 +529,7 @@ static bool content_file_load(
 
    if (!core_load_game(&load_info))
    {
-      snprintf(msg, sizeof(msg),
-            "%s.", msg_hash_to_str(MSG_FAILED_TO_LOAD_CONTENT));
+      snprintf(msg, sizeof(msg), "%s.", msg_hash_to_str(MSG_FAILED_TO_LOAD_CONTENT));
       *error_string = strdup(msg);
       return false;
    }
@@ -591,9 +539,7 @@ static bool content_file_load(
    {
       const char *content_path     = content->elems[0].data;
       enum rarch_content_type type = path_is_media_type(content_path);
-
       cheevos_set_cheats();
-
       if (type == RARCH_CONTENT_NONE && !string_is_empty(content_path))
          cheevos_load(info);
    }
@@ -617,9 +563,7 @@ static const struct retro_subsystem_info *content_file_init_subsystem(
 
    if (!special)
    {
-      snprintf(msg, sizeof(msg),
-            "Failed to find subsystem \"%s\" in libretro implementation.\n",
-            path_get(RARCH_PATH_SUBSYSTEM));
+      snprintf(msg, sizeof(msg), "Failed to find subsystem \"%s\" in libretro implementation.\n", path_get(RARCH_PATH_SUBSYSTEM));
       *error_string = strdup(msg);
       goto error;
    }
@@ -824,9 +768,7 @@ static bool task_load_content(content_ctx_info_t *content_info,
       {
          if (!path_is_empty(RARCH_PATH_CONTENT) && !string_is_empty(name))
          {
-            snprintf(msg, sizeof(msg), "%s %s.\n",
-                  msg_hash_to_str(MSG_FAILED_TO_LOAD),
-                  name);
+            snprintf(msg, sizeof(msg), "%s %s.\n", msg_hash_to_str(MSG_FAILED_TO_LOAD), name);
             *error_string = strdup(msg);
          }
       }
@@ -867,24 +809,15 @@ static bool task_load_content(content_ctx_info_t *content_info,
 
          switch (path_is_media_type(tmp))
          {
-            case RARCH_CONTENT_MOVIE:
-#ifdef HAVE_FFMPEG
-               playlist_tmp         = g_defaults.video_history;
-               core_name            = "movieplayer";
-               core_path            = "builtin";
-#endif
-               break;
             case RARCH_CONTENT_MUSIC:
                playlist_tmp         = g_defaults.music_history;
                core_name            = "musicplayer";
                core_path            = "builtin";
                break;
             case RARCH_CONTENT_IMAGE:
-#ifdef HAVE_IMAGEVIEWER
                playlist_tmp         = g_defaults.image_history;
                core_name            = "imageviewer";
                core_path            = "builtin";
-#endif
                break;
             default:
                core_path            = path_get(RARCH_PATH_CORE);
@@ -898,18 +831,14 @@ static bool task_load_content(content_ctx_info_t *content_info,
             content_ctx->history_list_enable = settings->bools.history_list_enable;
          }
 
-         if (
-                  content_ctx->history_list_enable
-               && playlist_tmp
-               && playlist_push(
+         if (content_ctx->history_list_enable && playlist_tmp && playlist_push(
                   playlist_tmp,
                   tmp,
                   NULL,
                   core_path,
                   core_name,
                   NULL,
-                  NULL)
-               )
+                  NULL))
             playlist_write_file(playlist_tmp);
       }
    }
@@ -1524,17 +1453,17 @@ bool task_push_load_content_with_new_core_from_companion_ui(
    return true;
 }
 
-bool task_push_load_content_from_cli(
-      const char *core_path,
-      const char *fullpath,
-      content_ctx_info_t *content_info,
-      enum rarch_core_type type,
-      retro_task_callback_t cb,
-      void *user_data)
+bool task_push_start_content_from_cli(const char *core_path, const char *fullpath,
+                                      content_ctx_info_t *content_info,
+                                      enum rarch_core_type type, retro_task_callback_t cb,
+                                      void *user_data)
 {
    /* Load content */
-   if (!task_load_content_callback(content_info, true, true))
-      return false;
+//   if (!task_load_content_callback(content_info, true, true))
+//      return false;
+
+   if (!task_push_start_current_core(content_info))
+      return -1;
 
    return true;
 }

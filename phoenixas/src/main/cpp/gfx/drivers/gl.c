@@ -1083,17 +1083,12 @@ static bool gl_frame(void *data, const void *frame,
 
    video_info->cb_shader_use(gl, video_info->shader_data, 1, true);
 
-#ifdef IOS
-   /* Apparently the viewport is lost each frame, thanks Apple. */
-   gl_set_viewport(gl, video_info, width, height, false, true);
-#endif
 
 #ifdef HAVE_FBO
    /* Render to texture in first pass. */
    if (gl->fbo_inited)
    {
-      gl_renderchain_recompute_pass_sizes(gl, frame_width, frame_height,
-            gl->vp_out_width, gl->vp_out_height);
+      gl_renderchain_recompute_pass_sizes(gl, frame_width, frame_height, gl->vp_out_width, gl->vp_out_height);
       gl_renderchain_start_render(gl, video_info);
    }
 #endif
@@ -1109,17 +1104,12 @@ static bool gl_frame(void *data, const void *frame,
 
       video_info->cb_set_resize(video_info->context_data, mode.width, mode.height);
 
-#ifdef HAVE_FBO
       if (gl->fbo_inited)
       {
          gl_check_fbo_dimensions(gl);
-
-         /* Go back to what we're supposed to do,
-          * render to FBO #0. */
          gl_renderchain_start_render(gl, video_info);
       }
       else
-#endif
          gl_set_viewport(gl, video_info, width, height, false, true);
    }
 
@@ -1131,9 +1121,7 @@ static bool gl_frame(void *data, const void *frame,
    /* Can be NULL for frame dupe / NULL render. */
    if (frame)
    {
-#ifdef HAVE_FBO
       if (!gl->hw_render_fbo_init)
-#endif
       {
          gl_update_input_size(gl, frame_width, frame_height, pitch, true);
          gl_copy_frame(gl, video_info, frame, frame_width, frame_height, pitch);
@@ -1147,7 +1135,6 @@ static bool gl_frame(void *data, const void *frame,
 
    /* Have to reset rendering state which libretro core
     * could easily have overridden. */
-#ifdef HAVE_FBO
    if (gl->hw_render_fbo_init)
    {
       gl_update_input_size(gl, frame_width, frame_height, pitch, false);
@@ -1170,7 +1157,6 @@ static bool gl_frame(void *data, const void *frame,
       glBlendEquation(GL_FUNC_ADD);
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
    }
-#endif
 
    gl->tex_info.tex           = gl->texture[gl->tex_index];
    gl->tex_info.input_size[0] = frame_width;
@@ -1180,7 +1166,6 @@ static bool gl_frame(void *data, const void *frame,
 
    feedback_info              = gl->tex_info;
 
-#ifdef HAVE_FBO
    if (gl->fbo_feedback_enable)
    {
       const struct video_fbo_rect *rect = &gl->fbo_rect[gl->fbo_feedback_pass];
@@ -1195,7 +1180,6 @@ static bool gl_frame(void *data, const void *frame,
 
       set_texture_coords(feedback_info.coord, xamt, yamt);
    }
-#endif
 
    glClear(GL_COLOR_BUFFER_BIT);
 
@@ -1227,10 +1211,8 @@ static bool gl_frame(void *data, const void *frame,
 
    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-#ifdef HAVE_FBO
    if (gl->fbo_inited)
       gl_renderchain_render(gl, video_info, frame_count, &gl->tex_info, &feedback_info);
-#endif
 
    /* Set prev textures. */
    gl_renderchain_bind_prev_texture(gl, &gl->tex_info);
@@ -1254,38 +1236,23 @@ static bool gl_frame(void *data, const void *frame,
 
    video_info->cb_update_window_title(video_info->context_data, video_info);
 
-#ifdef HAVE_FBO
    /* Reset state which could easily mess up libretro core. */
    if (gl->hw_render_fbo_init)
    {
       video_info->cb_shader_use(gl, video_info->shader_data, 0, true);
-
       glBindTexture(GL_TEXTURE_2D, 0);
-#ifndef NO_GL_FF_VERTEX
-      gl_disable_client_arrays();
-#endif
-   }
-#endif
 
-#ifndef NO_GL_READ_PIXELS
+   }
+
    /* Screenshots. */
    if (gl->readback_buffer_screenshot)
    {
       glPixelStorei(GL_PACK_ALIGNMENT, 4);
-#ifndef HAVE_OPENGLES
-      glPixelStorei(GL_PACK_ROW_LENGTH, 0);
-      glReadBuffer(GL_BACK);
-#endif
       glReadPixels(gl->vp.x, gl->vp.y, gl->vp.width, gl->vp.height, GL_RGBA, GL_UNSIGNED_BYTE, gl->readback_buffer_screenshot);
    }
-#ifdef HAVE_GL_ASYNC_READBACK
-#ifdef HAVE_MENU
    /* Don't readback if we're in menu mode. */
    else if (gl->pbo_readback_enable && !gl->menu_texture_enable)
       gl_pbo_async_readback(gl);
-#endif
-#endif
-#endif
 
    /* Disable BFI during fast forward, slow-motion,
     * and pause to prevent flicker. */

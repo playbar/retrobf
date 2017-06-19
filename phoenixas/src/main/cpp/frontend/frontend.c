@@ -17,6 +17,8 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <pthread.h>
+#include <src/log.h>
 
 #ifdef HAVE_CONFIG_H
 #include "../config.h"
@@ -101,6 +103,8 @@ int rarch_main(int argc, char *argv[], void *data)
    frontend_driver_init_first(args);
    rarch_ctl(RARCH_CTL_INIT, NULL);
 
+    path_set(RARCH_PATH_CORE, "/data/user/0/com.retroarch/cores/2048_libretro_android.so");
+
    if (frontend_driver_is_inited())
    {
       content_ctx_info_t info;
@@ -110,7 +114,7 @@ int rarch_main(int argc, char *argv[], void *data)
       info.args            = args;
       info.environ_get     = frontend_driver_environment_get_ptr();
 
-      if (!task_push_load_content_from_cli(NULL, NULL, &info, CORE_TYPE_PLAIN, NULL, NULL))
+      if (!task_push_start_content_from_cli(NULL, NULL, &info, CORE_TYPE_PLAIN, NULL, NULL))
          return 1;
    }
 
@@ -119,6 +123,8 @@ int rarch_main(int argc, char *argv[], void *data)
 #ifndef HAVE_MAIN
    do
    {
+       pthread_t  pid = pthread_self();
+       LOGE("rarch_main pid: %ld", pid);
       unsigned sleep_ms = 0;
       int           ret = runloop_iterate(&sleep_ms);
 

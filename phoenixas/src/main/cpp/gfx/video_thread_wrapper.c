@@ -22,6 +22,8 @@
 #include <features/features_cpu.h>
 #include <rthreads/rthreads.h>
 #include <string/stdstring.h>
+#include <pthread.h>
+#include <src/log.h>
 
 #include "video_thread_wrapper.h"
 #include "font_driver.h"
@@ -556,6 +558,8 @@ static void video_thread_loop(void *data)
 
          thread_update_driver_state(thr);
 
+          pthread_t  pid = pthread_self();
+          LOGE("video_thread_loop pid: %ld", pid);
          if (thr->driver && thr->driver->frame)
          {
             video_frame_info_t video_info;

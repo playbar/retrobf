@@ -566,8 +566,7 @@ bool path_set(enum rarch_path_type type, const char *path)
    switch (type)
    {
       case RARCH_PATH_BASENAME:
-         strlcpy(path_main_basename, path,
-               sizeof(path_main_basename));
+         strlcpy(path_main_basename, path, sizeof(path_main_basename));
          break;
       case RARCH_PATH_NAMES:
          path_set_names(path);
@@ -576,28 +575,22 @@ bool path_set(enum rarch_path_type type, const char *path)
          strlcpy(path_libretro, path, sizeof(path_libretro));
          break;
       case RARCH_PATH_DEFAULT_SHADER_PRESET:
-         strlcpy(path_default_shader_preset, path,
-               sizeof(path_default_shader_preset));
+         strlcpy(path_default_shader_preset, path, sizeof(path_default_shader_preset));
          break;
       case RARCH_PATH_CONFIG_APPEND:
-         strlcpy(path_config_append_file, path,
-               sizeof(path_config_append_file));
+         strlcpy(path_config_append_file, path, sizeof(path_config_append_file));
          break;
       case RARCH_PATH_CONFIG:
-         strlcpy(path_config_file, path,
-               sizeof(path_config_file));
+         strlcpy(path_config_file, path, sizeof(path_config_file));
          break;
       case RARCH_PATH_SUBSYSTEM:
-         strlcpy(subsystem_path, path,
-               sizeof(subsystem_path));
+         strlcpy(subsystem_path, path, sizeof(subsystem_path));
          break;
       case RARCH_PATH_CORE_OPTIONS:
-         strlcpy(path_core_options_file, path,
-               sizeof(path_core_options_file));
+         strlcpy(path_core_options_file, path, sizeof(path_core_options_file));
          break;
       case RARCH_PATH_CONTENT:
-         strlcpy(path_content, path,
-               sizeof(path_content));
+         strlcpy(path_content, path, sizeof(path_content));
          break;
       case RARCH_PATH_NONE:
          break;
