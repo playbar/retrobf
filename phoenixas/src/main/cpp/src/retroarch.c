@@ -1146,7 +1146,6 @@ bool retroarch_main_init(int argc, char *argv[])
       else
 #endif
       {
-         /* Fall back to regular error handling */
          goto error;
       }
    }
@@ -1160,8 +1159,6 @@ bool retroarch_main_init(int argc, char *argv[])
    command_event(CMD_EVENT_CHEATS_INIT, NULL);
 
    path_init_savefile();
-
-   command_event(CMD_EVENT_SET_PER_GAME_RESOLUTION, NULL);
 
    rarch_error_on_init     = false;
    rarch_is_inited         = true;
@@ -2129,18 +2126,13 @@ static enum runloop_state runloop_check_state(settings_t *settings, bool input_n
    bool focused                     = true;
    bool pause_nonactive             = settings->bools.pause_nonactive;
    bool fs_toggle_triggered         = false;
-#ifdef HAVE_MENU
    bool menu_driver_binding_state   = menu_driver_is_binding_state();
    bool menu_is_alive               = menu_driver_is_alive();
-   uint64_t current_input           =
-      menu_is_alive && !(settings->bools.menu_unified_controls && !menu_input_dialog_get_display_kb())? 
-      input_menu_keys_pressed(settings, last_input) :
-      input_keys_pressed(settings, last_input);
-#else
-   uint64_t current_input           =
-      input_keys_pressed(settings, last_input);
-#endif
-   last_input                       = current_input;
+   uint64_t current_input           = menu_is_alive && !(settings->bools.menu_unified_controls && !menu_input_dialog_get_display_kb())
+                                      ? input_menu_keys_pressed(settings, last_input)
+                                      : input_keys_pressed(settings, last_input);
+
+   last_input = current_input;
 
 #ifdef HAVE_MENU
    if (((settings->uints.input_menu_toggle_gamepad_combo != INPUT_TOGGLE_NONE) && input_driver_toggle_button_combo(settings->uints.input_menu_toggle_gamepad_combo, last_input)))
@@ -2183,10 +2175,7 @@ static enum runloop_state runloop_check_state(settings_t *settings, bool input_n
 
       if (fs_toggle_triggered)
       {
-         bool fullscreen_toggled = !runloop_paused
-#ifdef HAVE_MENU
-            || menu_is_alive;
-#endif
+         bool fullscreen_toggled = !runloop_paused || menu_is_alive;
 
          if (fullscreen_toggled)
             command_event(CMD_EVENT_FULLSCREEN_TOGGLE, NULL);
@@ -2198,12 +2187,12 @@ static enum runloop_state runloop_check_state(settings_t *settings, bool input_n
    /* Check mouse grab toggle */
    {
       static bool old_pressed = false;
-      bool pressed            = runloop_cmd_press(current_input, RARCH_GRAB_MOUSE_TOGGLE);
+      bool pressed = runloop_cmd_press(current_input, RARCH_GRAB_MOUSE_TOGGLE);
 
       if (pressed && !old_pressed)
          command_event(CMD_EVENT_GRAB_MOUSE_TOGGLE, NULL);
 
-      old_pressed             = pressed;
+      old_pressed = pressed;
    }
 
 
@@ -2259,14 +2248,13 @@ static enum runloop_state runloop_check_state(settings_t *settings, bool input_n
          }
          else
          {
-            old_quit_key                 = quit_key;
+            old_quit_key = quit_key;
             retroarch_main_quit();
             return RUNLOOP_STATE_QUIT;
          }
       }
    }
 
-#ifdef HAVE_MENU
    if (menu_is_alive)
    {
       static uint64_t old_input = 0;
@@ -2295,7 +2283,6 @@ static enum runloop_state runloop_check_state(settings_t *settings, bool input_n
          return RUNLOOP_STATE_POLLED_AND_SLEEP;
    }
    else
-#endif
       if (runloop_idle)
          return RUNLOOP_STATE_SLEEP;
 

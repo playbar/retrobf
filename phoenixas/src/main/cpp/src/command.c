@@ -1615,31 +1615,6 @@ bool command_event(enum event_command cmd, void *data)
          menu_driver_ctl(RARCH_MENU_CTL_REFRESH, NULL);
 #endif
          break;
-      case CMD_EVENT_SET_PER_GAME_RESOLUTION:
-#if defined(GEKKO)
-         {
-            unsigned width = 0, height = 0;
-
-            command_event(CMD_EVENT_VIDEO_SET_ASPECT_RATIO, NULL);
-
-            if (video_driver_get_video_output_size(&width, &height))
-            {
-               char msg[128] = {0};
-
-               video_driver_set_video_mode(width, height, true);
-
-               if (width == 0 || height == 0)
-                  snprintf(msg, sizeof(msg), "%s: DEFAULT",
-                        msg_hash_to_str(MENU_ENUM_LABEL_VALUE_SCREEN_RESOLUTION));
-               else
-                  snprintf(msg, sizeof(msg),"%s: %dx%d",
-                        msg_hash_to_str(MENU_ENUM_LABEL_VALUE_SCREEN_RESOLUTION),
-                        width, height);
-               runloop_msg_queue_push(msg, 1, 100, true);
-            }
-         }
-#endif
-         break;
       case CMD_EVENT_LOAD_CORE_PERSIST:
          {
 #ifdef HAVE_MENU
