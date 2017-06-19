@@ -643,9 +643,7 @@ static INLINE void android_mouse_calculate_deltas(android_input_t *android,
    android->mouse_y_delta = ceil(y) * y_scale;
 }
 
-static INLINE int android_input_poll_event_type_motion(
-      android_input_t *android, AInputEvent *event,
-      int port, int source)
+static INLINE int android_input_poll_event_type_motion(android_input_t *android, AInputEvent *event, int port, int source)
 {
    int getaction, action;
    size_t motion_ptr;
@@ -659,12 +657,8 @@ static INLINE int android_input_poll_event_type_motion(
    getaction  = AMotionEvent_getAction(event);
    action     = getaction & AMOTION_EVENT_ACTION_MASK;
    motion_ptr = getaction >> AMOTION_EVENT_ACTION_POINTER_INDEX_SHIFT;
-   keyup      = (
-         action == AMOTION_EVENT_ACTION_UP ||
-         action == AMOTION_EVENT_ACTION_CANCEL ||
-         action == AMOTION_EVENT_ACTION_POINTER_UP) ||
-      (source == AINPUT_SOURCE_MOUSE &&
-       action != AMOTION_EVENT_ACTION_DOWN);
+   keyup = (action == AMOTION_EVENT_ACTION_UP || action == AMOTION_EVENT_ACTION_CANCEL || action == AMOTION_EVENT_ACTION_POINTER_UP)
+           || (source == AINPUT_SOURCE_MOUSE && action != AMOTION_EVENT_ACTION_DOWN);
 
    /* If source is mouse then calculate button state
     * and mouse deltas and don't process as touchscreen event */
@@ -689,7 +683,6 @@ static INLINE int android_input_poll_event_type_motion(
       }
 
       android_mouse_calculate_deltas(android,event,motion_ptr);
-
       return 0;
    }
 
@@ -704,8 +697,7 @@ static INLINE int android_input_poll_event_type_motion(
          android->mouse_l = 0;
       }
 
-      memmove(android->pointer + motion_ptr,
-            android->pointer + motion_ptr + 1,
+      memmove(android->pointer + motion_ptr, android->pointer + motion_ptr + 1,
             (MAX_TOUCH - motion_ptr - 1) * sizeof(struct input_pointer));
       if (android->pointer_count > 0)
          android->pointer_count--;
@@ -756,9 +748,7 @@ static INLINE int android_input_poll_event_type_motion(
                &android->pointer[motion_ptr].full_x,
                &android->pointer[motion_ptr].full_y);
 
-         android->pointer_count = MAX(
-               android->pointer_count,
-               motion_ptr + 1);
+         android->pointer_count = MAX(android->pointer_count, motion_ptr + 1);
       }
    }
 
@@ -1180,8 +1170,7 @@ static void android_input_poll_input(void *data)
          switch (type_event)
          {
             case AINPUT_EVENT_TYPE_MOTION:
-               if (android_input_poll_event_type_motion(android, event,
-                        port, source))
+               if (android_input_poll_event_type_motion(android, event, port, source))
                   engine_handle_dpad(android, event, port, source);
                break;
             case AINPUT_EVENT_TYPE_KEY:
