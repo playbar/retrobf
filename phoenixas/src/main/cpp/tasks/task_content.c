@@ -1277,15 +1277,15 @@ bool task_push_load_content_with_new_core_from_menu(
    if (global)
    {
       if (!string_is_empty(global->name.ips))
-         content_ctx.name_ips                 = strdup(global->name.ips);
+         content_ctx.name_ips = strdup(global->name.ips);
       if (!string_is_empty(global->name.bps))
-         content_ctx.name_bps                 = strdup(global->name.bps);
+         content_ctx.name_bps = strdup(global->name.bps);
       if (!string_is_empty(global->name.ups))
-         content_ctx.name_ups                 = strdup(global->name.ups);
+         content_ctx.name_ups = strdup(global->name.ups);
    }
 
    if (!string_is_empty(settings->paths.directory_system))
-      content_ctx.directory_system            = strdup(settings->paths.directory_system);
+      content_ctx.directory_system = strdup(settings->paths.directory_system);
 
    /* Set content path */
    path_set(RARCH_PATH_CONTENT, fullpath);

@@ -744,28 +744,6 @@ static void *gl_glsl_init(void *data, const char *path)
 
    (void)shader_support;
 
-#ifndef HAVE_OPENGLES
-   RARCH_LOG("[GLSL]: Checking GLSL shader support ...\n");
-   shader_support = glCreateProgram && glUseProgram && glCreateShader
-      && glDeleteShader && glShaderSource && glCompileShader && glAttachShader
-      && glDetachShader && glLinkProgram && glGetUniformLocation
-      && glUniform1i && glUniform1f && glUniform2fv && glUniform4fv
-      && glUniformMatrix4fv
-      && glGetShaderiv && glGetShaderInfoLog && glGetProgramiv
-      && glGetProgramInfoLog
-      && glDeleteProgram && glGetAttachedShaders
-      && glGetAttribLocation && glEnableVertexAttribArray
-      && glDisableVertexAttribArray
-      && glVertexAttribPointer
-      && glGenBuffers && glBufferData && glDeleteBuffers && glBindBuffer;
-
-   if (!shader_support)
-   {
-      RARCH_ERR("GLSL shaders aren't supported by your OpenGL driver.\n");
-      goto error;
-   }
-#endif
-
    glsl->shader = (struct video_shader*)calloc(1, sizeof(*glsl->shader));
    if (!glsl->shader)
       goto error;

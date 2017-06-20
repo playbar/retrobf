@@ -103,6 +103,7 @@ int rarch_main(int argc, char *argv[], void *data)
    frontend_driver_init_first(args);
    rarch_ctl(RARCH_CTL_INIT, NULL);
 
+   // todo set path
     path_set(RARCH_PATH_CORE, "/data/user/0/com.retroarch/cores/2048_libretro_android.so");
 
    if (frontend_driver_is_inited())

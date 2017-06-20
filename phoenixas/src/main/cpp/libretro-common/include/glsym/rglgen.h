@@ -38,8 +38,7 @@ struct rglgen_sym_map;
 typedef void (*rglgen_func_t)(void);
 typedef rglgen_func_t (*rglgen_proc_address_t)(const char*);
 void rglgen_resolve_symbols(rglgen_proc_address_t proc);
-void rglgen_resolve_symbols_custom(rglgen_proc_address_t proc,
-      const struct rglgen_sym_map *map);
+void rglgen_resolve_symbols_custom(rglgen_proc_address_t proc, const struct rglgen_sym_map *map);
 
 RETRO_END_DECLS
 

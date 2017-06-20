@@ -740,13 +740,14 @@ static INLINE int android_input_poll_event_type_motion(android_input_t *android,
          vp.full_width               = 0;
          vp.full_height              = 0;
 
-         video_driver_translate_coord_viewport_wrap(
-               &vp,
-               x, y,
-               &android->pointer[motion_ptr].x,
-               &android->pointer[motion_ptr].y,
-               &android->pointer[motion_ptr].full_x,
-               &android->pointer[motion_ptr].full_y);
+          if(video_driver_get_viewport_info(&vp)){
+              video_driver_translate_coord_viewport( &vp, x, y,
+                   &android->pointer[motion_ptr].x,
+                   &android->pointer[motion_ptr].y,
+                   &android->pointer[motion_ptr].full_x,
+                   &android->pointer[motion_ptr].full_y);
+          }
+
 
          android->pointer_count = MAX(android->pointer_count, motion_ptr + 1);
       }

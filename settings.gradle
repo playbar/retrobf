@@ -1,3 +1,5 @@
 //include ':nativeactivity'
 include ':googleplay'
 include ':phoenixas'
+include ':gvrres'
+include ':treasurehunt'
