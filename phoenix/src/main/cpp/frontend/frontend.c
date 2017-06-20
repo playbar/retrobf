@@ -97,7 +97,7 @@ void main_exit(void *args)
  **/
 int rarch_main(int argc, char *argv[], void *data)
 {
-   void *args                      = (void*)data;
+   void *args = (void*)data;
 
    rarch_ctl(RARCH_CTL_PREINIT, NULL);
    frontend_driver_init_first(args);
@@ -121,25 +121,21 @@ int rarch_main(int argc, char *argv[], void *data)
 
    ui_companion_driver_init_first();
 
-#ifndef HAVE_MAIN
    do
    {
        pthread_t  pid = pthread_self();
        LOGE("rarch_main pid: %ld", pid);
       unsigned sleep_ms = 0;
-      int           ret = runloop_iterate(&sleep_ms);
+      int ret = runloop_iterate(&sleep_ms);
 
       if (ret == 1 && sleep_ms > 0)
          retro_sleep(sleep_ms);
-
       task_queue_check();
-
       if (ret == -1)
          break;
    }while(1);
 
    main_exit(args);
-#endif
 
    return 0;
 }

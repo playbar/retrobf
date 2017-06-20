@@ -239,8 +239,8 @@ static inline float VectorNorm(const std::array<float, 4>& vect) {
   return std::sqrt(vect[0] * vect[0] + vect[1] * vect[1] + vect[2] * vect[2]);
 }
 
-static float VectorInnerProduct(const std::array<float, 4>& vect1,
-                                const std::array<float, 4>& vect2) {
+static float VectorInnerProduct(const std::array<float, 4>& vect1, const std::array<float, 4>& vect2)
+{
   float product = 0;
   for (int i = 0; i < 3; i++) {
     product += vect1[i] * vect2[i];
@@ -363,8 +363,7 @@ void TreasureHuntRenderer::InitializeGl() {
 
   // Because we are using 2X MSAA, we can render to half as many pixels and
   // achieve similar quality.
-  render_size_ =
-      HalfPixelCount(gvr_api_->GetMaximumEffectiveRenderTargetSize());
+  render_size_ = HalfPixelCount(gvr_api_->GetMaximumEffectiveRenderTargetSize());
   std::vector<gvr::BufferSpec> specs;
 
   specs.push_back(gvr_api_->CreateBufferSpec());
@@ -389,14 +388,12 @@ void TreasureHuntRenderer::InitializeGl() {
   specs[1].SetSamples(1);
   swapchain_.reset(new gvr::SwapChain(gvr_api_->CreateSwapChain(specs)));
 
-  viewport_list_.reset(
-      new gvr::BufferViewportList(gvr_api_->CreateEmptyBufferViewportList()));
+  viewport_list_.reset(new gvr::BufferViewportList(gvr_api_->CreateEmptyBufferViewportList()));
 
   // Initialize audio engine and preload sample in a separate thread to avoid
   // any delay during construction and app initialization. Only do this once.
   if (!audio_initialization_thread_.joinable()) {
-    audio_initialization_thread_ =
-        std::thread(&TreasureHuntRenderer::LoadAndPlayCubeSound, this);
+    audio_initialization_thread_ = std::thread(&TreasureHuntRenderer::LoadAndPlayCubeSound, this);
   }
 }
 

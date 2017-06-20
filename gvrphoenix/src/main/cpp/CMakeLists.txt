@@ -191,7 +191,6 @@ add_library(gvrretro SHARED
                 ${RARCH_DIR}/managers/state_manager.c
                 ${RARCH_DIR}/frontend/frontend_driver.c
                 ${RARCH_DIR}/frontend/drivers/platform_linux.c
-                ${RARCH_DIR}/frontend/drivers/platform_null.c
                 ${RARCH_DIR}/src/core_info.c
                 ${RARCH_DIR}/ui/ui_companion_driver.c
                 ${RARCH_DIR}/ui/drivers/ui_null.c

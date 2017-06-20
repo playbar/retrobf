@@ -55,8 +55,7 @@ enum frontend_architecture
    FRONTEND_ARCH_TILE
 };
 
-typedef void (*environment_get_t)(int *argc, char *argv[], void *args,
-   void *params_data);
+typedef void (*environment_get_t)(int *argc, char *argv[], void *args, void *params_data);
 typedef void (*process_args_t)(int *argc, char *argv[]);
 
 typedef struct frontend_ctx_driver
@@ -85,30 +84,11 @@ typedef struct frontend_ctx_driver
    void (*destroy_signal_handler_state)(void);
    void (*attach_console)(void);
    void (*detach_console)(void);
-#ifdef HAVE_LAKKA
-   void (*get_lakka_version)(char *, size_t);
-#endif
-
    const char *ident;
-
    const struct video_driver *(*get_video_driver)(void);
 } frontend_ctx_driver_t;
 
-extern frontend_ctx_driver_t frontend_ctx_gx;
-extern frontend_ctx_driver_t frontend_ctx_wiiu;
-extern frontend_ctx_driver_t frontend_ctx_ps3;
-extern frontend_ctx_driver_t frontend_ctx_xdk;
-extern frontend_ctx_driver_t frontend_ctx_qnx;
-extern frontend_ctx_driver_t frontend_ctx_darwin;
 extern frontend_ctx_driver_t frontend_ctx_linux;
-extern frontend_ctx_driver_t frontend_ctx_bsd;
-extern frontend_ctx_driver_t frontend_ctx_psp;
-extern frontend_ctx_driver_t frontend_ctx_ctr;
-extern frontend_ctx_driver_t frontend_ctx_win32;
-extern frontend_ctx_driver_t frontend_ctx_xenon;
-extern frontend_ctx_driver_t frontend_ctx_emscripten;
-extern frontend_ctx_driver_t frontend_ctx_dos;
-extern frontend_ctx_driver_t frontend_ctx_null;
 
 /**
  * frontend_ctx_find_driver:
@@ -118,7 +98,7 @@ extern frontend_ctx_driver_t frontend_ctx_null;
  *
  * Returns: pointer to driver if successful, otherwise NULL.
  **/
-frontend_ctx_driver_t *frontend_ctx_find_driver(const char *ident);
+//frontend_ctx_driver_t *frontend_ctx_find_driver(const char *ident);
 
 frontend_ctx_driver_t *frontend_get_ptr(void);
 
@@ -129,7 +109,7 @@ frontend_ctx_driver_t *frontend_get_ptr(void);
  *
  * Returns: pointer to first suitable driver, otherwise NULL.
  **/
-frontend_ctx_driver_t *frontend_ctx_init_first(void);
+//frontend_ctx_driver_t *frontend_ctx_init_first(void);
 
 int frontend_driver_parse_drive_list(void *data, bool load_content);
 

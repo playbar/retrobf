@@ -1459,11 +1459,11 @@ bool task_push_start_content_from_cli(const char *core_path, const char *fullpat
                                       void *user_data)
 {
    /* Load content */
-//   if (!task_load_content_callback(content_info, true, true))
-//      return false;
+   if (!task_load_content_callback(content_info, true, true))
+      return false;
 
-   if (!task_push_start_current_core(content_info))
-      return -1;
+//   if (!task_push_start_current_core(content_info))
+//      return -1;
 
    return true;
 }

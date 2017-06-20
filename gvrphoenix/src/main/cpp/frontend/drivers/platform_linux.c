@@ -341,36 +341,17 @@ static void jni_thread_destruct(void *value)
 static void android_app_entry(void *data)
 {
    char arguments[]  = "retroarch";
-   char      *argv[] = {arguments,   NULL};
-   int          argc = 1;
+   char *argv[] = {arguments,   NULL};
+   int argc = 1;
 
-   if (rarch_main(argc, argv, data) != 0)
-      goto end;
-#ifndef HAVE_MAIN
-   do
-   {
-      unsigned sleep_ms = 0;
-      int ret = runloop_iterate(&sleep_ms);
-
-      if (ret == 1 && sleep_ms > 0)
-         retro_sleep(sleep_ms);
-      task_queue_check();
-      if (ret == -1)
-         break;
-   }while(1);
-
-   main_exit(data);
-#endif
-
-end:
+   rarch_main(argc, argv, data);
    exit(0);
 }
 
 static struct android_app* android_app_create(ANativeActivity* activity, void* savedState, size_t savedStateSize)
 {
    int msgpipe[2];
-   struct android_app *android_app =
-      (struct android_app*)calloc(1, sizeof(*android_app));
+   struct android_app *android_app = (struct android_app*)calloc(1, sizeof(*android_app));
 
    if (!android_app)
    {
@@ -1214,26 +1195,12 @@ frontend_ctx_driver_t frontend_ctx_linux = {
    frontend_linux_get_env,       /* environment_get */
    frontend_linux_init,          /* init */
    frontend_linux_deinit,        /* deinit */
-#ifdef HAVE_DYNAMIC
    NULL,                         /* exitspawn */
-#else
-   frontend_linux_exitspawn,     /* exitspawn */
-#endif
    NULL,                         /* process_args */
-#ifdef HAVE_DYNAMIC
    NULL,                         /* exec */
    NULL,                         /* set_fork */
-#else
-   frontend_linux_exec,          /* exec */
-   frontend_linux_set_fork,      /* set_fork */
-#endif
-#ifdef ANDROID
    frontend_android_shutdown,    /* shutdown */
    frontend_android_get_name,    /* get_name */
-#else
-   NULL,                         /* shutdown */
-   NULL,                         /* get_name */
-#endif
    frontend_linux_get_os,
    frontend_linux_get_rating,    /* get_rating */
    NULL,                         /* load_content */
@@ -1248,12 +1215,5 @@ frontend_ctx_driver_t frontend_ctx_linux = {
    frontend_linux_destroy_signal_handler_state,
    NULL,                         /* attach_console */
    NULL,                         /* detach_console */
-#ifdef HAVE_LAKKA
-   frontend_linux_get_lakka_version,    /* get_lakka_version */
-#endif
-#ifdef ANDROID
    "android"
-#else
-   "linux"
-#endif
 };

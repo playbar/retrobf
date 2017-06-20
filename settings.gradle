@@ -1,5 +1,5 @@
 //include ':nativeactivity'
 include ':googleplay'
-include ':phoenix'
+//include ':phoenix'
 include ':gvrres'
 include ':gvrphoenix'

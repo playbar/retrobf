@@ -97,7 +97,7 @@ void main_exit(void *args)
  **/
 int rarch_main(int argc, char *argv[], void *data)
 {
-   void *args                      = (void*)data;
+   void *args = (void*)data;
 
    rarch_ctl(RARCH_CTL_PREINIT, NULL);
    frontend_driver_init_first(args);
@@ -105,7 +105,7 @@ int rarch_main(int argc, char *argv[], void *data)
 
    // todo set path
 //    path_set(RARCH_PATH_CORE, "/data/user/0/com.retroarch/cores/2048_libretro_android.so");
-   path_set(RARCH_PATH_CORE, "lib2048.so");
+//   path_set(RARCH_PATH_CORE, "lib2048.so");
 
    if (frontend_driver_is_inited())
    {
@@ -122,13 +122,12 @@ int rarch_main(int argc, char *argv[], void *data)
 
    ui_companion_driver_init_first();
 
-#ifndef HAVE_MAIN
    do
    {
        pthread_t  pid = pthread_self();
        LOGE("rarch_main pid: %ld", pid);
       unsigned sleep_ms = 0;
-      int           ret = runloop_iterate(&sleep_ms);
+      int ret = runloop_iterate(&sleep_ms);
 
       if (ret == 1 && sleep_ms > 0)
          retro_sleep(sleep_ms);
@@ -140,7 +139,6 @@ int rarch_main(int argc, char *argv[], void *data)
    }while(1);
 
    main_exit(args);
-#endif
 
    return 0;
 }

@@ -15,7 +15,6 @@
  */
 
 #include <string.h>
-
 #include <compat/strl.h>
 #include <string/stdstring.h>
 
@@ -25,175 +24,17 @@
 
 #include "frontend_driver.h"
 
-static frontend_ctx_driver_t *frontend_ctx_drivers[] = {
-#if defined(EMSCRIPTEN)
-   &frontend_ctx_emscripten,
-#elif defined(__CELLOS_LV2__)
-   &frontend_ctx_ps3,
-#endif
-#if defined(_XBOX)
-   &frontend_ctx_xdk,
-#endif
-#if defined(GEKKO)
-   &frontend_ctx_gx,
-#endif
-#if defined(WIIU)
-   &frontend_ctx_wiiu,
-#endif
-#if defined(__QNX__)
-   &frontend_ctx_qnx,
-#endif
-#if defined(__APPLE__) && defined(__MACH__)
-   &frontend_ctx_darwin,
-#endif
-#if defined(__linux__)
-   &frontend_ctx_linux,
-#endif
-#if defined(BSD) && !defined(__MACH__)
-   &frontend_ctx_bsd,
-#endif
-#if defined(PSP) || defined(VITA)
-   &frontend_ctx_psp,
-#endif
-#if defined(_3DS)
-   &frontend_ctx_ctr,
-#endif
-#if defined(_WIN32) && !defined(_XBOX)
-   &frontend_ctx_win32,
-#endif
-#ifdef XENON
-   &frontend_ctx_xenon,
-#endif
-#ifdef DJGPP
-   &frontend_ctx_dos,
-#endif
-   &frontend_ctx_null,
-   NULL
-};
-
-#ifndef IS_SALAMANDER
 static frontend_ctx_driver_t *current_frontend_ctx;
-#endif
-
-/**
- * frontend_ctx_find_driver:
- * @ident               : Identifier name of driver to find.
- *
- * Finds driver with @ident. Does not initialize.
- *
- * Returns: pointer to driver if successful, otherwise NULL.
- **/
-frontend_ctx_driver_t *frontend_ctx_find_driver(const char *ident)
-{
-   unsigned i;
-
-   for (i = 0; frontend_ctx_drivers[i]; i++)
-   {
-      if (string_is_equal(frontend_ctx_drivers[i]->ident, ident))
-         return frontend_ctx_drivers[i];
-   }
-
-   return NULL;
-}
-
-/**
- * frontend_ctx_init_first:
- *
- * Finds first suitable driver and initialize.
- *
- * Returns: pointer to first suitable driver, otherwise NULL.
- **/
-frontend_ctx_driver_t *frontend_ctx_init_first(void)
-{
-   return frontend_ctx_drivers[0];
-}
 
 bool frontend_driver_get_core_extension(char *s, size_t len)
 {
-#ifdef HAVE_DYNAMIC
-
-#ifdef _WIN32
-   strlcpy(s, "dll", len);
-   return true;
-#elif defined(__APPLE__) || defined(__MACH__)
-   strlcpy(s, "dylib", len);
-   return true;
-#else
    strlcpy(s, "so", len);
    return true;
-#endif
-
-#else
-
-#if defined(__CELLOS_LV2__)
-   strlcpy(s, "self|bin", len);
-   return true;
-#elif defined(PSP)
-   strlcpy(s, "pbp", len);
-   return true;
-#elif defined(VITA)
-   strlcpy(s, "self|bin", len);
-   return true;
-#elif defined(_XBOX1)
-   strlcpy(s, "xbe", len);
-   return true;
-#elif defined(_XBOX360)
-   strlcpy(s, "xex", len);
-   return true;
-#elif defined(GEKKO)
-   strlcpy(s, "dol", len);
-   return true;
-#elif defined(HW_WUP)
-   strlcpy(s, "rpx|elf", len);
-   return true;
-#elif defined(__linux__)
-   strlcpy(s, "elf", len);
-   return true;
-#elif defined(_3DS)
-   strlcpy(s, "core", len);
-   return true;
-#else
-   return false;
-#endif
-
-#endif
 }
 
 bool frontend_driver_get_salamander_basename(char *s, size_t len)
 {
-#ifdef HAVE_DYNAMIC
    return false;
-#else
-
-#if defined(__CELLOS_LV2__)
-   strlcpy(s, "EBOOT.BIN", len);
-   return true;
-#elif defined(PSP)
-   strlcpy(s, "EBOOT.PBP", len);
-   return true;
-#elif defined(VITA)
-   strlcpy(s, "eboot.bin", len);
-   return true;
-#elif defined(_XBOX1)
-   strlcpy(s, "default.xbe", len);
-   return true;
-#elif defined(_XBOX360)
-   strlcpy(s, "default.xex", len);
-   return true;
-#elif defined(HW_RVL)
-   strlcpy(s, "boot.dol", len);
-   return true;
-#elif defined(HW_WUP)
-   strlcpy(s, "retroarch.rpx", len);
-   return true;
-#elif defined(_3DS)
-   strlcpy(s, "retroarch.core", len);
-   return true;
-#else
-   return false;
-#endif
-
-#endif
 }
 
 #ifndef IS_SALAMANDER
@@ -257,7 +98,7 @@ bool frontend_driver_is_inited(void)
 
 void frontend_driver_init_first(void *args)
 {
-   current_frontend_ctx = (frontend_ctx_driver_t*)frontend_ctx_init_first();
+   current_frontend_ctx = &frontend_ctx_linux;
 
    if (current_frontend_ctx && current_frontend_ctx->init)
       current_frontend_ctx->init(args);
