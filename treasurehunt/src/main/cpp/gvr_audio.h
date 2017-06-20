@@ -650,10 +650,9 @@ class AudioApi {
 /// Creates and initializes a gvr_audio_context.
 /// For more information, see gvr_audio_create().
 #ifdef __ANDROID__
-  bool Init(JNIEnv* env, jobject android_context, jobject class_loader,
-            AudioRenderingMode rendering_mode) {
-    context_ =
-        gvr_audio_create(env, android_context, class_loader, rendering_mode);
+  bool Init(JNIEnv* env, jobject android_context, jobject class_loader, AudioRenderingMode rendering_mode)
+  {
+    context_ = gvr_audio_create(env, android_context, class_loader, rendering_mode);
     return context_ != nullptr;
   }
 #else

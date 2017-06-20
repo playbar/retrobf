@@ -249,8 +249,7 @@ static float VectorInnerProduct(const std::array<float, 4>& vect1,
 }
 }  // anonymous namespace
 
-TreasureHuntRenderer::TreasureHuntRenderer(
-    gvr_context* gvr_context, std::unique_ptr<gvr::AudioApi> gvr_audio_api)
+TreasureHuntRenderer::TreasureHuntRenderer(gvr_context* gvr_context, std::unique_ptr<gvr::AudioApi> gvr_audio_api)
     : gvr_api_(gvr::GvrApi::WrapNonOwned(gvr_context)),
       gvr_audio_api_(std::move(gvr_audio_api)),
       viewport_left_(gvr_api_->CreateBufferViewport()),
@@ -267,7 +266,8 @@ TreasureHuntRenderer::TreasureHuntRenderer(
       audio_source_id_(-1),
       success_source_id_(-1),
       gvr_controller_api_(nullptr),
-      gvr_viewer_type_(gvr_api_->GetViewerType()) {
+      gvr_viewer_type_(gvr_api_->GetViewerType())
+{
   ResumeControllerApiAsNeeded();
   if (gvr_viewer_type_ == GVR_VIEWER_TYPE_CARDBOARD) {
     LOGD("Viewer type: CARDBOARD");
@@ -291,16 +291,11 @@ void TreasureHuntRenderer::InitializeGl() {
   LOGD(multiview_enabled_ ? "Using multiview." : "Not using multiview.");
 
   int index = multiview_enabled_ ? 1 : 0;
-  const int vertex_shader =
-      LoadGLShader(GL_VERTEX_SHADER, &kDiffuseLightingVertexShaders[index]);
-  const int grid_shader =
-      LoadGLShader(GL_FRAGMENT_SHADER, &kGridFragmentShaders[index]);
-  const int pass_through_shader =
-      LoadGLShader(GL_FRAGMENT_SHADER, &kPassthroughFragmentShaders[index]);
-  const int reticle_vertex_shader =
-      LoadGLShader(GL_VERTEX_SHADER, &kReticleVertexShaders[index]);
-  const int reticle_fragment_shader =
-      LoadGLShader(GL_FRAGMENT_SHADER, &kReticleFragmentShaders[index]);
+  const int vertex_shader = LoadGLShader(GL_VERTEX_SHADER, &kDiffuseLightingVertexShaders[index]);
+  const int grid_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kGridFragmentShaders[index]);
+  const int pass_through_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kPassthroughFragmentShaders[index]);
+  const int reticle_vertex_shader = LoadGLShader(GL_VERTEX_SHADER, &kReticleVertexShaders[index]);
+  const int reticle_fragment_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kReticleFragmentShaders[index]);
 
   cube_program_ = glCreateProgram();
   glAttachShader(cube_program_, vertex_shader);
@@ -314,8 +309,7 @@ void TreasureHuntRenderer::InitializeGl() {
 
   cube_model_param_ = glGetUniformLocation(cube_program_, "u_Model");
   cube_modelview_param_ = glGetUniformLocation(cube_program_, "u_MVMatrix");
-  cube_modelview_projection_param_ =
-      glGetUniformLocation(cube_program_, "u_MVP");
+  cube_modelview_projection_param_ = glGetUniformLocation(cube_program_, "u_MVP");
   cube_light_pos_param_ = glGetUniformLocation(cube_program_, "u_LightPos");
 
   CheckGLError("Cube program params");
@@ -334,8 +328,7 @@ void TreasureHuntRenderer::InitializeGl() {
 
   floor_model_param_ = glGetUniformLocation(floor_program_, "u_Model");
   floor_modelview_param_ = glGetUniformLocation(floor_program_, "u_MVMatrix");
-  floor_modelview_projection_param_ =
-      glGetUniformLocation(floor_program_, "u_MVP");
+  floor_modelview_projection_param_ = glGetUniformLocation(floor_program_, "u_MVP");
   floor_light_pos_param_ = glGetUniformLocation(floor_program_, "u_LightPos");
 
   CheckGLError("Floor program params");
@@ -349,8 +342,7 @@ void TreasureHuntRenderer::InitializeGl() {
   CheckGLError("Reticle program");
 
   reticle_position_param_ = glGetAttribLocation(reticle_program_, "a_Position");
-  reticle_modelview_projection_param_ =
-      glGetUniformLocation(reticle_program_, "u_MVP");
+  reticle_modelview_projection_param_ = glGetUniformLocation(reticle_program_, "u_MVP");
 
   CheckGLError("Reticle program params");
 
@@ -475,8 +467,7 @@ void TreasureHuntRenderer::DrawFrame() {
   const gvr_rectf fullscreen = { 0, 1, 0, 1 };
   reticle_viewport.SetSourceUv(fullscreen);
 
-  gvr::Mat4f controller_matrix =
-      ControllerQuatToMatrix(gvr_controller_state_.GetOrientation());
+  gvr::Mat4f controller_matrix = ControllerQuatToMatrix(gvr_controller_state_.GetOrientation());
   model_cursor_ = MatrixMul(controller_matrix, model_reticle_);
 
   gvr::Mat4f eye_views[2];
@@ -502,16 +493,11 @@ void TreasureHuntRenderer::DrawFrame() {
     modelview_cube_[eye] = MatrixMul(eye_views[eye], model_cube_);
     modelview_floor_[eye] = MatrixMul(eye_views[eye], model_floor_);
     const gvr_rectf fov = viewport[eye]->GetSourceFov();
-    const gvr::Mat4f perspective =
-        PerspectiveMatrixFromView(fov, kZNear, kZFar);
-    modelview_projection_cube_[eye] =
-        MatrixMul(perspective, modelview_cube_[eye]);
-    modelview_projection_floor_[eye] =
-        MatrixMul(perspective, modelview_floor_[eye]);
-    light_pos_eye_space_[eye] =
-        Vec4ToVec3(MatrixVectorMul(eye_views[eye], light_pos_world_space_));
-    modelview_projection_cursor_[eye] =
-        MatrixMul(perspective, MatrixMul(eye_views[eye], model_cursor_));
+    const gvr::Mat4f perspective = PerspectiveMatrixFromView(fov, kZNear, kZFar);
+    modelview_projection_cube_[eye] = MatrixMul(perspective, modelview_cube_[eye]);
+    modelview_projection_floor_[eye] = MatrixMul(perspective, modelview_floor_[eye]);
+    light_pos_eye_space_[eye] = Vec4ToVec3(MatrixVectorMul(eye_views[eye], light_pos_world_space_));
+    modelview_projection_cursor_[eye] = MatrixMul(perspective, MatrixMul(eye_views[eye], model_cursor_));
   }
 
   glEnable(GL_DEPTH_TEST);
