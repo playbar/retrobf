@@ -287,7 +287,7 @@ TreasureHuntRenderer::~TreasureHuntRenderer() {
 
 void TreasureHuntRenderer::InitializeGl() {
   gvr_api_->InitializeGl();
-  multiview_enabled_ = gvr_api_->IsFeatureSupported(GVR_FEATURE_MULTIVIEW);
+  multiview_enabled_ = false; //gvr_api_->IsFeatureSupported(GVR_FEATURE_MULTIVIEW);
   LOGD(multiview_enabled_ ? "Using multiview." : "Not using multiview.");
 
   int index = multiview_enabled_ ? 1 : 0;
@@ -395,6 +395,8 @@ void TreasureHuntRenderer::InitializeGl() {
   if (!audio_initialization_thread_.joinable()) {
     audio_initialization_thread_ = std::thread(&TreasureHuntRenderer::LoadAndPlayCubeSound, this);
   }
+
+
 }
 
 void TreasureHuntRenderer::ResumeControllerApiAsNeeded() {

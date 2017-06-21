@@ -176,20 +176,20 @@ static void gl_overlay_vertex_geom(void *data,
       return;
    }
 
-   vertex          = (GLfloat*)&gl->overlay_vertex_coord[image * 8];
+   vertex = (GLfloat*)&gl->overlay_vertex_coord[image * 8];
 
    /* Flipped, so we preserve top-down semantics. */
-   y               = 1.0f - y;
-   h               = -h;
+   y = 1.0f - y;
+   h = -h;
 
-   vertex[0]       = x;
-   vertex[1]       = y;
-   vertex[2]       = x + w;
-   vertex[3]       = y;
-   vertex[4]       = x;
-   vertex[5]       = y + h;
-   vertex[6]       = x + w;
-   vertex[7]       = y + h;
+   vertex[0] = x;
+   vertex[1] = y;
+   vertex[2] = x + w;
+   vertex[3] = y;
+   vertex[4] = x;
+   vertex[5] = y + h;
+   vertex[6] = x + w;
+   vertex[7] = y + h;
 }
 
 static void gl_overlay_tex_geom(void *data,

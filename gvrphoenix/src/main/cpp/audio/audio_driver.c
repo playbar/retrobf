@@ -327,14 +327,12 @@ static bool audio_driver_init_internal(bool audio_cb_inited)
    size_t max_bufsamples = AUDIO_CHUNK_SIZE_NONBLOCKING * 2;
    settings_t *settings  = config_get_ptr();
    /* Accomodate rewind since at some point we might have two full buffers. */
-   size_t outsamples_max = AUDIO_CHUNK_SIZE_NONBLOCKING * 2 * AUDIO_MAX_RATIO *
-      settings->floats.slowmotion_ratio;
+   size_t outsamples_max = AUDIO_CHUNK_SIZE_NONBLOCKING * 2 * AUDIO_MAX_RATIO * settings->floats.slowmotion_ratio;
 
    convert_s16_to_float_init_simd();
    convert_float_to_s16_init_simd();
 
-   conv_buf = (int16_t*)malloc(outsamples_max
-         * sizeof(int16_t));
+   conv_buf = (int16_t*)malloc(outsamples_max * sizeof(int16_t));
    /* Used for recording even if audio isn't enabled. */
    retro_assert(conv_buf != NULL);
 
@@ -342,9 +340,9 @@ static bool audio_driver_init_internal(bool audio_cb_inited)
       goto error;
 
    audio_driver_output_samples_conv_buf = conv_buf;
-   audio_driver_chunk_block_size        = AUDIO_CHUNK_SIZE_BLOCKING;
-   audio_driver_chunk_nonblock_size     = AUDIO_CHUNK_SIZE_NONBLOCKING;
-   audio_driver_chunk_size              = audio_driver_chunk_block_size;
+   audio_driver_chunk_block_size = AUDIO_CHUNK_SIZE_BLOCKING;
+   audio_driver_chunk_nonblock_size = AUDIO_CHUNK_SIZE_NONBLOCKING;
+   audio_driver_chunk_size = audio_driver_chunk_block_size;
 
    /* Needs to be able to hold full content of a full max_bufsamples
     * in addition to its own. */

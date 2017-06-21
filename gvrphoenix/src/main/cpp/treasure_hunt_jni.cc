@@ -22,17 +22,17 @@
 #include "gvr.h"
 #include "gvr_audio.h"
 
-#define JNI_METHOD(return_type, method_name) \
-  JNIEXPORT return_type JNICALL              \
-      Java_com_mj_vr_MainActivity_##method_name
+#define JNI_METHOD(return_type, method_name) JNIEXPORT return_type JNICALL Java_com_mj_vr_MainActivity_##method_name
 
 namespace {
 
-inline jlong jptr(TreasureHuntRenderer *native_treasure_hunt) {
+inline jlong jptr(TreasureHuntRenderer *native_treasure_hunt)
+{
   return reinterpret_cast<intptr_t>(native_treasure_hunt);
 }
 
-inline TreasureHuntRenderer *native(jlong ptr) {
+inline TreasureHuntRenderer *native(jlong ptr)
+{
   return reinterpret_cast<TreasureHuntRenderer *>(ptr);
 }
 }  // anonymous namespace
