@@ -43,6 +43,7 @@
             <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
             <!--android:enableVrMode="@string/gvr_vr_mode_component"-->
             <!--android:resizeableActivity="false">-->
+            <!--<meta-data android:name="android.app.lib_name" android:value="gvrretro" />-->
             <!--<meta-data android:name="com.google.android.vr.icon" android:resource="@drawable/vr_icon" />-->
             <!--<meta-data android:name="com.google.android.vr.icon_background" android:resource="@drawable/vr_icon_background" />-->
             <!--<intent-filter>-->
