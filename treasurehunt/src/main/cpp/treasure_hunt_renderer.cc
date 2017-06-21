@@ -15,7 +15,7 @@
 
 #include "treasure_hunt_renderer.h"  // NOLINT
 #include "treasure_hunt_shaders.h"  // NOLINT
-#include "Instancing.h"
+#include "Texture2D.h"
 
 #include <android/log.h>
 #include <assert.h>
@@ -176,8 +176,7 @@ namespace {
         return result;
     }
 
-    static gvr::Recti CalculatePixelSpaceRect(const gvr::Sizei& texture_size,
-                                              const gvr::Rectf& texture_rect) {
+    static gvr::Recti CalculatePixelSpaceRect(const gvr::Sizei& texture_size, const gvr::Rectf& texture_rect) {
         const float width = static_cast<float>(texture_size.width);
         const float height = static_cast<float>(texture_size.height);
         const gvr::Rectf rect = ModulateRect(texture_rect, width, height);
@@ -193,15 +192,6 @@ namespace {
         static std::mt19937 random_generator(random_device());
         static std::uniform_real_distribution<float> random_distribution(0, 1);
         return random_distribution(random_generator);
-    }
-
-    static void CheckGLError(const char* label) {
-        int gl_error = glGetError();
-        if (gl_error != GL_NO_ERROR) {
-            LOGW("GL error @ %s: %d", label, gl_error);
-            // Crash immediately to make OpenGL errors obvious.
-            abort();
-        }
     }
 
     static gvr::Sizei HalfPixelCount(const gvr::Sizei& in) {
@@ -269,7 +259,7 @@ TreasureHuntRenderer::TreasureHuntRenderer(gvr_context* gvr_context, std::unique
           cube_found_colors_(world_layout_data_.cube_found_color.data()),
           cube_normals_(world_layout_data_.cube_normals.data()),
           reticle_vertices_(world_layout_data_.reticle_coords.data()),
-          reticle_render_size_{128, 128},
+          reticle_render_size_{1024, 1024},
           light_pos_world_space_({0.0f, 2.0f, 0.0f, 1.0f}),
           object_distance_(kMinCubeDistance),
           audio_source_id_(-1),
@@ -285,6 +275,7 @@ TreasureHuntRenderer::TreasureHuntRenderer(gvr_context* gvr_context, std::unique
     } else {
         LOGE("Unexpected viewer type.");
     }
+    memset ( &esContext, 0, sizeof ( ESContext ) );
 }
 
 TreasureHuntRenderer::~TreasureHuntRenderer() {
@@ -296,7 +287,7 @@ TreasureHuntRenderer::~TreasureHuntRenderer() {
 
 void TreasureHuntRenderer::InitializeGl() {
     gvr_api_->InitializeGl();
-    multiview_enabled_ = gvr_api_->IsFeatureSupported(GVR_FEATURE_MULTIVIEW);
+    multiview_enabled_ = false; // gvr_api_->IsFeatureSupported(GVR_FEATURE_MULTIVIEW);
     LOGD(multiview_enabled_ ? "Using multiview." : "Not using multiview.");
 
     int index = multiview_enabled_ ? 1 : 0;
@@ -372,8 +363,7 @@ void TreasureHuntRenderer::InitializeGl() {
 
     // Because we are using 2X MSAA, we can render to half as many pixels and
     // achieve similar quality.
-    render_size_ =
-            HalfPixelCount(gvr_api_->GetMaximumEffectiveRenderTargetSize());
+    render_size_ = HalfPixelCount(gvr_api_->GetMaximumEffectiveRenderTargetSize());
     std::vector<gvr::BufferSpec> specs;
 
     specs.push_back(gvr_api_->CreateBufferSpec());
@@ -398,8 +388,7 @@ void TreasureHuntRenderer::InitializeGl() {
     specs[1].SetSamples(1);
     swapchain_.reset(new gvr::SwapChain(gvr_api_->CreateSwapChain(specs)));
 
-    viewport_list_.reset(
-            new gvr::BufferViewportList(gvr_api_->CreateEmptyBufferViewportList()));
+    viewport_list_.reset(new gvr::BufferViewportList(gvr_api_->CreateEmptyBufferViewportList()));
 
     // Initialize audio engine and preload sample in a separate thread to avoid
     // any delay during construction and app initialization. Only do this once.
@@ -407,7 +396,7 @@ void TreasureHuntRenderer::InitializeGl() {
         audio_initialization_thread_ =
                 std::thread(&TreasureHuntRenderer::LoadAndPlayCubeSound, this);
     }
-    InitMain(&esContext);
+    Init(&esContext);
 }
 
 void TreasureHuntRenderer::SurfaceChange(int width, int height)
@@ -488,25 +477,23 @@ void TreasureHuntRenderer::DrawFrame()
         DrawWorld(kLeftView);
         DrawWorld(kRightView);
     }
+//    DrawCardboardReticle();
     frame.Unbind();
 
     frame.BindBuffer(1);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // In Cardboard viewer, draw head-locked reticle on a separate layer since the
-    // cursor is controlled by head movement. In Daydream viewer, this layer is
-    // left empty, since the cursor is controlled by controller and drawn with
-    // DrawDaydreamCursor() in the same frame buffer as the virtual scene.
-    if (gvr_viewer_type_ == GVR_VIEWER_TYPE_CARDBOARD) {
+//    if (gvr_viewer_type_ == GVR_VIEWER_TYPE_CARDBOARD) {
         DrawCardboardReticle();
-    }
+
+//    }
     frame.Unbind();
 
     // Submit frame.
     frame.Submit(*viewport_list_, head_view_);
 
-    CheckGLError("onDrawFrame");
+//    CheckGLError("onDrawFrame");
 
     // Update audio head rotation in audio API.
     gvr_audio_api_->SetHeadPose(head_view_);
@@ -561,10 +548,9 @@ void TreasureHuntRenderer::ProcessControllerInput() {
 void TreasureHuntRenderer::PrepareFramebuffer() {
     // Because we are using 2X MSAA, we can render to half as many pixels and
     // achieve similar quality.
-    const gvr::Sizei recommended_size =
-            HalfPixelCount(gvr_api_->GetMaximumEffectiveRenderTargetSize());
-    if (render_size_.width != recommended_size.width ||
-        render_size_.height != recommended_size.height) {
+    const gvr::Sizei recommended_size = HalfPixelCount(gvr_api_->GetMaximumEffectiveRenderTargetSize());
+    if (render_size_.width != recommended_size.width || render_size_.height != recommended_size.height)
+    {
         // We need to resize the framebuffer.
         swapchain_->ResizeBuffer(0, recommended_size);
         render_size_ = recommended_size;
@@ -627,35 +613,22 @@ void TreasureHuntRenderer::DrawWorld(ViewType view) {
     if (view == kMultiview) {
         glViewport(0, 0, render_size_.width / 2, render_size_.height);
     } else {
-        const gvr::BufferViewport& viewport =
-                view == kLeftView ? viewport_left_ : viewport_right_;
-        const gvr::Recti pixel_rect =
-                CalculatePixelSpaceRect(render_size_, viewport.GetSourceUv());
-        glViewport(pixel_rect.left, pixel_rect.bottom,
-                   pixel_rect.right - pixel_rect.left,
-                   pixel_rect.top - pixel_rect.bottom);
+        const gvr::BufferViewport& viewport = view == kLeftView ? viewport_left_ : viewport_right_;
+        const gvr::Recti pixel_rect = CalculatePixelSpaceRect(render_size_, viewport.GetSourceUv());
+        glViewport(pixel_rect.left, pixel_rect.bottom, pixel_rect.right - pixel_rect.left, pixel_rect.top - pixel_rect.bottom);
     }
+
     DrawCube(view);
     DrawFloor(view);
+    Draw(&esContext);
     if (gvr_viewer_type_ == GVR_VIEWER_TYPE_DAYDREAM) {
         DrawDaydreamCursor(view);
     }
-//    if ( esContext.updateFunc != NULL )
-//    {
-//        float curTime = GetCurrentTime();
-//        float deltaTime =  ( curTime - lastTime );
-//        lastTime = curTime;
-//        esContext.updateFunc ( &esContext, deltaTime );
-//    }
-//
-//    if ( esContext.drawFunc != NULL )
-//    {
-//        esContext.drawFunc ( &esContext );
-//    }
-    CheckGLError("Drawing DrawWorld");
+
 }
 
-void TreasureHuntRenderer::DrawCube(ViewType view) {
+void TreasureHuntRenderer::DrawCube(ViewType view)
+{
     glUseProgram(cube_program_);
 
     if (view == kMultiview) {
@@ -740,6 +713,7 @@ void TreasureHuntRenderer::DrawDaydreamCursor(ViewType view) {
 
 void TreasureHuntRenderer::DrawCardboardReticle() {
     glViewport(0, 0, reticle_render_size_.width, reticle_render_size_.height);
+//    glViewport( 0, 0, 32, 32 );
     glUseProgram(reticle_program_);
     const gvr::Mat4f uniform_matrix = {{{1.f, 0.f, 0.f, 0.f},
                                                {0.f, 1.f, 0.f, 0.f},

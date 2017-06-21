@@ -927,6 +927,7 @@ public class BFSurfaceView extends SurfaceView implements SurfaceHolder.Callback
                     EGL10.EGL_ALPHA_SIZE, alphaSize,
                     EGL10.EGL_DEPTH_SIZE, depthSize,
                     EGL10.EGL_STENCIL_SIZE, stencilSize,
+                    EGL10.EGL_SAMPLE_BUFFERS, 0,
                     EGL10.EGL_NONE});
             mValue = new int[1];
             mRedSize = redSize;

@@ -15,7 +15,7 @@ add_library(draw SHARED
             esShapes.cpp
             esTransform.cpp
             esUtil.cpp
-            Instancing.cpp
+            Texture2D.cpp
             )
 
 add_library(lib_audio SHARED IMPORTED )

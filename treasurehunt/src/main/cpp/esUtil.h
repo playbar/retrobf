@@ -50,11 +50,17 @@
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #endif
-#ifdef __cplusplus
 
+#define LOG_TAG "native"
+#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+#define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
+#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
+
+#ifdef __cplusplus
 extern "C" {
 #endif
 
+void CheckGLError(const char* label);
 
 ///
 //  Macros
@@ -101,38 +107,13 @@ struct ESContext
 {
    /// Put platform specific data here
    void       *platformData;
-
    /// Put your user data here...
    void       *userData;
-
    /// Window width
    GLint       width;
-
    /// Window height
    GLint       height;
 
-#ifndef __APPLE__
-   /// Display handle
-   EGLNativeDisplayType eglNativeDisplay;
-
-   /// Window handle
-   EGLNativeWindowType  eglNativeWindow;
-
-   /// EGL display
-   EGLDisplay  eglDisplay;
-
-   /// EGL context
-   EGLContext  eglContext;
-
-   /// EGL surface
-   EGLSurface  eglSurface;
-#endif
-
-   /// Callbacks
-   void ( ESCALLBACK *drawFunc ) ( ESContext * );
-   void ( ESCALLBACK *shutdownFunc ) ( ESContext * );
-   void ( ESCALLBACK *keyFunc ) ( ESContext *, unsigned char, int, int );
-   void ( ESCALLBACK *updateFunc ) ( ESContext *, float deltaTime );
 };
 
 

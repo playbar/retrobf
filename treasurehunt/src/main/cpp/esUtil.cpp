@@ -103,6 +103,17 @@ __attribute__ ( ( packed ) )
 //    Check whether EGL_KHR_create_context extension is supported.  If so,
 //    return EGL_OPENGL_ES3_BIT_KHR instead of EGL_OPENGL_ES2_BIT
 //
+
+void CheckGLError(const char* label)
+{
+    int gl_error = glGetError();
+    if (gl_error != GL_NO_ERROR) {
+        LOGE("GL error @ %s: %d", label, gl_error);
+        // Crash immediately to make OpenGL errors obvious.
+//            abort();
+    }
+}
+
 EGLint GetContextRenderableType ( EGLDisplay eglDisplay )
 {
 #ifdef EGL_KHR_create_context
@@ -119,163 +130,6 @@ EGLint GetContextRenderableType ( EGLDisplay eglDisplay )
    return EGL_OPENGL_ES2_BIT;
 }
 #endif
-
-//////////////////////////////////////////////////////////////////
-//
-//  Public Functions
-//
-//
-
-///
-//  esCreateWindow()
-//
-//      title - name for title bar of window
-//      width - width of window to create
-//      height - height of window to create
-//      flags  - bitwise or of window creation flags
-//          ES_WINDOW_ALPHA       - specifies that the framebuffer should have alpha
-//          ES_WINDOW_DEPTH       - specifies that a depth buffer should be created
-//          ES_WINDOW_STENCIL     - specifies that a stencil buffer should be created
-//          ES_WINDOW_MULTISAMPLE - specifies that a multi-sample buffer should be created
-//
-GLboolean ESUTIL_API esCreateWindow ( ESContext *esContext, const char *title, GLint width, GLint height, GLuint flags )
-{
-#ifndef __APPLE__
-   EGLConfig config;
-   EGLint majorVersion;
-   EGLint minorVersion;
-   EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE };
-
-   if ( esContext == NULL )
-   {
-      return GL_FALSE;
-   }
-
-#ifdef ANDROID
-   // For Android, get the width/height from the window rather than what the
-   // application requested.
-   esContext->width = ANativeWindow_getWidth ( esContext->eglNativeWindow );
-   esContext->height = ANativeWindow_getHeight ( esContext->eglNativeWindow );
-#else
-   esContext->width = width;
-   esContext->height = height;
-#endif
-
-   esContext->eglDisplay = eglGetDisplay( esContext->eglNativeDisplay );
-   if ( esContext->eglDisplay == EGL_NO_DISPLAY )
-   {
-      return GL_FALSE;
-   }
-
-   // Initialize EGL
-   if ( !eglInitialize ( esContext->eglDisplay, &majorVersion, &minorVersion ) )
-   {
-      return GL_FALSE;
-   }
-
-   {
-      EGLint numConfigs = 0;
-      EGLint attribList[] =
-      {
-         EGL_RED_SIZE,       5,
-         EGL_GREEN_SIZE,     6,
-         EGL_BLUE_SIZE,      5,
-         EGL_ALPHA_SIZE,     ( flags & ES_WINDOW_ALPHA ) ? 8 : EGL_DONT_CARE,
-         EGL_DEPTH_SIZE,     ( flags & ES_WINDOW_DEPTH ) ? 8 : EGL_DONT_CARE,
-         EGL_STENCIL_SIZE,   ( flags & ES_WINDOW_STENCIL ) ? 8 : EGL_DONT_CARE,
-         EGL_SAMPLE_BUFFERS, ( flags & ES_WINDOW_MULTISAMPLE ) ? 1 : 0,
-         // if EGL_KHR_create_context extension is supported, then we will use
-         // EGL_OPENGL_ES3_BIT_KHR instead of EGL_OPENGL_ES2_BIT in the attribute list
-         EGL_RENDERABLE_TYPE, GetContextRenderableType ( esContext->eglDisplay ),
-         EGL_NONE
-      };
-
-      // Choose config
-      if ( !eglChooseConfig ( esContext->eglDisplay, attribList, &config, 1, &numConfigs ) )
-      {
-         return GL_FALSE;
-      }
-
-      if ( numConfigs < 1 )
-      {
-         return GL_FALSE;
-      }
-   }
-
-
-#ifdef ANDROID
-   // For Android, need to get the EGL_NATIVE_VISUAL_ID and set it using ANativeWindow_setBuffersGeometry
-   {
-      EGLint format = 0;
-      eglGetConfigAttrib ( esContext->eglDisplay, config, EGL_NATIVE_VISUAL_ID, &format );
-      ANativeWindow_setBuffersGeometry ( esContext->eglNativeWindow, 0, 0, format );
-   }
-#endif // ANDROID
-
-   // Create a surface
-   esContext->eglSurface = eglCreateWindowSurface ( esContext->eglDisplay, config, 
-                                                    esContext->eglNativeWindow, NULL );
-
-   if ( esContext->eglSurface == EGL_NO_SURFACE )
-   {
-      return GL_FALSE;
-   }
-
-   // Create a GL context
-   esContext->eglContext = eglCreateContext ( esContext->eglDisplay, config, 
-                                              EGL_NO_CONTEXT, contextAttribs );
-
-   if ( esContext->eglContext == EGL_NO_CONTEXT )
-   {
-      return GL_FALSE;
-   }
-
-   // Make the context current
-   if ( !eglMakeCurrent ( esContext->eglDisplay, esContext->eglSurface, 
-                          esContext->eglSurface, esContext->eglContext ) )
-   {
-      return GL_FALSE;
-   }
-
-#endif // #ifndef __APPLE__
-
-   return GL_TRUE;
-}
-
-///
-//  esRegisterDrawFunc()
-//
-void ESUTIL_API esRegisterDrawFunc ( ESContext *esContext, void ( ESCALLBACK *drawFunc ) ( ESContext * ) )
-{
-   esContext->drawFunc = drawFunc;
-}
-
-///
-//  esRegisterShutdownFunc()
-//
-void ESUTIL_API esRegisterShutdownFunc ( ESContext *esContext, void ( ESCALLBACK *shutdownFunc ) ( ESContext * ) )
-{
-   esContext->shutdownFunc = shutdownFunc;
-}
-
-///
-//  esRegisterUpdateFunc()
-//
-void ESUTIL_API esRegisterUpdateFunc ( ESContext *esContext, void ( ESCALLBACK *updateFunc ) ( ESContext *, float ) )
-{
-   esContext->updateFunc = updateFunc;
-}
-
-
-///
-//  esRegisterKeyFunc()
-//
-void ESUTIL_API esRegisterKeyFunc ( ESContext *esContext,
-                                    void ( ESCALLBACK *keyFunc ) ( ESContext *, unsigned char, int, int ) )
-{
-   esContext->keyFunc = keyFunc;
-}
-
 
 ///
 // esLogMessage()

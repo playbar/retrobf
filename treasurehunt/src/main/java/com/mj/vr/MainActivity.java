@@ -85,7 +85,7 @@ public class MainActivity extends Activity {
         // Add the GLSurfaceView to the GvrLayout.
         surfaceView = new BFSurfaceView(this);
         surfaceView.setEGLContextClientVersion(3);
-        surfaceView.setEGLConfigChooser(8, 8, 8, 0, 0, 0);
+        surfaceView.setEGLConfigChooser(8, 8, 8, 0, 8, 0);
         surfaceView.setPreserveEGLContextOnPause(true);
         surfaceView.setRenderer(
                 new BFSurfaceView.Renderer() {
