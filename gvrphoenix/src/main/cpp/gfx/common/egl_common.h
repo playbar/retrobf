@@ -54,7 +54,6 @@ RETRO_BEGIN_DECLS
 typedef struct
 {
    EGLContext ctx;
-   EGLContext hw_ctx;
    EGLSurface surf;
    EGLDisplay dpy;
    EGLConfig config;
@@ -63,8 +62,6 @@ typedef struct
    unsigned major;
    unsigned minor;
 
-   /* egl "private" */
-   bool use_hw_ctx;
 } egl_ctx_data_t;
 
 extern bool g_egl_inited;

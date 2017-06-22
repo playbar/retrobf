@@ -38,7 +38,7 @@
 
 #include "../../frontend/drivers/platform_linux.h"
 
-static enum gfx_ctx_api android_api           = GFX_CTX_NONE;
+static enum gfx_ctx_api android_api           = GFX_CTX_OPENGL_ES_API;
 
 /* forward declaration */
 int system_property_get(const char *cmd, const char *args, char *value);

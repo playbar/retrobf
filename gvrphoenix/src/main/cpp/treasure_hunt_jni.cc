@@ -22,7 +22,8 @@
 #include "gvr.h"
 #include "gvr_audio.h"
 
-#define JNI_METHOD(return_type, method_name) JNIEXPORT return_type JNICALL Java_com_mj_vr_MainActivity_##method_name
+#define JNI_METHOD(return_type, method_name) \
+JNIEXPORT return_type JNICALL Java_com_retroarch_browser_retroactivity_RetroActivityFuture_##method_name
 
 namespace {
 

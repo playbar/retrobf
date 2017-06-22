@@ -345,7 +345,7 @@ static void android_app_entry(void *data)
    int argc = 1;
 
    rarch_main(argc, argv, data);
-   exit(0);
+    return;
 }
 
 static struct android_app* android_app_create(ANativeActivity* activity, void* savedState, size_t savedStateSize)

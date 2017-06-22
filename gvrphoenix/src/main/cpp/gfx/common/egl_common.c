@@ -16,6 +16,7 @@
 #include <stdlib.h>
 
 #include <retro_assert.h>
+#include <src/log.h>
 
 #ifdef HAVE_CONFIG_H
 #include "../../config.h"
@@ -109,23 +110,10 @@ void egl_destroy(egl_ctx_data_t *egl)
 {
    if (egl->dpy)
    {
-#if defined HAVE_OPENGL
-#if !defined(RARCH_MOBILE)
-      if (egl->ctx != EGL_NO_CONTEXT)
-      {
-         glFlush();
-         glFinish();
-      }
-#endif
-#endif
-
       eglMakeCurrent(egl->dpy,
             EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
       if (egl->ctx != EGL_NO_CONTEXT)
          eglDestroyContext(egl->dpy, egl->ctx);
-
-      if (egl->hw_ctx != EGL_NO_CONTEXT)
-         eglDestroyContext(egl->dpy, egl->hw_ctx);
 
       if (egl->surf != EGL_NO_SURFACE)
          eglDestroySurface(egl->dpy, egl->surf);
@@ -137,7 +125,6 @@ void egl_destroy(egl_ctx_data_t *egl)
     */
 
    egl->ctx     = EGL_NO_CONTEXT;
-   egl->hw_ctx  = EGL_NO_CONTEXT;
    egl->surf    = EGL_NO_SURFACE;
    egl->dpy     = EGL_NO_DISPLAY;
    egl->config  = 0;
@@ -148,20 +135,19 @@ void egl_destroy(egl_ctx_data_t *egl)
 
 void egl_bind_hw_render(egl_ctx_data_t *egl, bool enable)
 {
-   egl->use_hw_ctx = enable;
-
    if (egl->dpy  == EGL_NO_DISPLAY)
       return;
    if (egl->surf == EGL_NO_SURFACE)
       return;
 
-   eglMakeCurrent(egl->dpy, egl->surf,
-         egl->surf,
-         enable ? egl->hw_ctx : egl->ctx);
+//   eglMakeCurrent(egl->dpy, egl->surf,
+//         egl->surf,
+//         enable ? egl->hw_ctx : egl->ctx);
 }
 
 void egl_swap_buffers(void *data)
 {
+    return;
    egl_ctx_data_t *egl = (egl_ctx_data_t*)data;
 
    if (egl->dpy  == EGL_NO_DISPLAY)
@@ -173,6 +159,8 @@ void egl_swap_buffers(void *data)
 
 void egl_set_swap_interval(egl_ctx_data_t *egl, unsigned interval)
 {
+    LOGE("%s", __FUNCTION__);
+    return;
    /* Can be called before initialization.
     * Some contexts require that swap interval
     * is known at startup time.
@@ -194,18 +182,19 @@ void egl_set_swap_interval(egl_ctx_data_t *egl, unsigned interval)
 
 void egl_get_video_size(egl_ctx_data_t *egl, unsigned *width, unsigned *height)
 {
-   *width  = 0;
-   *height = 0;
+   *width  = 1280;
+   *height = 1440;
 
-   if (egl->dpy != EGL_NO_DISPLAY && egl->surf != EGL_NO_SURFACE)
-   {
-      EGLint gl_width, gl_height;
-
-      eglQuerySurface(egl->dpy, egl->surf, EGL_WIDTH, &gl_width);
-      eglQuerySurface(egl->dpy, egl->surf, EGL_HEIGHT, &gl_height);
-      *width  = gl_width;
-      *height = gl_height;
-   }
+//   if (egl->dpy != EGL_NO_DISPLAY && egl->surf != EGL_NO_SURFACE)
+//   {
+//      EGLint gl_width, gl_height;
+//       gl_width =  1280;
+//       gl_height = 1440;
+////      eglQuerySurface(egl->dpy, egl->surf, EGL_WIDTH, &gl_width);
+////      eglQuerySurface(egl->dpy, egl->surf, EGL_HEIGHT, &gl_height);
+//      *width  = gl_width;
+//      *height = gl_height;
+//   }
 }
 
 bool check_egl_version(int minMajorVersion, int minMinorVersion)
@@ -315,7 +304,7 @@ bool egl_init_context(egl_ctx_data_t *egl,
       EGLint *major, EGLint *minor,
      EGLint *n, const EGLint *attrib_ptr)
 {
-   EGLDisplay dpy = get_egl_display(platform, display_data);
+   EGLDisplay dpy = eglGetCurrentDisplay();//get_egl_display(platform, display_data);
    if (dpy == EGL_NO_DISPLAY)
    {
       RARCH_ERR("[EGL]: Couldn't get EGL display.\n");
@@ -340,38 +329,25 @@ bool egl_init_context(egl_ctx_data_t *egl,
 
 bool egl_create_context(egl_ctx_data_t *egl, const EGLint *egl_attribs)
 {
-   EGLContext ctx = eglCreateContext(egl->dpy, egl->config, EGL_NO_CONTEXT,
-         egl_attribs);
+   EGLContext ctx = eglGetCurrentContext();//eglCreateContext(egl->dpy, egl->config, EGL_NO_CONTEXT, egl_attribs);
 
    if (ctx == EGL_NO_CONTEXT)
       return false;
-
    egl->ctx    = ctx;
-   egl->hw_ctx = NULL;
-
-   if (egl->use_hw_ctx)
-   {
-      egl->hw_ctx = eglCreateContext(egl->dpy, egl->config, egl->ctx,
-            egl_attribs);
-      RARCH_LOG("[EGL]: Created shared context: %p.\n", (void*)egl->hw_ctx);
-
-      if (egl->hw_ctx == EGL_NO_CONTEXT)
-         return false;
-   }
 
    return true;
 }
 
 bool egl_create_surface(egl_ctx_data_t *egl, void *native_window)
 {
-   egl->surf = eglCreateWindowSurface(egl->dpy, egl->config, (NativeWindowType)native_window, NULL);
+   egl->surf = eglGetCurrentSurface(EGL_DRAW);//eglCreateWindowSurface(egl->dpy, egl->config, (NativeWindowType)native_window, NULL);
 
    if (egl->surf == EGL_NO_SURFACE)
       return false;
 
-   /* Connect the context to the surface. */
-   if (!eglMakeCurrent(egl->dpy, egl->surf, egl->surf, egl->ctx))
-      return false;
+//   /* Connect the context to the surface. */
+//   if (!eglMakeCurrent(egl->dpy, egl->surf, egl->surf, egl->ctx))
+//      return false;
 
    RARCH_LOG("[EGL]: Current context: %p.\n", (void*)eglGetCurrentContext());
 

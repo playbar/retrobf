@@ -289,8 +289,7 @@ static void gl_set_viewport_wrapper(void *data, unsigned viewport_width,
 
    video_driver_build_info(&video_info);
 
-   gl_set_viewport(data, &video_info,
-         viewport_width, viewport_height, force_full, allow_rotate);
+   gl_set_viewport(data, &video_info, viewport_width, viewport_height, force_full, allow_rotate);
 }
 
 void gl_set_viewport(void *data, video_frame_info_t *video_info,
@@ -376,7 +375,7 @@ void gl_set_viewport(void *data, video_frame_info_t *video_info,
       gl->vp.y *= 2;
 #endif
 
-   glViewport(gl->vp.x, gl->vp.y, gl->vp.width, gl->vp.height);
+//   glViewport(gl->vp.x, gl->vp.y, gl->vp.width, gl->vp.height);
    gl_set_projection(gl, &default_ortho, allow_rotate);
 
    /* Set last backbuffer viewport. */
@@ -1181,7 +1180,7 @@ static bool gl_frame(void *data, const void *frame,
       set_texture_coords(feedback_info.coord, xamt, yamt);
    }
 
-   glClear(GL_COLOR_BUFFER_BIT);
+//   glClear(GL_COLOR_BUFFER_BIT);
 
    params.data          = gl;
    params.width         = frame_width;
@@ -1598,7 +1597,6 @@ static const gfx_ctx_driver_t *gl_get_context(gl_t *gl)
    unsigned major                       = hwr->version_major;
    unsigned minor                       = hwr->version_minor;
 
-#ifdef HAVE_OPENGLES
    api         = GFX_CTX_OPENGL_ES_API;
    api_name    = "OpenGL ES 2.0";
 
@@ -1610,10 +1608,7 @@ static const gfx_ctx_driver_t *gl_get_context(gl_t *gl)
    }
    else if (hwr->context_type == RETRO_HW_CONTEXT_OPENGLES_VERSION)
       api_name = "OpenGL ES 3.1+";
-#else
-   api         = GFX_CTX_OPENGL_API;
-   api_name    = "OpenGL";
-#endif
+
 
    (void)api_name;
 
@@ -1776,7 +1771,7 @@ static void *gl_init(const video_info_t *video, const input_driver_t **input, vo
    struct retro_hw_render_callback *hwr = NULL;
    char *error_string                   = NULL;
    gl_t *gl                             = (gl_t*)calloc(1, sizeof(gl_t));
-   const gfx_ctx_driver_t *ctx_driver   = gl_get_context(gl);
+   const gfx_ctx_driver_t *ctx_driver   = gl_get_context(gl); // &gfx_ctx_android;
    if (!gl || !ctx_driver)
       goto error;
 
@@ -1787,6 +1782,8 @@ static void *gl_init(const video_info_t *video, const input_driver_t **input, vo
    RARCH_LOG("[GL]: Found GL context: %s\n", ctx_driver->ident);
 
    video_context_driver_get_video_size(&mode);
+    mode.width = 1280;
+    mode.height = 1440;
 
    full_x  = mode.width;
    full_y  = mode.height;
@@ -1797,7 +1794,7 @@ static void *gl_init(const video_info_t *video, const input_driver_t **input, vo
 
    interval = video->vsync ? video->swap_interval : 0;
 
-   video_context_driver_swap_interval(&interval);
+//   video_context_driver_swap_interval(&interval);
 
    win_width  = video->width;
    win_height = video->height;

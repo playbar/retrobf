@@ -230,7 +230,7 @@ static void menu_display_gl_draw_pipeline(void *data)
 
 static void menu_display_gl_restore_clear_color(void)
 {
-   glClearColor(0.0f, 0.0f, 0.0f, 0.00f);
+//   glClearColor(0.0f, 0.0f, 0.0f, 0.00f);
 }
 
 static void menu_display_gl_clear_color(menu_display_ctx_clearcolor_t *clearcolor)
@@ -238,9 +238,9 @@ static void menu_display_gl_clear_color(menu_display_ctx_clearcolor_t *clearcolo
    if (!clearcolor)
       return;
 
-   glClearColor(clearcolor->r,
-         clearcolor->g, clearcolor->b, clearcolor->a);
-   glClear(GL_COLOR_BUFFER_BIT);
+//   glClearColor(clearcolor->r,
+//         clearcolor->g, clearcolor->b, clearcolor->a);
+//   glClear(GL_COLOR_BUFFER_BIT);
 }
 
 static bool menu_display_gl_font_init_first(

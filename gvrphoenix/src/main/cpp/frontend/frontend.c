@@ -107,45 +107,39 @@ int rarch_main(int argc, char *argv[], void *data)
 //    path_set(RARCH_PATH_CORE, "/data/user/0/com.retroarch/cores/2048_libretro_android.so");
    path_set(RARCH_PATH_CORE, "lib2048.so");
 
-   if (frontend_driver_is_inited())
-   {
-      content_ctx_info_t info;
-
-      info.argc            = argc;
-      info.argv            = argv;
-      info.args            = args;
-      info.environ_get     = frontend_driver_environment_get_ptr();
-
-      if (!task_push_start_content_from_cli(NULL, NULL, &info, CORE_TYPE_PLAIN, NULL, NULL))
-         return 1;
-   }
-
-   ui_companion_driver_init_first();
-
-   do
-   {
-       pthread_t  pid = pthread_self();
-       LOGE("rarch_main pid: %ld", pid);
-      unsigned sleep_ms = 0;
-      int ret = runloop_iterate(&sleep_ms);
-
-      if (ret == 1 && sleep_ms > 0)
-         retro_sleep(sleep_ms);
-
-      task_queue_check();
-
-      if (ret == -1)
-         break;
-   }while(1);
-
-   main_exit(args);
+//   if (frontend_driver_is_inited())
+//   {
+//      content_ctx_info_t info;
+//
+//      info.argc            = argc;
+//      info.argv            = argv;
+//      info.args            = args;
+//      info.environ_get     = frontend_driver_environment_get_ptr();
+//
+//      if (!task_push_start_content_from_cli(NULL, NULL, &info, CORE_TYPE_PLAIN, NULL, NULL))
+//         return 1;
+//   }
+//
+//   ui_companion_driver_init_first();
+//
+//   do
+//   {
+//       pthread_t  pid = pthread_self();
+//       LOGE("rarch_main pid: %ld", pid);
+//      unsigned sleep_ms = 0;
+//      int ret = runloop_iterate(&sleep_ms);
+//
+//      if (ret == 1 && sleep_ms > 0)
+//         retro_sleep(sleep_ms);
+//
+//      task_queue_check();
+//
+//      if (ret == -1)
+//         break;
+//   }while(1);
+//
+//   main_exit(args);
 
    return 0;
 }
 
-#ifndef HAVE_MAIN
-int main(int argc, char *argv[])
-{
-   return rarch_main(argc, argv, NULL);
-}
-#endif

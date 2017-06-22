@@ -21,6 +21,12 @@
 #include <stdlib.h>
 #include <cmath>
 #include <random>
+#include <frontend/frontend_driver.h>
+#include <src/content.h>
+#include <tasks/tasks_internal.h>
+#include <ui/ui_companion_driver.h>
+#include <frontend/drivers/platform_linux.h>
+#include <src/retroarch.h>
 
 #define LOG_TAG "TreasureHuntCPP"
 #define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
@@ -191,7 +197,6 @@ static void CheckGLError(const char* label) {
   if (gl_error != GL_NO_ERROR) {
     LOGW("GL error @ %s: %d", label, gl_error);
     // Crash immediately to make OpenGL errors obvious.
-    abort();
   }
 }
 
@@ -395,7 +400,25 @@ void TreasureHuntRenderer::InitializeGl() {
   if (!audio_initialization_thread_.joinable()) {
     audio_initialization_thread_ = std::thread(&TreasureHuntRenderer::LoadAndPlayCubeSound, this);
   }
+//////////////////////
+  if (frontend_driver_is_inited())
+  {
+    content_ctx_info_t info;
 
+    char arguments[]  = "retroarch";
+    char *argv[] = {arguments,   NULL};
+    int argc = 1;
+
+    info.argc            = argc;
+    info.argv            = argv;
+    info.args            = (void*)g_android;
+    info.environ_get     = frontend_driver_environment_get_ptr();
+
+    if (!task_push_start_content_from_cli(NULL, NULL, &info, CORE_TYPE_PLAIN, NULL, NULL))
+      return;
+  }
+
+  ui_companion_driver_init_first();
 
 }
 
@@ -617,7 +640,15 @@ void TreasureHuntRenderer::DrawWorld(ViewType view) {
                pixel_rect.top - pixel_rect.bottom);
   }
   DrawCube(view);
-  DrawFloor(view);
+    //////////
+    unsigned sleep_ms = 0;
+    int ret = runloop_iterate(&sleep_ms);
+
+//    if (ret == 1 && sleep_ms > 0)
+//        retro_sleep(sleep_ms);
+//    task_queue_check();
+//    DrawFloor(view);
+
   if (gvr_viewer_type_ == GVR_VIEWER_TYPE_DAYDREAM) {
     DrawDaydreamCursor(view);
   }
