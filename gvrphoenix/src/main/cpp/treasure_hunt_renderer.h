@@ -30,6 +30,7 @@
 #include "gvr_controller.h"
 #include "gvr_types.h"
 #include "world_layout_data.h"  // NOLINT
+#include "esUtil.h"
 
 class TreasureHuntRenderer {
 public:
@@ -51,6 +52,8 @@ public:
      * thread with a valid GL context.
      */
     void InitializeGl();
+
+    void SurfaceChange(int width, int height);
 
     /**
      * Draw the TreasureHunt scene. This should be called on the rendering thread.
@@ -281,6 +284,11 @@ private:
     gvr::ControllerState gvr_controller_state_;
 
     gvr::ViewerType gvr_viewer_type_;
+
+private:
+    ESContext esContext;
+    float lastTime;
+
 };
 
 #endif  // TREASUREHUNT_APP_SRC_MAIN_JNI_TREASUREHUNTRENDERER_H_  // NOLINT

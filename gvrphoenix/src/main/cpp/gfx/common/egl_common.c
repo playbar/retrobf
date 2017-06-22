@@ -30,7 +30,7 @@
 #include "../../src/verbosity.h"
 #include "../../frontend/frontend_driver.h"
 
-bool g_egl_inited    = false;
+//bool g_egl_inited    = false;
 
 unsigned g_egl_major = 0;
 unsigned g_egl_minor = 0;
@@ -108,38 +108,15 @@ gfx_ctx_proc_t egl_get_proc_address(const char *symbol)
 
 void egl_destroy(egl_ctx_data_t *egl)
 {
-   if (egl->dpy)
-   {
-      eglMakeCurrent(egl->dpy,
-            EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-      if (egl->ctx != EGL_NO_CONTEXT)
-         eglDestroyContext(egl->dpy, egl->ctx);
-
-      if (egl->surf != EGL_NO_SURFACE)
-         eglDestroySurface(egl->dpy, egl->surf);
-      eglTerminate(egl->dpy);
-   }
-
    /* Be as careful as possible in deinit.
     * If we screw up, any TTY will not restore.
     */
-
-   egl->ctx     = EGL_NO_CONTEXT;
-   egl->surf    = EGL_NO_SURFACE;
-   egl->dpy     = EGL_NO_DISPLAY;
-   egl->config  = 0;
-   g_egl_inited  = false;
 
    frontend_driver_destroy_signal_handler_state();
 }
 
 void egl_bind_hw_render(egl_ctx_data_t *egl, bool enable)
 {
-   if (egl->dpy  == EGL_NO_DISPLAY)
-      return;
-   if (egl->surf == EGL_NO_SURFACE)
-      return;
-
 //   eglMakeCurrent(egl->dpy, egl->surf,
 //         egl->surf,
 //         enable ? egl->hw_ctx : egl->ctx);
@@ -148,53 +125,20 @@ void egl_bind_hw_render(egl_ctx_data_t *egl, bool enable)
 void egl_swap_buffers(void *data)
 {
     return;
-   egl_ctx_data_t *egl = (egl_ctx_data_t*)data;
 
-   if (egl->dpy  == EGL_NO_DISPLAY)
-      return;
-   if (egl->surf == EGL_NO_SURFACE)
-      return;
-   eglSwapBuffers(egl->dpy, egl->surf);
 }
 
 void egl_set_swap_interval(egl_ctx_data_t *egl, unsigned interval)
 {
     LOGE("%s", __FUNCTION__);
     return;
-   /* Can be called before initialization.
-    * Some contexts require that swap interval
-    * is known at startup time.
-    */
-   egl->interval = interval;
-
-   if (egl->dpy  == EGL_NO_DISPLAY)
-      return;
-   if (!(eglGetCurrentContext()))
-      return;
-
-   RARCH_LOG("[EGL]: eglSwapInterval(%u)\n", interval);
-   if (!eglSwapInterval(egl->dpy, interval))
-   {
-      RARCH_ERR("[EGL]: eglSwapInterval() failed.\n");
-      egl_report_error();
-   }
 }
 
 void egl_get_video_size(egl_ctx_data_t *egl, unsigned *width, unsigned *height)
 {
-   *width  = 1280;
+   *width  = 2560;
    *height = 1440;
 
-   if (egl->dpy != EGL_NO_DISPLAY && egl->surf != EGL_NO_SURFACE)
-   {
-      EGLint gl_width, gl_height;
-//       gl_width =  1280;
-//       gl_height = 1440;
-      eglQuerySurface(egl->dpy, egl->surf, EGL_WIDTH, &gl_width);
-      eglQuerySurface(egl->dpy, egl->surf, EGL_HEIGHT, &gl_height);
-      *width  = gl_width;
-      *height = gl_height;
-   }
 }
 
 bool check_egl_version(int minMajorVersion, int minMinorVersion)
@@ -304,74 +248,25 @@ bool egl_init_context(egl_ctx_data_t *egl,
       EGLint *major, EGLint *minor,
      EGLint *n, const EGLint *attrib_ptr)
 {
-   EGLDisplay dpy = eglGetCurrentDisplay();//get_egl_display(platform, display_data);
-   if (dpy == EGL_NO_DISPLAY)
-   {
-      RARCH_ERR("[EGL]: Couldn't get EGL display.\n");
-      return false;
-   }
-
-   egl->dpy = dpy;
-
-   if (!eglInitialize(egl->dpy, major, minor))
-      return false;
-
-   RARCH_LOG("[EGL]: EGL version: %d.%d\n", *major, *minor);
-
-   if (!eglChooseConfig(egl->dpy, attrib_ptr, &egl->config, 1, n) || *n != 1)
-      return false;
-
-   egl->major = g_egl_major;
-   egl->minor = g_egl_minor;
-
    return true;
 }
 
 bool egl_create_context(egl_ctx_data_t *egl, const EGLint *egl_attribs)
 {
-   EGLContext ctx = eglGetCurrentContext();//eglCreateContext(egl->dpy, egl->config, EGL_NO_CONTEXT, egl_attribs);
-
-   if (ctx == EGL_NO_CONTEXT)
-      return false;
-   egl->ctx    = ctx;
-
    return true;
 }
 
 bool egl_create_surface(egl_ctx_data_t *egl, void *native_window)
 {
-   egl->surf = eglGetCurrentSurface(EGL_DRAW);//eglCreateWindowSurface(egl->dpy, egl->config, (NativeWindowType)native_window, NULL);
-
-   if (egl->surf == EGL_NO_SURFACE)
-      return false;
-
-//   /* Connect the context to the surface. */
-//   if (!eglMakeCurrent(egl->dpy, egl->surf, egl->surf, egl->ctx))
-//      return false;
-
-   RARCH_LOG("[EGL]: Current context: %p.\n", (void*)eglGetCurrentContext());
-
    return true;
 }
 
 bool egl_get_native_visual_id(egl_ctx_data_t *egl, EGLint *value)
 {
-   if (!eglGetConfigAttrib(egl->dpy, egl->config,
-         EGL_NATIVE_VISUAL_ID, value))
-   {
-      RARCH_ERR("[EGL]: egl_get_native_visual_id failed.\n");
-      return false;
-   }
-
    return true;
 }
 
 bool egl_has_config(egl_ctx_data_t *egl)
 {
-   if (!egl->config)
-   {
-      RARCH_ERR("[EGL]: No EGL configurations available.\n");
-      return false;
-   }
    return true;
 }

@@ -57,6 +57,11 @@ JNI_METHOD(void, nativeInitializeGl)(JNIEnv *env, jobject obj, jlong native_trea
   native(native_treasure_hunt)->InitializeGl();
 }
 
+JNI_METHOD(void, nativeSurfaceChange)(JNIEnv *env, jobject obj, jlong native_treasure_hunt, jint width, jint height)
+{
+  native(native_treasure_hunt)->SurfaceChange(width, height );
+}
+
 JNI_METHOD(void, nativeDrawFrame)(JNIEnv *env, jobject obj, jlong native_treasure_hunt)
 {
   native(native_treasure_hunt)->DrawFrame();

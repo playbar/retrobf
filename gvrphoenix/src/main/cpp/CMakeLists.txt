@@ -329,6 +329,11 @@ add_library(gvrretro SHARED
                 ${RARCH_DIR}/deps/miniupnpc/minisoap.c
                 ${RARCH_DIR}/treasure_hunt_jni.cc
                 ${RARCH_DIR}/treasure_hunt_renderer.cc
+                ${RARCH_DIR}/esShader.cpp
+                ${RARCH_DIR}/esShapes.cpp
+                ${RARCH_DIR}/esTransform.cpp
+                ${RARCH_DIR}/esUtil.cpp
+                ${RARCH_DIR}/Texture2D.cpp
             ${RARCH_DIR}/src/CallStackPP.cpp
             ${RARCH_DIR}/gfx/drivers_shader/shader_vulkan.cpp
             ${RARCH_DIR}/gfx/drivers_shader/glslang_util.cpp

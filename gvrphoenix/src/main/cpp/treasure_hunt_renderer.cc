@@ -15,6 +15,7 @@
 
 #include "treasure_hunt_renderer.h"  // NOLINT
 #include "treasure_hunt_shaders.h"  // NOLINT
+#include "Texture2D.h"
 
 #include <android/log.h>
 #include <assert.h>
@@ -192,14 +193,6 @@ static float RandomUniformFloat() {
   return random_distribution(random_generator);
 }
 
-static void CheckGLError(const char* label) {
-  int gl_error = glGetError();
-  if (gl_error != GL_NO_ERROR) {
-    LOGW("GL error @ %s: %d", label, gl_error);
-    // Crash immediately to make OpenGL errors obvious.
-  }
-}
-
 static gvr::Sizei HalfPixelCount(const gvr::Sizei& in) {
   // Scale each dimension by sqrt(2)/2 ~= 7/10ths.
   gvr::Sizei out;
@@ -281,6 +274,7 @@ TreasureHuntRenderer::TreasureHuntRenderer(gvr_context* gvr_context, std::unique
   } else {
     LOGE("Unexpected viewer type.");
   }
+    memset ( &esContext, 0, sizeof ( ESContext ) );
 }
 
 TreasureHuntRenderer::~TreasureHuntRenderer() {
@@ -400,6 +394,9 @@ void TreasureHuntRenderer::InitializeGl() {
   if (!audio_initialization_thread_.joinable()) {
     audio_initialization_thread_ = std::thread(&TreasureHuntRenderer::LoadAndPlayCubeSound, this);
   }
+
+    Init(&esContext);
+
 //////////////////////
   if (frontend_driver_is_inited())
   {
@@ -421,6 +418,109 @@ void TreasureHuntRenderer::InitializeGl() {
   ui_companion_driver_init_first();
 
 }
+
+void TreasureHuntRenderer::SurfaceChange(int width, int height)
+{
+    esContext.width = width;
+    esContext.height = height;
+}
+
+
+void TreasureHuntRenderer::DrawFrame() {
+    if (gvr_viewer_type_ == GVR_VIEWER_TYPE_DAYDREAM) {
+        ProcessControllerInput();
+    }
+    PrepareFramebuffer();
+    gvr::Frame frame = swapchain_->AcquireFrame();
+
+    // A client app does its rendering here.
+    gvr::ClockTimePoint target_time = gvr::GvrApi::GetTimePointNow();
+    target_time.monotonic_system_time_nanos += kPredictionTimeWithoutVsyncNanos;
+    gvr::BufferViewport* viewport[2] = {
+            &viewport_left_,
+            &viewport_right_,
+    };
+    head_view_ = gvr_api_->GetHeadSpaceFromStartSpaceRotation(target_time);
+    viewport_list_->SetToRecommendedBufferViewports();
+    gvr::BufferViewport reticle_viewport = gvr_api_->CreateBufferViewport();
+    reticle_viewport.SetSourceBufferIndex(1);
+    reticle_viewport.SetReprojection(GVR_REPROJECTION_NONE);
+    const gvr_rectf fullscreen = { 0, 1, 0, 1 };
+    reticle_viewport.SetSourceUv(fullscreen);
+
+    gvr::Mat4f controller_matrix = ControllerQuatToMatrix(gvr_controller_state_.GetOrientation());
+    model_cursor_ = MatrixMul(controller_matrix, model_reticle_);
+
+    gvr::Mat4f eye_views[2];
+    for (int eye = 0; eye < 2; ++eye) {
+        const gvr::Eye gvr_eye = eye == 0 ? GVR_LEFT_EYE : GVR_RIGHT_EYE;
+        const gvr::Mat4f eye_from_head = gvr_api_->GetEyeFromHeadMatrix(gvr_eye);
+        eye_views[eye] = MatrixMul(eye_from_head, head_view_);
+
+        viewport_list_->GetBufferViewport(eye, viewport[eye]);
+
+        if (multiview_enabled_) {
+            viewport[eye]->SetSourceUv(fullscreen);
+            viewport[eye]->SetSourceLayer(eye);
+            viewport_list_->SetBufferViewport(eye, *viewport[eye]);
+        }
+
+        reticle_viewport.SetTransform(MatrixMul(eye_from_head, model_reticle_));
+        reticle_viewport.SetTargetEye(gvr_eye);
+        // The first two viewports are for the 3D scene (one for each eye), the
+        // latter two viewports are for the reticle (one for each eye).
+        viewport_list_->SetBufferViewport(2 + eye, reticle_viewport);
+
+        modelview_cube_[eye] = MatrixMul(eye_views[eye], model_cube_);
+        modelview_floor_[eye] = MatrixMul(eye_views[eye], model_floor_);
+        const gvr_rectf fov = viewport[eye]->GetSourceFov();
+        const gvr::Mat4f perspective = PerspectiveMatrixFromView(fov, kZNear, kZFar);
+        modelview_projection_cube_[eye] = MatrixMul(perspective, modelview_cube_[eye]);
+        modelview_projection_floor_[eye] = MatrixMul(perspective, modelview_floor_[eye]);
+        light_pos_eye_space_[eye] = Vec4ToVec3(MatrixVectorMul(eye_views[eye], light_pos_world_space_));
+        modelview_projection_cursor_[eye] = MatrixMul(perspective, MatrixMul(eye_views[eye], model_cursor_));
+    }
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glDisable(GL_SCISSOR_TEST);
+    glDisable(GL_BLEND);
+
+    // Draw the world.
+    frame.BindBuffer(0);
+    glClearColor(0.1f, 0.1f, 0.1f, 0.5f);  // Dark background so text shows up.
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (multiview_enabled_) {
+        DrawWorld(kMultiview);
+    } else {
+        DrawWorld(kLeftView);
+        DrawWorld(kRightView);
+    }
+    frame.Unbind();
+
+    frame.BindBuffer(1);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // In Cardboard viewer, draw head-locked reticle on a separate layer since the
+    // cursor is controlled by head movement. In Daydream viewer, this layer is
+    // left empty, since the cursor is controlled by controller and drawn with
+    // DrawDaydreamCursor() in the same frame buffer as the virtual scene.
+    if (gvr_viewer_type_ == GVR_VIEWER_TYPE_CARDBOARD) {
+        DrawCardboardReticle();
+    }
+    frame.Unbind();
+
+    // Submit frame.
+    frame.Submit(*viewport_list_, head_view_);
+
+    CheckGLError("onDrawFrame");
+
+    // Update audio head rotation in audio API.
+    gvr_audio_api_->SetHeadPose(head_view_);
+    gvr_audio_api_->Update();
+}
+
 
 void TreasureHuntRenderer::ResumeControllerApiAsNeeded() {
   switch (gvr_viewer_type_) {
@@ -465,101 +565,6 @@ void TreasureHuntRenderer::ProcessControllerInput() {
       gvr_controller_state_.GetButtonDown(GVR_CONTROLLER_BUTTON_CLICK)) {
     OnTriggerEvent();
   }
-}
-
-void TreasureHuntRenderer::DrawFrame() {
-  if (gvr_viewer_type_ == GVR_VIEWER_TYPE_DAYDREAM) {
-    ProcessControllerInput();
-  }
-  PrepareFramebuffer();
-  gvr::Frame frame = swapchain_->AcquireFrame();
-
-  // A client app does its rendering here.
-  gvr::ClockTimePoint target_time = gvr::GvrApi::GetTimePointNow();
-  target_time.monotonic_system_time_nanos += kPredictionTimeWithoutVsyncNanos;
-  gvr::BufferViewport* viewport[2] = {
-    &viewport_left_,
-    &viewport_right_,
-  };
-  head_view_ = gvr_api_->GetHeadSpaceFromStartSpaceRotation(target_time);
-  viewport_list_->SetToRecommendedBufferViewports();
-  gvr::BufferViewport reticle_viewport = gvr_api_->CreateBufferViewport();
-  reticle_viewport.SetSourceBufferIndex(1);
-  reticle_viewport.SetReprojection(GVR_REPROJECTION_NONE);
-  const gvr_rectf fullscreen = { 0, 1, 0, 1 };
-  reticle_viewport.SetSourceUv(fullscreen);
-
-  gvr::Mat4f controller_matrix = ControllerQuatToMatrix(gvr_controller_state_.GetOrientation());
-  model_cursor_ = MatrixMul(controller_matrix, model_reticle_);
-
-  gvr::Mat4f eye_views[2];
-  for (int eye = 0; eye < 2; ++eye) {
-    const gvr::Eye gvr_eye = eye == 0 ? GVR_LEFT_EYE : GVR_RIGHT_EYE;
-    const gvr::Mat4f eye_from_head = gvr_api_->GetEyeFromHeadMatrix(gvr_eye);
-    eye_views[eye] = MatrixMul(eye_from_head, head_view_);
-
-    viewport_list_->GetBufferViewport(eye, viewport[eye]);
-
-    if (multiview_enabled_) {
-      viewport[eye]->SetSourceUv(fullscreen);
-      viewport[eye]->SetSourceLayer(eye);
-      viewport_list_->SetBufferViewport(eye, *viewport[eye]);
-    }
-
-    reticle_viewport.SetTransform(MatrixMul(eye_from_head, model_reticle_));
-    reticle_viewport.SetTargetEye(gvr_eye);
-    // The first two viewports are for the 3D scene (one for each eye), the
-    // latter two viewports are for the reticle (one for each eye).
-    viewport_list_->SetBufferViewport(2 + eye, reticle_viewport);
-
-    modelview_cube_[eye] = MatrixMul(eye_views[eye], model_cube_);
-    modelview_floor_[eye] = MatrixMul(eye_views[eye], model_floor_);
-    const gvr_rectf fov = viewport[eye]->GetSourceFov();
-    const gvr::Mat4f perspective = PerspectiveMatrixFromView(fov, kZNear, kZFar);
-    modelview_projection_cube_[eye] = MatrixMul(perspective, modelview_cube_[eye]);
-    modelview_projection_floor_[eye] = MatrixMul(perspective, modelview_floor_[eye]);
-    light_pos_eye_space_[eye] = Vec4ToVec3(MatrixVectorMul(eye_views[eye], light_pos_world_space_));
-    modelview_projection_cursor_[eye] = MatrixMul(perspective, MatrixMul(eye_views[eye], model_cursor_));
-  }
-
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_CULL_FACE);
-  glDisable(GL_SCISSOR_TEST);
-  glDisable(GL_BLEND);
-
-  // Draw the world.
-  frame.BindBuffer(0);
-  glClearColor(0.1f, 0.1f, 0.1f, 0.5f);  // Dark background so text shows up.
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  if (multiview_enabled_) {
-    DrawWorld(kMultiview);
-  } else {
-    DrawWorld(kLeftView);
-    DrawWorld(kRightView);
-  }
-  frame.Unbind();
-
-  frame.BindBuffer(1);
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  // In Cardboard viewer, draw head-locked reticle on a separate layer since the
-  // cursor is controlled by head movement. In Daydream viewer, this layer is
-  // left empty, since the cursor is controlled by controller and drawn with
-  // DrawDaydreamCursor() in the same frame buffer as the virtual scene.
-  if (gvr_viewer_type_ == GVR_VIEWER_TYPE_CARDBOARD) {
-    DrawCardboardReticle();
-  }
-  frame.Unbind();
-
-  // Submit frame.
-  frame.Submit(*viewport_list_, head_view_);
-
-  CheckGLError("onDrawFrame");
-
-  // Update audio head rotation in audio API.
-  gvr_audio_api_->SetHeadPose(head_view_);
-  gvr_audio_api_->Update();
 }
 
 void TreasureHuntRenderer::PrepareFramebuffer() {
@@ -644,6 +649,7 @@ void TreasureHuntRenderer::DrawWorld(ViewType view) {
 
     DrawCube(view);
     DrawFloor(view);
+    Draw(&esContext);
 
     unsigned sleep_ms = 0;
     int ret = runloop_iterate(&sleep_ms);

@@ -53,18 +53,18 @@ RETRO_BEGIN_DECLS
  */
 typedef struct
 {
-   EGLContext ctx;
-   EGLSurface surf;
-   EGLDisplay dpy;
-   EGLConfig config;
-   unsigned interval;
+//   EGLContext ctx;
+//   EGLSurface surf;
+//   EGLDisplay dpy;
+//   EGLConfig config;
+//   unsigned interval;
 
-   unsigned major;
-   unsigned minor;
+//   unsigned major;
+//   unsigned minor;
 
 } egl_ctx_data_t;
 
-extern bool g_egl_inited;
+//extern bool g_egl_inited;
 
 /* bind_api is called before init so we need these, please
  * try no to use them outside of bind_api() and init() */

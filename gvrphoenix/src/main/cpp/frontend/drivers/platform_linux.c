@@ -80,6 +80,8 @@ enum
 
 struct android_app *g_android;
 static pthread_key_t thread_key;
+char internal_storage_path[PATH_MAX_LENGTH];
+char internal_storage_app_path[PATH_MAX_LENGTH];
 static char screenshot_dir[PATH_MAX_LENGTH];
 static char downloads_dir[PATH_MAX_LENGTH];
 static char apk_dir[PATH_MAX_LENGTH];

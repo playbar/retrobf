@@ -90,7 +90,9 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 					}
 
 					@Override
-					public void onSurfaceChanged(GL10 gl, int width, int height) {}
+					public void onSurfaceChanged(GL10 gl, int width, int height) {
+						nativeSurfaceChange(nativeTreasureHuntRenderer, width, height);
+					}
 
 					@Override
 					public void onDrawFrame(GL10 gl) {
@@ -259,6 +261,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 	private native long nativeCreateRenderer(ClassLoader appClassLoader, Context context, long nativeGvrContext);
 	private native void nativeDestroyRenderer(long nativeTreasureHuntRenderer);
 	private native void nativeInitializeGl(long nativeTreasureHuntRenderer);
+	private native void nativeSurfaceChange(long nativeTreasureHuntRenderer, int width, int height);
 	private native long nativeDrawFrame(long nativeTreasureHuntRenderer);
 	private native void nativeOnTriggerEvent(long nativeTreasureHuntRenderer);
 	private native void nativeOnPause(long nativeTreasureHuntRenderer);
