@@ -375,7 +375,7 @@ void gl_set_viewport(void *data, video_frame_info_t *video_info,
       gl->vp.y *= 2;
 #endif
 
-//   glViewport(gl->vp.x, gl->vp.y, gl->vp.width, gl->vp.height);
+   glViewport(gl->vp.x, gl->vp.y, gl->vp.width, gl->vp.height);
    gl_set_projection(gl, &default_ortho, allow_rotate);
 
    /* Set last backbuffer viewport. */
@@ -1066,9 +1066,9 @@ static bool gl_frame(void *data, const void *frame,
    video_shader_ctx_coords_t coords;
    video_shader_ctx_params_t params;
    struct video_tex_info feedback_info;
-   gl_t                            *gl = (gl_t*)data;
-   unsigned width                      = video_info->width;
-   unsigned height                     = video_info->height;
+   gl_t *gl = (gl_t*)data;
+   unsigned width = video_info->width;
+   unsigned height = video_info->height;
 
    if (!gl)
       return false;
@@ -1143,10 +1143,6 @@ static bool gl_frame(void *data, const void *frame,
          gl_set_viewport(gl, video_info, width, height, false, true);
       }
 
-#ifndef HAVE_OPENGLES
-      if (!gl_query_core_context_in_use())
-         glEnable(GL_TEXTURE_2D);
-#endif
       glDisable(GL_DEPTH_TEST);
       glDisable(GL_STENCIL_TEST);
       glDisable(GL_CULL_FACE);

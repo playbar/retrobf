@@ -185,16 +185,16 @@ void egl_get_video_size(egl_ctx_data_t *egl, unsigned *width, unsigned *height)
    *width  = 1280;
    *height = 1440;
 
-//   if (egl->dpy != EGL_NO_DISPLAY && egl->surf != EGL_NO_SURFACE)
-//   {
-//      EGLint gl_width, gl_height;
+   if (egl->dpy != EGL_NO_DISPLAY && egl->surf != EGL_NO_SURFACE)
+   {
+      EGLint gl_width, gl_height;
 //       gl_width =  1280;
 //       gl_height = 1440;
-////      eglQuerySurface(egl->dpy, egl->surf, EGL_WIDTH, &gl_width);
-////      eglQuerySurface(egl->dpy, egl->surf, EGL_HEIGHT, &gl_height);
-//      *width  = gl_width;
-//      *height = gl_height;
-//   }
+      eglQuerySurface(egl->dpy, egl->surf, EGL_WIDTH, &gl_width);
+      eglQuerySurface(egl->dpy, egl->surf, EGL_HEIGHT, &gl_height);
+      *width  = gl_width;
+      *height = gl_height;
+   }
 }
 
 bool check_egl_version(int minMajorVersion, int minMinorVersion)

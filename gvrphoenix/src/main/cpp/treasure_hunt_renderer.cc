@@ -639,15 +639,17 @@ void TreasureHuntRenderer::DrawWorld(ViewType view) {
                pixel_rect.right - pixel_rect.left,
                pixel_rect.top - pixel_rect.bottom);
   }
-  DrawCube(view);
+
     //////////
+
+    DrawCube(view);
+    DrawFloor(view);
+
     unsigned sleep_ms = 0;
     int ret = runloop_iterate(&sleep_ms);
-
-//    if (ret == 1 && sleep_ms > 0)
-//        retro_sleep(sleep_ms);
-//    task_queue_check();
-//    DrawFloor(view);
+    if (ret == 1 && sleep_ms > 0)
+        retro_sleep(sleep_ms);
+    task_queue_check();
 
   if (gvr_viewer_type_ == GVR_VIEWER_TYPE_DAYDREAM) {
     DrawDaydreamCursor(view);
