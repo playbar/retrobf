@@ -28,6 +28,7 @@
 #include <ui/ui_companion_driver.h>
 #include <frontend/drivers/platform_linux.h>
 #include <src/retroarch.h>
+#include <src/paths.h>
 
 #define LOG_TAG "TreasureHuntCPP"
 #define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
@@ -398,14 +399,20 @@ void TreasureHuntRenderer::InitializeGl() {
     Init(&esContext);
 
 //////////////////////
+
+//    rarch_ctl(RARCH_CTL_PREINIT, NULL);
+//    frontend_driver_init_first((void*)g_android);
+//    rarch_ctl(RARCH_CTL_INIT, NULL);
+//
+//    // todo set path
+////    path_set(RARCH_PATH_CORE, "/data/user/0/com.retroarch/cores/2048_libretro_android.so");
+//    path_set(RARCH_PATH_CORE, "lib2048.so");
   if (frontend_driver_is_inited())
   {
     content_ctx_info_t info;
-
     char arguments[]  = "retroarch";
     char *argv[] = {arguments,   NULL};
     int argc = 1;
-
     info.argc            = argc;
     info.argv            = argv;
     info.args            = (void*)g_android;
@@ -481,14 +488,14 @@ void TreasureHuntRenderer::DrawFrame() {
         modelview_projection_cursor_[eye] = MatrixMul(perspective, MatrixMul(eye_views[eye], model_cursor_));
     }
 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glDisable(GL_SCISSOR_TEST);
-    glDisable(GL_BLEND);
+//    glEnable(GL_DEPTH_TEST);
+//    glEnable(GL_CULL_FACE);
+//    glDisable(GL_SCISSOR_TEST);
+//    glDisable(GL_BLEND);
 
     // Draw the world.
     frame.BindBuffer(0);
-    glClearColor(0.1f, 0.1f, 0.1f, 0.5f);  // Dark background so text shows up.
+    glClearColor(0.8f, 0.8f, 0.8f, 0.5f);  // Dark background so text shows up.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (multiview_enabled_) {
         DrawWorld(kMultiview);
@@ -647,15 +654,15 @@ void TreasureHuntRenderer::DrawWorld(ViewType view) {
 
     //////////
 
-    DrawCube(view);
-    DrawFloor(view);
-    Draw(&esContext);
-
+//    DrawCube(view);
+//    DrawFloor(view);
     unsigned sleep_ms = 0;
     int ret = runloop_iterate(&sleep_ms);
     if (ret == 1 && sleep_ms > 0)
         retro_sleep(sleep_ms);
     task_queue_check();
+
+//  Draw(&esContext);
 
   if (gvr_viewer_type_ == GVR_VIEWER_TYPE_DAYDREAM) {
     DrawDaydreamCursor(view);

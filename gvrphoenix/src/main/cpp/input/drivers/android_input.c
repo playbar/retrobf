@@ -351,8 +351,7 @@ static void android_input_poll_main_cmd(void)
          break;
 
       case APP_CMD_CONFIG_CHANGED:
-         AConfiguration_fromAssetManager(android_app->config,
-               android_app->activity->assetManager);
+         AConfiguration_fromAssetManager(android_app->config, android_app->activity->assetManager);
          break;
       case APP_CMD_TERM_WINDOW:
          slock_lock(android_app->mutex);
@@ -1201,11 +1200,9 @@ static void android_input_poll_input(void *data)
 static void android_input_poll_user(void *data)
 {
    struct android_app *android_app = (struct android_app*)g_android;
-   android_input_t    *android     = (android_input_t*)data;
+   android_input_t *android = (android_input_t*)data;
 
-   if ((android_app->sensor_state_mask & (UINT64_C(1) <<
-               RETRO_SENSOR_ACCELEROMETER_ENABLE))
-         && android_app->accelerometerSensor)
+   if ((android_app->sensor_state_mask & (UINT64_C(1) << RETRO_SENSOR_ACCELEROMETER_ENABLE)) && android_app->accelerometerSensor)
    {
       ASensorEvent event;
       while (ASensorEventQueue_getEvents(android_app->sensorEventQueue, &event, 1) > 0)
@@ -1220,7 +1217,7 @@ static void android_input_poll_user(void *data)
 static void android_input_poll_memcpy(void *data)
 {
    unsigned i, j;
-   android_input_t    *android     = (android_input_t*)data;
+   android_input_t *android = (android_input_t*)data;
    struct android_app *android_app = (struct android_app*)g_android;
 
    for (i = 0; i < MAX_PADS; i++)
@@ -1432,12 +1429,8 @@ static uint64_t android_input_get_capabilities(void *data)
 static void android_input_enable_sensor_manager(struct android_app *android_app)
 {
    android_app->sensorManager = ASensorManager_getInstance();
-   android_app->accelerometerSensor =
-      ASensorManager_getDefaultSensor(android_app->sensorManager,
-         ASENSOR_TYPE_ACCELEROMETER);
-   android_app->sensorEventQueue =
-      ASensorManager_createEventQueue(android_app->sensorManager,
-         android_app->looper, LOOPER_ID_USER, NULL, NULL);
+   android_app->accelerometerSensor = ASensorManager_getDefaultSensor(android_app->sensorManager, ASENSOR_TYPE_ACCELEROMETER);
+   android_app->sensorEventQueue = ASensorManager_createEventQueue(android_app->sensorManager, android_app->looper, LOOPER_ID_USER, NULL, NULL);
 }
 
 static bool android_input_set_sensor_state(void *data, unsigned port,
@@ -1455,14 +1448,11 @@ static bool android_input_set_sensor_state(void *data, unsigned port,
             android_input_enable_sensor_manager(android_app);
 
          if (android_app->accelerometerSensor)
-            ASensorEventQueue_enableSensor(android_app->sensorEventQueue,
-                  android_app->accelerometerSensor);
+            ASensorEventQueue_enableSensor(android_app->sensorEventQueue, android_app->accelerometerSensor);
 
          /* Events per second (in microseconds). */
          if (android_app->accelerometerSensor)
-            ASensorEventQueue_setEventRate(android_app->sensorEventQueue,
-                  android_app->accelerometerSensor, (1000L / event_rate)
-                  * 1000);
+            ASensorEventQueue_setEventRate(android_app->sensorEventQueue, android_app->accelerometerSensor, (1000L / event_rate) * 1000);
 
          BIT64_CLEAR(android_app->sensor_state_mask, RETRO_SENSOR_ACCELEROMETER_DISABLE);
          BIT64_SET(android_app->sensor_state_mask, RETRO_SENSOR_ACCELEROMETER_ENABLE);
@@ -1470,8 +1460,7 @@ static bool android_input_set_sensor_state(void *data, unsigned port,
 
       case RETRO_SENSOR_ACCELEROMETER_DISABLE:
          if (android_app->accelerometerSensor)
-            ASensorEventQueue_disableSensor(android_app->sensorEventQueue,
-                  android_app->accelerometerSensor);
+            ASensorEventQueue_disableSensor(android_app->sensorEventQueue, android_app->accelerometerSensor);
 
          BIT64_CLEAR(android_app->sensor_state_mask, RETRO_SENSOR_ACCELEROMETER_ENABLE);
          BIT64_SET(android_app->sensor_state_mask, RETRO_SENSOR_ACCELEROMETER_DISABLE);
@@ -1483,10 +1472,9 @@ static bool android_input_set_sensor_state(void *data, unsigned port,
    return false;
 }
 
-static float android_input_get_sensor_input(void *data,
-      unsigned port,unsigned id)
+static float android_input_get_sensor_input(void *data, unsigned port,unsigned id)
 {
-   android_input_t      *android      = (android_input_t*)data;
+   android_input_t *android = (android_input_t*)data;
 
    switch (id)
    {

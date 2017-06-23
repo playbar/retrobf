@@ -151,15 +151,6 @@ struct android_app
    jmethodID getIntent;
    jmethodID onRetroArchExit;
    jmethodID getStringExtra;
-   jmethodID clearPendingIntent;
-   jmethodID hasPendingIntent;
-   jmethodID getPendingIntentConfigPath;
-   jmethodID getPendingIntentLibretroPath;
-   jmethodID getPendingIntentFullPath;
-   jmethodID getPendingIntentIME;
-   jmethodID getPendingIntentStorageLocation;
-   jmethodID getPendingIntentDownloadsLocation;
-   jmethodID getPendingIntentScreenshotsLocation;
    jmethodID isAndroidTV;
    jmethodID checkRuntimePermissions;
 };

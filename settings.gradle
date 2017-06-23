@@ -1,6 +1,6 @@
 //include ':nativeactivity'
-//include ':googleplay'
+include ':googleplay'
 //include ':phoenix'
 include ':gvrres'
-//include ':gvrphoenix'
+include ':gvrphoenix'
 include ':treasurehunt'
