@@ -68,8 +68,7 @@ static void core_input_state_poll_maybe(void)
       input_poll();
 }
 
-static int16_t core_input_state_poll(unsigned port,
-      unsigned device, unsigned idx, unsigned id)
+static int16_t core_input_state_poll(unsigned port, unsigned device, unsigned idx, unsigned id)
 {
 //    CallStack st;
    pid_t  pid = pthread_self();
