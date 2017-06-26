@@ -3,6 +3,8 @@ package com.retroarch.browser.retroactivity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
+import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -237,13 +239,28 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 	}
 
 	@Override
-	public boolean dispatchKeyEvent(KeyEvent event) {
-		// Avoid accidental volume key presses while the phone is in the VR headset.
-		if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP
-				|| event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) {
-			return true;
+	public boolean dispatchKeyEvent(android.view.KeyEvent event) {
+		boolean handled = false;
+		if ((event.getSource() & InputDevice.SOURCE_GAMEPAD)
+				== InputDevice.SOURCE_GAMEPAD) {
+
+			if (event.getAction() == KeyEvent.ACTION_DOWN) {
+				switch (event.getKeyCode()) {
+					default:
+						Log.e("default:", "event code:" + event.getKeyCode());
+				}
+				if (!handled)
+					Log.e("handle", "code is " + event.getKeyCode() + "\n");
+			} else if (event.getAction() == KeyEvent.ACTION_UP) {
+				//don't care, but need to handle it.
+				handled = true;
+			} else {
+				Log.e("else", "unknown action " + event.getAction());
+			}
+			return handled;
 		}
-		return super.dispatchKeyEvent(event);
+
+		return handled;
 	}
 
 	private void setImmersiveSticky() {

@@ -334,6 +334,9 @@ void input_poll(void)
    settings_t *settings           = config_get_ptr();
    unsigned max_users             = input_driver_max_users;
 
+    if( current_input == NULL || current_input_data == NULL)
+        return;
+
    current_input->poll(current_input_data);
 
    input_driver_turbo_btns.count++;
@@ -342,8 +345,7 @@ void input_poll(void)
    {
       input_driver_turbo_btns.frame_enable[i] = 0;
 
-      if (!input_driver_block_libretro_input &&
-            libretro_input_binds[i][RARCH_TURBO_ENABLE].valid)
+      if (!input_driver_block_libretro_input && libretro_input_binds[i][RARCH_TURBO_ENABLE].valid)
       {
          rarch_joypad_info_t joypad_info;
          joypad_info.axis_threshold = input_driver_axis_threshold;

@@ -19,6 +19,7 @@
 #include <stddef.h>
 #include <pthread.h>
 #include <src/log.h>
+#include <android/looper.h>
 
 #ifdef HAVE_CONFIG_H
 #include "../config.h"
@@ -103,7 +104,7 @@ int rarch_main(int argc, char *argv[], void *data)
    frontend_driver_init_first(args);
    rarch_ctl(RARCH_CTL_INIT, NULL);
 
-   // todo set path
+//    todo set path
 //    path_set(RARCH_PATH_CORE, "/data/user/0/com.retroarch/cores/2048_libretro_android.so");
    path_set(RARCH_PATH_CORE, "lib2048.so");
 
@@ -122,6 +123,16 @@ int rarch_main(int argc, char *argv[], void *data)
 //
 //   ui_companion_driver_init_first();
 //
+//    int ident;
+//    int events;
+//    struct android_poll_source *pSource;
+//    while ( ( ident = ALooper_pollAll ( 0, NULL, &events, ( void ** ) &pSource ) ) >= 0 )
+//    {
+//        LOGE("%s", "ALooper_pollAll" );
+//    }
+    while(true) {
+        input_poll();
+    }
 //   do
 //   {
 //       pthread_t  pid = pthread_self();

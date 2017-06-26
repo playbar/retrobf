@@ -24,6 +24,7 @@
 #include <dynamic/dylib.h>
 #include <retro_inline.h>
 #include <string/stdstring.h>
+#include <src/verbosity.h>
 
 #ifdef HAVE_CONFIG_H
 #include "../../config.h"
@@ -476,8 +477,7 @@ static bool android_input_init_handle(void)
    return false;
 #endif
 
-   if ((p_AMotionEvent_getAxisValue = dlsym(RTLD_DEFAULT,
-               "AMotionEvent_getAxisValue")))
+   if ((p_AMotionEvent_getAxisValue = dlsym(RTLD_DEFAULT, "AMotionEvent_getAxisValue")))
    {
       RARCH_LOG("Set engine_handle_dpad to 'Get Axis Value' (for reading extra analog sticks)");
       engine_handle_dpad = engine_handle_dpad_getaxisvalue;
@@ -1233,12 +1233,9 @@ static bool android_input_key_pressed(void *data, int key)
 {
    rarch_joypad_info_t joypad_info;
    android_input_t *android           = (android_input_t*)data;
-   const struct retro_keybind *keyptr = (const struct retro_keybind*)
-      &input_config_binds[0][key];
+   const struct retro_keybind *keyptr = (const struct retro_keybind*) &input_config_binds[0][key];
 
-   if(       keyptr->valid
-         && android_keyboard_port_input_pressed(input_config_binds[0],
-            key))
+   if(  keyptr->valid && android_keyboard_port_input_pressed(input_config_binds[0], key))
       return true;
 
    joypad_info.joy_idx        = 0;
@@ -1262,7 +1259,8 @@ static void android_input_poll(void *data)
    unsigned key                    = RARCH_PAUSE_TOGGLE;
    struct android_app *android_app = (struct android_app*)g_android;
 
-   while ((ident = ALooper_pollAll((android_input_key_pressed(data, key)) ? -1 : 1, NULL, NULL, NULL)) >= 0)
+    bool bpress = android_input_key_pressed(data, key);
+   while ((ident = ALooper_pollAll((bpress) ? -1 : 1, NULL, NULL, NULL)) >= 0)
    {
       switch (ident)
       {

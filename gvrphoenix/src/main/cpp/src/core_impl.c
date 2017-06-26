@@ -73,13 +73,13 @@ static int16_t core_input_state_poll(unsigned port,
 {
 //    CallStack st;
    pid_t  pid = pthread_self();
-   if (current_core.poll_type == POLL_TYPE_LATE)
-   {
-      if (!current_core.input_polled)
-         input_poll();
-
-      current_core.input_polled = true;
-   }
+//   if (current_core.poll_type == POLL_TYPE_LATE)
+//   {
+//      if (!current_core.input_polled)
+//         input_poll();
+//
+//      current_core.input_polled = true;
+//   }
    return input_state(port, device, idx, id);
 }
 
