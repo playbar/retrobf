@@ -351,9 +351,9 @@ static void android_input_poll_main_cmd(void)
          slock_unlock(android_app->mutex);
          break;
 
-      case APP_CMD_CONFIG_CHANGED:
-         AConfiguration_fromAssetManager(android_app->config, android_app->activity->assetManager);
-         break;
+//      case APP_CMD_CONFIG_CHANGED:
+//         AConfiguration_fromAssetManager(android_app->config, android_app->activity->assetManager);
+//         break;
       case APP_CMD_TERM_WINDOW:
          slock_lock(android_app->mutex);
 

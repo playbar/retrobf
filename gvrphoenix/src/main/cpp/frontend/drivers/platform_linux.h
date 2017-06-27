@@ -69,22 +69,22 @@ struct android_app
 {
    /* The application can place a pointer to its own state object
     * here if it likes. */
-   void* userData;
+//   void* userData;
 
    /* Fill this in with the function to process main app commands (APP_CMD_*) */
-   void (*onAppCmd)(struct android_app* app, int32_t cmd);
+//   void (*onAppCmd)(struct android_app* app, int32_t cmd);
 
    /* Fill this in with the function to process input events.  At this point
     * the event has already been pre-dispatched, and it will be finished upon
     * return.  Return 1 if you have handled the event, 0 for any default
     * dispatching. */
-   int32_t (*onInputEvent)(struct android_app* app, AInputEvent* event);
+//   int32_t (*onInputEvent)(struct android_app* app, AInputEvent* event);
 
    /* The ANativeActivity object instance that this app is running in. */
    ANativeActivity* activity;
 
    /* The current configuration the app is running in. */
-   AConfiguration *config;
+//   AConfiguration *config;
 
    /* This is the last instance's saved state, as provided at creation time.
     * It is NULL if there was no state.  You can use this as you need; the
@@ -95,8 +95,8 @@ struct android_app
     * state and place the information here.  In that case the memory will be
     * freed for you later.
     */
-   void* savedState;
-   size_t savedStateSize;
+//   void* savedState;
+//   size_t savedStateSize;
 
    /* The ALooper associated with the app's thread. */
    ALooper* looper;
@@ -137,23 +137,45 @@ struct android_app
    AInputQueue* pendingInputQueue;
    ANativeWindow* pendingWindow;
 
-   /*  Below are "private" implementation of RA code. */
-   bool unfocused;
-   unsigned accelerometer_event_rate;
-   ASensorManager *sensorManager;
-   ASensorEventQueue *sensorEventQueue;
-   const ASensor* accelerometerSensor;
-   uint64_t sensor_state_mask;
-   char current_ime[PATH_MAX_LENGTH];
-   bool input_alive;
-   int16_t analog_state[MAX_PADS][MAX_AXIS];
-   int8_t hat_state[MAX_PADS][2];
-   jmethodID getIntent;
-   jmethodID onRetroArchExit;
-   jmethodID getStringExtra;
-   jmethodID isAndroidTV;
-   jmethodID checkRuntimePermissions;
+
+    /*  Below are "private" implementation of RA code. */
+    bool unfocused;
+    unsigned accelerometer_event_rate;
+    ASensorManager *sensorManager;
+    ASensorEventQueue *sensorEventQueue;
+    const ASensor* accelerometerSensor;
+    uint64_t sensor_state_mask;
+    char current_ime[PATH_MAX_LENGTH];
+    bool input_alive;
+    int16_t analog_state[MAX_PADS][MAX_AXIS];
+    int8_t hat_state[MAX_PADS][2];
+    jmethodID getIntent;
+    jmethodID onRetroArchExit;
+    jmethodID getStringExtra;
+    jmethodID isAndroidTV;
+    jmethodID checkRuntimePermissions;
+
 };
+
+//struct activity_data{
+//  AConfiguration *config;
+//    /*  Below are "private" implementation of RA code. */
+//    bool unfocused;
+//    unsigned accelerometer_event_rate;
+//    ASensorManager *sensorManager;
+//    ASensorEventQueue *sensorEventQueue;
+//    const ASensor* accelerometerSensor;
+//    uint64_t sensor_state_mask;
+//    char current_ime[PATH_MAX_LENGTH];
+//    bool input_alive;
+//    int16_t analog_state[MAX_PADS][MAX_AXIS];
+//    int8_t hat_state[MAX_PADS][2];
+//    jmethodID getIntent;
+//    jmethodID onRetroArchExit;
+//    jmethodID getStringExtra;
+//    jmethodID isAndroidTV;
+//    jmethodID checkRuntimePermissions;
+//};
 
 
 enum

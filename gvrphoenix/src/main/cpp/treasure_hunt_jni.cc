@@ -40,6 +40,11 @@ inline TreasureHuntRenderer *native(jlong ptr)
 
 extern "C" {
 
+JNI_METHOD(void, nativeOnCreate)(JNIEnv *env, jclass clazz)
+{
+
+}
+
 JNI_METHOD(void, nativeDispatchKeyEvent)(JNIEnv *env, jclass clazz, jlong native_treasure_hunt)
 {
   native(native_treasure_hunt)->DispatchKeyEvent();

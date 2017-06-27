@@ -60,7 +60,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		nativeOnCreate();
 		// Ensure fullscreen immersion.
 		setImmersiveSticky();
 		getWindow()
@@ -276,6 +276,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 								| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 	}
 
+	private native void nativeOnCreate();
 	private native void nativeDispatchKeyEvent(long nativeTreasureHuntRenderer);
 	private native long nativeCreateRenderer(ClassLoader appClassLoader, Context context, long nativeGvrContext);
 	private native void nativeDestroyRenderer(long nativeTreasureHuntRenderer);

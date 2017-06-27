@@ -245,13 +245,13 @@ static void* onSaveInstanceState(ANativeActivity* activity, size_t* outLen)
    while (!android_app->stateSaved)
       scond_wait(android_app->cond, android_app->mutex);
 
-   if (android_app->savedState != NULL)
-   {
-      savedState = android_app->savedState;
-      *outLen    = android_app->savedStateSize;
-      android_app->savedState = NULL;
-      android_app->savedStateSize = 0;
-   }
+//   if (android_app->savedState != NULL)
+//   {
+//      savedState = android_app->savedState;
+//      *outLen    = android_app->savedStateSize;
+//      android_app->savedState = NULL;
+//      android_app->savedStateSize = 0;
+//   }
    slock_unlock(android_app->mutex);
    return savedState;
 }
@@ -363,17 +363,17 @@ static struct android_app* android_app_create(ANativeActivity* activity, void* s
    android_app->activity = activity;
    android_app->mutex    = slock_new();
    android_app->cond     = scond_new();
-   if (savedState != NULL)
-   {
-      android_app->savedState = malloc(savedStateSize);
-      android_app->savedStateSize = savedStateSize;
-      memcpy(android_app->savedState, savedState, savedStateSize);
-   }
+//   if (savedState != NULL)
+//   {
+//      android_app->savedState = malloc(savedStateSize);
+//      android_app->savedStateSize = savedStateSize;
+//      memcpy(android_app->savedState, savedState, savedStateSize);
+//   }
    if (pipe(msgpipe))
    {
       RARCH_ERR("could not create pipe: %s.\n", strerror(errno));
-      if(android_app->savedState)
-        free(android_app->savedState);
+//      if(android_app->savedState)
+//        free(android_app->savedState);
       free(android_app);
       return NULL;
    }
@@ -981,12 +981,12 @@ static void free_saved_state(struct android_app* android_app)
 {
     slock_lock(android_app->mutex);
 
-    if (android_app->savedState != NULL)
-    {
-        free(android_app->savedState);
-        android_app->savedState = NULL;
-        android_app->savedStateSize = 0;
-    }
+//    if (android_app->savedState != NULL)
+//    {
+//        free(android_app->savedState);
+//        android_app->savedState = NULL;
+//        android_app->savedStateSize = 0;
+//    }
 
     slock_unlock(android_app->mutex);
 }
@@ -1008,7 +1008,7 @@ static void android_app_destroy(struct android_app *android_app)
    if (android_app->inputQueue)
       AInputQueue_detachLooper(android_app->inputQueue);
 
-   AConfiguration_delete(android_app->config);
+//   AConfiguration_delete(android_app->config);
    android_app->destroyed = 1;
    scond_broadcast(android_app->cond);
    slock_unlock(android_app->mutex);
@@ -1036,8 +1036,8 @@ static void frontend_linux_init(void *data)
    if (!android_app)
       return;
 
-   android_app->config = AConfiguration_new();
-   AConfiguration_fromAssetManager(android_app->config, android_app->activity->assetManager);
+//   android_app->config = AConfiguration_new();
+//   AConfiguration_fromAssetManager(android_app->config, android_app->activity->assetManager);
 
    looper = (ALooper*)ALooper_prepare(ALOOPER_PREPARE_ALLOW_NON_CALLBACKS);
    ALooper_addFd(looper, android_app->msgread, LOOPER_ID_MAIN, ALOOPER_EVENT_INPUT, NULL, NULL);

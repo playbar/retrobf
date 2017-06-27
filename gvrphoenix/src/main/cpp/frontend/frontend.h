@@ -25,27 +25,8 @@
 
 RETRO_BEGIN_DECLS
 
-/**
- * main_exit:
- *
- * Cleanly exit RetroArch.
- *
- * Also saves configuration files to disk,
- * and (optionally) autosave state.
- **/
 void main_exit(void *args);
     
-/**
- * main_entry:
- *
- * Main function of RetroArch.
- *
- * If HAVE_MAIN is not defined, will contain main loop and will not
- * be exited from until we exit the program. Otherwise, will 
- * just do initialization.
- *
- * Returns: varies per platform.
- **/
 int rarch_main(int argc, char *argv[], void *data);
 
 RETRO_END_DECLS
