@@ -288,7 +288,7 @@ TreasureHuntRenderer::~TreasureHuntRenderer() {
 
 void TreasureHuntRenderer::DispatchKeyEvent()
 {
-    input_poll();
+//    input_poll();
 }
 
 void TreasureHuntRenderer::InitializeGl() {

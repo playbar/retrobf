@@ -2699,6 +2699,8 @@ int runloop_iterate(unsigned *sleep_ms)
    bool input_nonblock_state = input_driver_is_nonblock_state();
    settings_t *settings = config_get_ptr();
    unsigned max_users = *(input_driver_get_uint(INPUT_ACTION_MAX_USERS));
+    if( runloop_shutdown_initiated )
+        return 0;
 
    if (runloop_frame_time.callback)
    {
