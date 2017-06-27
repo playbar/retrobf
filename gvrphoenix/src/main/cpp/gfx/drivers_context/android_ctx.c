@@ -84,7 +84,7 @@ static void android_gfx_ctx_destroy(void *data)
          break;
       case GFX_CTX_VULKAN_API:
 #ifdef HAVE_VULKAN
-         vulkan_context_destroy(&and->vk, android_app->window);
+//         vulkan_context_destroy(&and->vk, android_app->window);
 
          if (and->vk.context.queue_lock)
             slock_free(and->vk.context.queue_lock);
@@ -159,24 +159,24 @@ static void *android_gfx_ctx_init(video_frame_info_t *video_info, void *video_dr
    }
 
    slock_lock(android_app->mutex);
-   if (!android_app->window)
-      goto unlock_error;
+//   if (!android_app->window)
+//      goto unlock_error;
 
    switch (android_api)
    {
       case GFX_CTX_OPENGL_API:
       case GFX_CTX_OPENGL_ES_API:
-         ANativeWindow_setBuffersGeometry(android_app->window, 0, 0, format);
+//         ANativeWindow_setBuffersGeometry(android_app->window, 0, 0, format);
 
 #ifdef HAVE_EGL
-         if (!egl_create_context(&and->egl, context_attributes))
-         {
-            egl_report_error();
-            goto unlock_error;
-         }
+//         if (!egl_create_context(&and->egl, context_attributes))
+//         {
+//            egl_report_error();
+//            goto unlock_error;
+//         }
 
-         if (!egl_create_surface(&and->egl, android_app->window))
-            goto unlock_error;
+//         if (!egl_create_surface(&and->egl, android_app->window))
+//            goto unlock_error;
 #endif
          break;
       case GFX_CTX_NONE:
@@ -282,8 +282,8 @@ static bool android_gfx_ctx_set_resize(void *data,
    {
       case GFX_CTX_VULKAN_API:
 #ifdef HAVE_VULKAN
-         and->width  = ANativeWindow_getWidth(android_app->window);
-         and->height = ANativeWindow_getHeight(android_app->window);
+//         and->width  = ANativeWindow_getWidth(android_app->window);
+//         and->height = ANativeWindow_getHeight(android_app->window);
          RARCH_LOG("[Android]: Native window size: %u x %u.\n", and->width, and->height);
          if (!vulkan_create_swapchain(&and->vk, and->width, and->height, and->swap_interval))
          {
@@ -322,15 +322,14 @@ static bool android_gfx_ctx_set_video_mode(void *data,
    {
       case GFX_CTX_VULKAN_API:
 #ifdef HAVE_VULKAN
-         and->width  = ANativeWindow_getWidth(android_app->window);
-         and->height = ANativeWindow_getHeight(android_app->window);
+//         and->width  = ANativeWindow_getWidth(android_app->window);
+//         and->height = ANativeWindow_getHeight(android_app->window);
          RARCH_LOG("[Android]: Native window size: %u x %u.\n", and->width, and->height);
-         if (!vulkan_surface_create(&and->vk, VULKAN_WSI_ANDROID, NULL, android_app->window,
-                  and->width, and->height, and->swap_interval))
-         {
-            RARCH_ERR("[Android]: Failed to create surface.\n");
-            return false;
-         }
+//         if (!vulkan_surface_create(&and->vk, VULKAN_WSI_ANDROID, NULL, android_app->window, and->width, and->height, and->swap_interval))
+//         {
+//            RARCH_ERR("[Android]: Failed to create surface.\n");
+//            return false;
+//         }
 #endif
          break;
 

@@ -88,6 +88,8 @@ static char apk_dir[PATH_MAX_LENGTH];
 static char app_dir[PATH_MAX_LENGTH];
 static bool is_android_tv_device = false;
 
+extern JavaVM* gvm;
+
 #else
 static const char *proc_apm_path                   = "/proc/apm";
 static const char *proc_acpi_battery_path          = "/proc/acpi/battery";
@@ -178,8 +180,8 @@ static void android_app_set_window(struct android_app *android_app, ANativeWindo
    if (window)
       android_app_write_cmd(android_app, APP_CMD_INIT_WINDOW);
 
-   while (android_app->window != android_app->pendingWindow)
-      scond_wait(android_app->cond, android_app->mutex);
+//   while (android_app->window != android_app->pendingWindow)
+//      scond_wait(android_app->cond, android_app->mutex);
 
    slock_unlock(android_app->mutex);
 }
@@ -314,7 +316,7 @@ JNIEnv *jni_thread_getenv(void)
 {
    JNIEnv *env;
    struct android_app* android_app = (struct android_app*)g_android;
-   int status = (*android_app->activity->vm)->AttachCurrentThread(android_app->activity->vm, &env, 0);
+   int status = (*gvm)->AttachCurrentThread(gvm, &env, 0);
 
    if (status < 0)
    {
@@ -336,7 +338,7 @@ static void jni_thread_destruct(void *value)
       return;
 
    if (android_app)
-      (*android_app->activity->vm)->DetachCurrentThread(android_app->activity->vm);
+      (*gvm)->DetachCurrentThread(gvm);
    pthread_setspecific(thread_key, NULL);
 }
 
@@ -350,7 +352,47 @@ static void android_app_entry(void *data)
     return;
 }
 
-static struct android_app* android_app_create(ANativeActivity* activity, void* savedState, size_t savedStateSize)
+
+void android_app_oncreate(jobject clazz )
+{
+    int msgpipe[2];
+    struct android_app *android_app = (struct android_app*)calloc(1, sizeof(*android_app));
+
+    if (!android_app)
+    {
+        RARCH_ERR("Failed to initialize android_app\n");
+        return;
+    }
+    android_app->clazz = clazz;
+    android_app->mutex    = slock_new();
+    android_app->cond     = scond_new();
+//   if (savedState != NULL)
+//   {
+//      android_app->savedState = malloc(savedStateSize);
+//      android_app->savedStateSize = savedStateSize;
+//      memcpy(android_app->savedState, savedState, savedStateSize);
+//   }
+    if (pipe(msgpipe))
+    {
+        RARCH_ERR("could not create pipe: %s.\n", strerror(errno));
+//      if(android_app->savedState)
+//        free(android_app->savedState);
+        free(android_app);
+        return;
+    }
+    android_app->msgread  = msgpipe[0];
+    android_app->msgwrite = msgpipe[1];
+    android_app->thread   = sthread_create(android_app_entry, android_app);
+
+    /* Wait for thread to start. */
+    slock_lock(android_app->mutex);
+    while (!android_app->running)
+        scond_wait(android_app->cond, android_app->mutex);
+    slock_unlock(android_app->mutex);
+
+}
+
+struct android_app* android_app_create(ANativeActivity* activity )
 {
    int msgpipe[2];
    struct android_app *android_app = (struct android_app*)calloc(1, sizeof(*android_app));
@@ -360,7 +402,7 @@ static struct android_app* android_app_create(ANativeActivity* activity, void* s
       RARCH_ERR("Failed to initialize android_app\n");
       return NULL;
    }
-   android_app->activity = activity;
+//   android_app->activity = activity;
    android_app->mutex    = slock_new();
    android_app->cond     = scond_new();
 //   if (savedState != NULL)
@@ -418,7 +460,7 @@ void ANativeActivity_onCreate(ANativeActivity* activity, void* savedState, size_
    if (pthread_key_create(&thread_key, jni_thread_destruct))
       RARCH_ERR("Error initializing pthread_key\n");
 
-   activity->instance = android_app_create(activity, savedState, savedStateSize);
+   activity->instance = android_app_create(activity );
 }
 
 void frontend_android_get_name(char *s, size_t len)
@@ -632,7 +674,7 @@ static void frontend_linux_get_env(int *argc, char *argv[], void *data, void *pa
 
    __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV] Android version (major : %d, minor : %d, rel : %d)\n", major, minor, rel);
 
-   CALL_OBJ_METHOD(env, obj, android_app->activity->clazz, android_app->getIntent);
+   CALL_OBJ_METHOD(env, obj, android_app->clazz, android_app->getIntent);
    __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV] Checking arguments passed from intent ...\n");
 
    /* Config file. */
@@ -815,7 +857,7 @@ static void frontend_linux_get_env(int *argc, char *argv[], void *data, void *pa
 
       /* Check for runtime permissions on Android 6.0+ */
       if (env && android_app->checkRuntimePermissions)
-         CALL_VOID_METHOD(env, android_app->activity->clazz, android_app->checkRuntimePermissions);
+         CALL_VOID_METHOD(env, android_app->clazz, android_app->checkRuntimePermissions);
 
       /* set paths depending on the ability to write
        * to internal_storage_path */
@@ -933,7 +975,7 @@ static void frontend_linux_get_env(int *argc, char *argv[], void *data, void *pa
    /* Check if we are an Android TV device */
    if (env && android_app->isAndroidTV)
    {
-      CALL_BOOLEAN_METHOD(env, jbool, android_app->activity->clazz, android_app->isAndroidTV);
+      CALL_BOOLEAN_METHOD(env, jbool, android_app->clazz, android_app->isAndroidTV);
 
       if (jbool != JNI_FALSE)
          is_android_tv_device = true;
@@ -1003,7 +1045,7 @@ static void android_app_destroy(struct android_app *android_app)
    slock_lock(android_app->mutex);
    env = jni_thread_getenv();
    if (env && android_app->onRetroArchExit)
-      CALL_VOID_METHOD(env, android_app->activity->clazz, android_app->onRetroArchExit);
+      CALL_VOID_METHOD(env, android_app->clazz, android_app->onRetroArchExit);
 
    if (android_app->inputQueue)
       AInputQueue_detachLooper(android_app->inputQueue);
@@ -1029,7 +1071,7 @@ static void frontend_linux_init(void *data)
 {
    JNIEnv *env = NULL;
    ALooper *looper = NULL;
-   jclass class = NULL;
+   jclass clazz = NULL;
    jobject obj = NULL;
    struct android_app* android_app = (struct android_app*)data;
 
@@ -1053,15 +1095,15 @@ static void frontend_linux_init(void *data)
 
    RARCH_LOG("Waiting for Android Native Window to be initialized ...\n");
 
-   while (!android_app->window)
-   {
-      if (!android_run_events(android_app))
-      {
-         frontend_linux_deinit(android_app);
-         frontend_android_shutdown(android_app);
-         return;
-      }
-   }
+//   while (!android_app->window)
+//   {
+//      if (!android_run_events(android_app))
+//      {
+//         frontend_linux_deinit(android_app);
+//         frontend_android_shutdown(android_app);
+//         return;
+//      }
+//   }
 
    RARCH_LOG("Android Native Window initialized.\n");
 
@@ -1069,15 +1111,17 @@ static void frontend_linux_init(void *data)
    if (!env)
       return;
 
-   GET_OBJECT_CLASS(env, class, android_app->activity->clazz);
-   GET_METHOD_ID(env, android_app->getIntent, class, "getIntent", "()Landroid/content/Intent;");
-   GET_METHOD_ID(env, android_app->onRetroArchExit, class, "onRetroArchExit", "()V");
-   GET_METHOD_ID(env, android_app->isAndroidTV, class, "isAndroidTV", "()Z");
-   GET_METHOD_ID(env, android_app->checkRuntimePermissions, class, "checkRuntimePermissions", "()V");
-   CALL_OBJ_METHOD(env, obj, android_app->activity->clazz, android_app->getIntent);
+//   GET_OBJECT_CLASS(env, class, android_app->clazz);
+//    GET_METHOD_ID(env, android_app->getIntent, clazz, "getIntent", "()Landroid/content/Intent;");
+    clazz = (*env)->GetObjectClass(env, android_app->clazz);
+    android_app->getIntent = (*env)->GetMethodID(env, clazz, "getIntent", "()Landroid/content/Intent;");
+   GET_METHOD_ID(env, android_app->onRetroArchExit, clazz, "onRetroArchExit", "()V");
+   GET_METHOD_ID(env, android_app->isAndroidTV, clazz, "isAndroidTV", "()Z");
+   GET_METHOD_ID(env, android_app->checkRuntimePermissions, clazz, "checkRuntimePermissions", "()V");
+   CALL_OBJ_METHOD(env, obj, android_app->clazz, android_app->getIntent);
 
-   GET_OBJECT_CLASS(env, class, obj);
-   GET_METHOD_ID(env, android_app->getStringExtra, class, "getStringExtra", "(Ljava/lang/String;)Ljava/lang/String;");
+   GET_OBJECT_CLASS(env, clazz, obj);
+   GET_METHOD_ID(env, android_app->getStringExtra, clazz, "getStringExtra", "(Ljava/lang/String;)Ljava/lang/String;");
 
 }
 

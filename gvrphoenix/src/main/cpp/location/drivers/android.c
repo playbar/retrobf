@@ -46,7 +46,7 @@ static void *android_location_init(void)
    if (!env)
       goto dealloc;
 
-   GET_OBJECT_CLASS(env, class, android_app->activity->clazz);
+   GET_OBJECT_CLASS(env, class, android_app->clazz);
    if (class == NULL)
       goto dealloc;
 
@@ -95,7 +95,7 @@ static void *android_location_init(void)
    if (!androidlocation->onLocationHasChanged)
       goto dealloc;
 
-   CALL_VOID_METHOD(env, android_app->activity->clazz,
+   CALL_VOID_METHOD(env, android_app->clazz,
          androidlocation->onLocationInit);
 
    return androidlocation;
@@ -113,7 +113,7 @@ static void android_location_free(void *data)
    if (!env)
       return;
 
-   CALL_VOID_METHOD(env, android_app->activity->clazz,
+   CALL_VOID_METHOD(env, android_app->clazz,
          androidlocation->onLocationFree);
 
    free(androidlocation);
@@ -127,7 +127,7 @@ static bool android_location_start(void *data)
    if (!env)
       return false;
 
-   CALL_VOID_METHOD(env, android_app->activity->clazz,
+   CALL_VOID_METHOD(env, android_app->clazz,
          androidlocation->onLocationStart);
 
    return true;
@@ -141,7 +141,7 @@ static void android_location_stop(void *data)
    if (!env)
       return;
 
-   CALL_VOID_METHOD(env, android_app->activity->clazz,
+   CALL_VOID_METHOD(env, android_app->clazz,
          androidlocation->onLocationStop);
 }
 
@@ -158,17 +158,17 @@ static bool android_location_get_position(void *data, double *latitude,
    jdouble lat, lon, horiz_accu;
    jboolean newLocation;
 
-   CALL_BOOLEAN_METHOD(env, newLocation, android_app->activity->clazz,
+   CALL_BOOLEAN_METHOD(env, newLocation, android_app->clazz,
          androidlocation->onLocationHasChanged);
 
    if (!newLocation)
       goto fail;
 
-   CALL_DOUBLE_METHOD(env, lat,        android_app->activity->clazz,
+   CALL_DOUBLE_METHOD(env, lat,        android_app->clazz,
          androidlocation->onLocationGetLatitude);
-   CALL_DOUBLE_METHOD(env, lon,        android_app->activity->clazz,
+   CALL_DOUBLE_METHOD(env, lon,        android_app->clazz,
          androidlocation->onLocationGetLongitude);
-   CALL_DOUBLE_METHOD(env, horiz_accu, android_app->activity->clazz,
+   CALL_DOUBLE_METHOD(env, horiz_accu, android_app->clazz,
          androidlocation->onLocationGetHorizontalAccuracy);
 
    if (lat != 0.0)
@@ -201,7 +201,7 @@ static void android_location_set_interval(void *data, unsigned interval_ms,
    if (!env)
       return;
 
-   CALL_VOID_METHOD_PARAM(env, android_app->activity->clazz,
+   CALL_VOID_METHOD_PARAM(env, android_app->clazz,
          androidlocation->onLocationSetInterval, (int)interval_ms,
          (int)interval_distance);
 }

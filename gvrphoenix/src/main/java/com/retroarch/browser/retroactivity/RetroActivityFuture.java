@@ -239,20 +239,35 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 	}
 
 	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		boolean value = super.onTouchEvent(event);
+		System.out.println("super.onTouchEvent: " + value+ " event: " + event.getAction());
+		return value;
+	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev)
+	{
+		boolean value = super.dispatchTouchEvent( ev );
+		return value;
+	}
+	@Override
 	public boolean dispatchKeyEvent(android.view.KeyEvent event) {
 //        nativeDispatchKeyEvent(nativeTreasureHuntRenderer);
 		boolean handled = false;
-		if ((event.getSource() & InputDevice.SOURCE_GAMEPAD)
-				== InputDevice.SOURCE_GAMEPAD) {
+		if ((event.getSource() & InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD)
+		{
 
-			if (event.getAction() == KeyEvent.ACTION_DOWN) {
+			if (event.getAction() == KeyEvent.ACTION_DOWN)
+			{
 				switch (event.getKeyCode()) {
 					default:
 						Log.e("default:", "event code:" + event.getKeyCode());
 				}
 				if (!handled)
 					Log.e("handle", "code is " + event.getKeyCode() + "\n");
-			} else if (event.getAction() == KeyEvent.ACTION_UP) {
+			} else if (event.getAction() == KeyEvent.ACTION_UP)
+			{
 				//don't care, but need to handle it.
 				handled = true;
 			} else {

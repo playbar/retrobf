@@ -8,6 +8,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.retroarch.browser.preferences.util.UserPreferences;
 
+import android.app.Activity;
 import android.app.NativeActivity;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -18,10 +19,9 @@ import android.widget.Toast;
 
 /**
  * Class that implements location-based functionality for
- * the {@link RetroActivityFuture} and {@link RetroActivityPast}
  * activities.
  */
-public class RetroActivityLocation extends NativeActivity
+public class RetroActivityLocation extends Activity
 implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener
 {
 	/* LOCATION VARIABLES */

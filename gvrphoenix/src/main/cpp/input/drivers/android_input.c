@@ -327,7 +327,7 @@ static void android_input_poll_main_cmd(void)
 
       case APP_CMD_INIT_WINDOW:
          slock_lock(android_app->mutex);
-         android_app->window = android_app->pendingWindow;
+//         android_app->window = android_app->pendingWindow;
          android_app->reinitRequested = 1;
          scond_broadcast(android_app->cond);
          slock_unlock(android_app->mutex);
@@ -360,7 +360,7 @@ static void android_input_poll_main_cmd(void)
          /* The window is being hidden or closed, clean it up. */
          /* terminate display/EGL context here */
 
-         android_app->window = NULL;
+//         android_app->window = NULL;
          scond_broadcast(android_app->cond);
          slock_unlock(android_app->mutex);
          break;
@@ -1260,7 +1260,7 @@ static bool android_input_key_pressed(void *data, int key)
 static void android_input_poll(void *data)
 {
    int ident;
-   unsigned key                    = RARCH_PAUSE_TOGGLE;
+   unsigned key = RARCH_PAUSE_TOGGLE;
    struct android_app *android_app = (struct android_app*)g_android;
 
     bool bpress = android_input_key_pressed(data, key);
@@ -1331,14 +1331,13 @@ static int16_t android_input_state(void *data,
 
    switch (device)
    {
-      case RETRO_DEVICE_JOYPAD:
-         return input_joypad_pressed(android->joypad, joypad_info,
-               port, binds[port], id) ||
-            android_keyboard_port_input_pressed(binds[port],id);
+//      case RETRO_DEVICE_JOYPAD:
+//         return input_joypad_pressed(android->joypad, joypad_info,
+//               port, binds[port], id) ||
+//            android_keyboard_port_input_pressed(binds[port],id);
       case RETRO_DEVICE_ANALOG:
          if (binds[port])
-            return input_joypad_analog(android->joypad, joypad_info,
-                  port, idx, id, binds[port]);
+            return input_joypad_analog(android->joypad, joypad_info, port, idx, id, binds[port]);
          break;
       case RETRO_DEVICE_MOUSE:
          return android_mouse_state(android, id);

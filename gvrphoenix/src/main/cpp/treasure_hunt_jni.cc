@@ -22,6 +22,7 @@
 #include "gvr.h"
 #include "gvr_audio.h"
 
+
 #define JNI_METHOD(return_type, method_name) \
 JNIEXPORT return_type JNICALL Java_com_retroarch_browser_retroactivity_RetroActivityFuture_##method_name
 
@@ -39,18 +40,29 @@ inline TreasureHuntRenderer *native(jlong ptr)
 }  // anonymous namespace
 
 extern "C" {
+JavaVM* gvm = NULL;
 
-JNI_METHOD(void, nativeOnCreate)(JNIEnv *env, jclass clazz)
-{
-
+jint JNI_OnLoad(JavaVM* vm, void* reserved){
+    gvm = vm;
+    return JNI_VERSION_1_6;
 }
 
-JNI_METHOD(void, nativeDispatchKeyEvent)(JNIEnv *env, jclass clazz, jlong native_treasure_hunt)
+extern void android_app_oncreate(jobject clazz );
+
+JNI_METHOD(void, nativeOnCreate)(JNIEnv *env, jobject obj)
+{
+    jclass claz = env->GetObjectClass(obj);
+    jmethodID getIntent = env->GetMethodID(claz, "getIntent", "()Landroid/content/Intent;");
+    jobject gobj = env->NewGlobalRef( obj );
+    android_app_oncreate(gobj );
+}
+
+JNI_METHOD(void, nativeDispatchKeyEvent)(JNIEnv *env, jobject clazz, jlong native_treasure_hunt)
 {
   native(native_treasure_hunt)->DispatchKeyEvent();
 }
 
-JNI_METHOD(jlong, nativeCreateRenderer)(JNIEnv *env, jclass clazz, jobject class_loader, jobject android_context, jlong native_gvr_api)
+JNI_METHOD(jlong, nativeCreateRenderer)(JNIEnv *env, jobject clazz, jobject class_loader, jobject android_context, jlong native_gvr_api)
 {
   std::unique_ptr<gvr::AudioApi> audio_context(new gvr::AudioApi);
   audio_context->Init(env, android_context, class_loader, GVR_AUDIO_RENDERING_BINAURAL_HIGH_QUALITY);

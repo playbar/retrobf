@@ -58,7 +58,7 @@ static void *android_camera_init(const char *device, uint64_t caps,
    if (!env)
       goto dealloc;
 
-   GET_OBJECT_CLASS(env, class, android_app->activity->clazz);
+   GET_OBJECT_CLASS(env, class, android_app->clazz);
    if (class == NULL)
       goto dealloc;
 
@@ -92,7 +92,7 @@ static void *android_camera_init(const char *device, uint64_t caps,
    if (!androidcamera->onCameraPoll)
       goto dealloc;
 
-   CALL_VOID_METHOD(env, android_app->activity->clazz,
+   CALL_VOID_METHOD(env, android_app->clazz,
          androidcamera->onCameraInit);
 
    return androidcamera;
@@ -111,8 +111,7 @@ static void android_camera_free(void *data)
    if (!env)
       return;
 
-   CALL_VOID_METHOD(env, android_app->activity->clazz,
-         androidcamera->onCameraFree);
+   CALL_VOID_METHOD(env, android_app->clazz, androidcamera->onCameraFree);
 
    free(androidcamera);
 }
@@ -121,7 +120,7 @@ static bool android_camera_start(void *data)
 {
    struct android_app *android_app = (struct android_app*)g_android;
    androidcamera_t *androidcamera  = (androidcamera_t*)data;
-   JNIEnv                     *env = jni_thread_getenv();
+   JNIEnv *env = jni_thread_getenv();
 
    if (!env)
       return NULL;
@@ -135,9 +134,9 @@ static bool android_camera_start(void *data)
    glTexParameteri(GL_TEXTURE_EXTERNAL_OES, GL_TEXTURE_WRAP_T,
          GL_CLAMP_TO_EDGE);
 
-   CALL_VOID_METHOD_PARAM(env, android_app->activity->clazz,
+   CALL_VOID_METHOD_PARAM(env, android_app->clazz,
          androidcamera->onCameraSetTexture, (int) androidcamera->tex);
-   CALL_VOID_METHOD(env, android_app->activity->clazz,
+   CALL_VOID_METHOD(env, android_app->clazz,
          androidcamera->onCameraStart);
 
    return true;
@@ -152,8 +151,7 @@ static void android_camera_stop(void *data)
    if (!env)
       return;
 
-   CALL_VOID_METHOD(env, android_app->activity->clazz,
-         androidcamera->onCameraStop);
+   CALL_VOID_METHOD(env, android_app->clazz, androidcamera->onCameraStop);
 
    if (androidcamera->tex)
       video_driver_texture_unload((uintptr_t*)&androidcamera->tex);
@@ -173,8 +171,7 @@ static bool android_camera_poll(void *data,
 
    (void)frame_raw_cb;
 
-   CALL_BOOLEAN_METHOD(env, newFrame, android_app->activity->clazz,
-         androidcamera->onCameraPoll);
+   CALL_BOOLEAN_METHOD(env, newFrame, android_app->clazz, androidcamera->onCameraPoll);
 
    if (newFrame)
    {

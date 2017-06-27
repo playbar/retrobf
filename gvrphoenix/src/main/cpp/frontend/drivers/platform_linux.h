@@ -81,7 +81,8 @@ struct android_app
 //   int32_t (*onInputEvent)(struct android_app* app, AInputEvent* event);
 
    /* The ANativeActivity object instance that this app is running in. */
-   ANativeActivity* activity;
+//   ANativeActivity* activity;
+    jobject clazz;
 
    /* The current configuration the app is running in. */
 //   AConfiguration *config;
@@ -107,7 +108,7 @@ struct android_app
 
 
    /* When non-NULL, this is the window surface that the app can draw in. */
-   ANativeWindow* window;
+//   ANativeWindow* window;
 
    /* Current state of the app's activity.  May be either APP_CMD_START,
     * APP_CMD_RESUME, APP_CMD_PAUSE, or APP_CMD_STOP; see below. */
