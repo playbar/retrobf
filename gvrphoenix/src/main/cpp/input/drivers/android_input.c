@@ -1176,6 +1176,10 @@ static void android_input_poll_input(void *data)
             case AINPUT_EVENT_TYPE_KEY:
                {
                   int keycode = AKeyEvent_getKeyCode(event);
+                   if(keycode == 109 ){
+                       command_event(CMD_EVENT_QUIT, NULL);
+                       return;
+                   }
 
                   if (is_keyboard_id(id))
                   {

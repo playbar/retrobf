@@ -40,6 +40,11 @@ inline TreasureHuntRenderer *native(jlong ptr)
 
 extern "C" {
 
+JNI_METHOD(void, nativeDispatchKeyEvent)(JNIEnv *env, jclass clazz, jlong native_treasure_hunt)
+{
+  native(native_treasure_hunt)->DispatchKeyEvent();
+}
+
 JNI_METHOD(jlong, nativeCreateRenderer)(JNIEnv *env, jclass clazz, jobject class_loader, jobject android_context, jlong native_gvr_api)
 {
   std::unique_ptr<gvr::AudioApi> audio_context(new gvr::AudioApi);

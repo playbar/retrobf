@@ -42,6 +42,8 @@
 #include "../src/retroarch.h"
 #endif
 
+extern bool runloop_shutdown_initiated;
+
 /**
  * main_exit:
  *
@@ -132,6 +134,9 @@ int rarch_main(int argc, char *argv[], void *data)
 //    }
     while(true) {
         input_poll();
+        if( runloop_shutdown_initiated ) {
+            break;
+        }
     }
 //   do
 //   {
@@ -149,7 +154,7 @@ int rarch_main(int argc, char *argv[], void *data)
 //         break;
 //   }while(1);
 //
-//   main_exit(args);
+   main_exit(args);
 
    return 0;
 }

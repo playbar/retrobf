@@ -240,6 +240,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 
 	@Override
 	public boolean dispatchKeyEvent(android.view.KeyEvent event) {
+//        nativeDispatchKeyEvent(nativeTreasureHuntRenderer);
 		boolean handled = false;
 		if ((event.getSource() & InputDevice.SOURCE_GAMEPAD)
 				== InputDevice.SOURCE_GAMEPAD) {
@@ -275,6 +276,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 								| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 	}
 
+	private native void nativeDispatchKeyEvent(long nativeTreasureHuntRenderer);
 	private native long nativeCreateRenderer(ClassLoader appClassLoader, Context context, long nativeGvrContext);
 	private native void nativeDestroyRenderer(long nativeTreasureHuntRenderer);
 	private native void nativeInitializeGl(long nativeTreasureHuntRenderer);

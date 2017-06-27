@@ -47,6 +47,8 @@ public:
      */
     ~TreasureHuntRenderer();
 
+    void DispatchKeyEvent();
+
     /**
      * Initialize any GL-related objects. This should be called on the rendering
      * thread with a valid GL context.

@@ -29,6 +29,7 @@
 #include <frontend/drivers/platform_linux.h>
 #include <src/retroarch.h>
 #include <src/paths.h>
+#include <input/input_driver.h>
 
 #define LOG_TAG "TreasureHuntCPP"
 #define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
@@ -283,6 +284,11 @@ TreasureHuntRenderer::~TreasureHuntRenderer() {
   if (audio_initialization_thread_.joinable()) {
     audio_initialization_thread_.join();
   }
+}
+
+void TreasureHuntRenderer::DispatchKeyEvent()
+{
+    input_poll();
 }
 
 void TreasureHuntRenderer::InitializeGl() {

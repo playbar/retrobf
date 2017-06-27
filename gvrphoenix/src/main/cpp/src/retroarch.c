@@ -225,7 +225,6 @@ static bool runloop_paused                                 = false;
 static bool runloop_idle                                   = false;
 static bool runloop_exec                                   = false;
 static bool runloop_slowmotion                             = false;
-static bool runloop_shutdown_initiated                     = false;
 static bool runloop_core_shutdown_initiated                = false;
 static bool runloop_perfcnt_enable                         = false;
 static bool runloop_overrides_active                       = false;
@@ -236,6 +235,7 @@ static retro_time_t frame_limit_minimum_time               = 0.0;
 static retro_time_t frame_limit_last_time                  = 0.0;
 
 extern bool input_driver_flushing_input;
+bool runloop_shutdown_initiated                     = false;
 
 static void retroarch_msg_queue_deinit(void)
 {
