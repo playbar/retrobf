@@ -134,6 +134,7 @@ int rarch_main(int argc, char *argv[], void *data)
 //    }
     while(true) {
         input_poll();
+        task_queue_check();
         if( runloop_shutdown_initiated ) {
             break;
         }
@@ -154,7 +155,7 @@ int rarch_main(int argc, char *argv[], void *data)
 //         break;
 //   }while(1);
 //
-   main_exit(args);
+//   main_exit(args);
 
    return 0;
 }

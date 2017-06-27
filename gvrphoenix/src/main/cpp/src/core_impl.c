@@ -417,8 +417,8 @@ bool core_run(void)
 
    current_core.retro_run();
 
-   if (current_core.poll_type == POLL_TYPE_LATE && !current_core.input_polled)
-      input_poll();
+//   if (current_core.poll_type == POLL_TYPE_LATE && !current_core.input_polled)
+//      input_poll();
 
 #ifdef HAVE_NETWORKING
    netplay_driver_ctl(RARCH_NETPLAY_CTL_POST_FRAME, NULL);
