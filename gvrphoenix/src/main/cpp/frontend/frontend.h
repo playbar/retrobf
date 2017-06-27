@@ -22,8 +22,16 @@
 #include <stddef.h>
 
 #include <retro_common_api.h>
+#include <libretro-common/include/rthreads/rthreads.h>
 
 RETRO_BEGIN_DECLS
+
+struct StPause
+{
+    slock_t *mutex;
+    scond_t *cond;
+    bool  bPasuse;
+};
 
 /**
  * main_exit:

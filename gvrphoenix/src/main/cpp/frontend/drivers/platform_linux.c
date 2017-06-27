@@ -88,6 +88,8 @@ static char apk_dir[PATH_MAX_LENGTH];
 static char app_dir[PATH_MAX_LENGTH];
 static bool is_android_tv_device = false;
 
+extern  struct StPause gPause;
+
 #else
 static const char *proc_apm_path                   = "/proc/apm";
 static const char *proc_acpi_battery_path          = "/proc/acpi/battery";
@@ -230,6 +232,19 @@ static void onResume(ANativeActivity* activity)
 {
    RARCH_LOG("Resume: %p\n", activity);
    android_app_set_activity_state((struct android_app*) activity->instance, APP_CMD_RESUME);
+   slock_lock(gPause.mutex);
+    scond_broadcast(gPause.cond);
+   gPause.bPasuse = false;
+   slock_unlock(gPause.mutex);
+}
+
+static void onPause(ANativeActivity* activity)
+{
+    RARCH_LOG("Pause: %p\n", activity);
+    android_app_set_activity_state((struct android_app*) activity->instance, APP_CMD_PAUSE);
+    slock_lock(gPause.mutex);
+    gPause.bPasuse = true;
+    slock_unlock(gPause.mutex);
 }
 
 static void* onSaveInstanceState(ANativeActivity* activity, size_t* outLen)
@@ -254,12 +269,6 @@ static void* onSaveInstanceState(ANativeActivity* activity, size_t* outLen)
    }
    slock_unlock(android_app->mutex);
    return savedState;
-}
-
-static void onPause(ANativeActivity* activity)
-{
-   RARCH_LOG("Pause: %p\n", activity);
-   android_app_set_activity_state((struct android_app*) activity->instance, APP_CMD_PAUSE);
 }
 
 static void onStop(ANativeActivity* activity)
