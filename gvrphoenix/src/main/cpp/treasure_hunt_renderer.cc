@@ -41,6 +41,13 @@
     abort();                                                               \
   }
 
+extern "C" {
+extern void android_dispatch_motion_event(int source, int id,
+                                   float x, float y, float z, float rz, float hatx, float haty,
+                                   float ltrig, float rtrig, float brake, float gas);
+extern void android_dispatch_key_event(int source, int id, int keycode, int action, int mate);
+}
+
 namespace {
 static const float kZNear = 1.0f;
 static const float kZFar = 100.0f;
@@ -286,8 +293,16 @@ TreasureHuntRenderer::~TreasureHuntRenderer() {
   }
 }
 
-void TreasureHuntRenderer::DispatchKeyEvent()
+void TreasureHuntRenderer::DispatchMotionEvent(int source, int id,
+                                               float x, float y, float z, float rz, float hatx, float haty,
+                                               float ltrig, float rtrig, float brake, float gas)
 {
+  android_dispatch_motion_event( source, id, x, y, z, rz, hatx, haty, ltrig, rtrig, brake, gas);
+}
+
+void TreasureHuntRenderer::DispatchKeyEvent(int source, int id, int keycode, int action, int mate)
+{
+  android_dispatch_key_event(source, id, keycode, action, mate);
 //    input_poll();
 }
 
@@ -595,6 +610,7 @@ void TreasureHuntRenderer::PrepareFramebuffer() {
 }
 
 void TreasureHuntRenderer::OnTriggerEvent() {
+//    input_poll();
   if (ObjectIsFound()) {
     success_source_id_ = gvr_audio_api_->CreateStereoSound(kSuccessSoundFile);
     gvr_audio_api_->PlaySound(success_source_id_, false /* looping disabled */);

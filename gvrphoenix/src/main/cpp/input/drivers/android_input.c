@@ -769,13 +769,12 @@ bool is_keyboard_id(int id)
 }
 
 static INLINE void android_input_poll_event_type_keyboard(
-      AInputEvent *event, int keycode, int *handled)
+        int action, int meta, int keycode, int *handled)
 {
-   int keydown           = (AKeyEvent_getAction(event) == AKEY_EVENT_ACTION_DOWN);
+   int keydown           = (action == AKEY_EVENT_ACTION_DOWN);
    unsigned keyboardcode = input_keymaps_translate_keysym_to_rk(keycode);
    /* Set keyboard modifier based on shift,ctrl and alt state */
    uint16_t mod          = 0;
-   int meta              = AKeyEvent_getMetaState(event);
 
    if (meta & AMETA_ALT_ON)
       mod |= RETROKMOD_ALT;
@@ -792,11 +791,10 @@ static INLINE void android_input_poll_event_type_keyboard(
 
 static INLINE void android_input_poll_event_type_key(
       struct android_app *android_app,
-      AInputEvent *event, int port, int keycode, int source,
+      int action, int port, int keycode, int source,
       int type_event, int *handled)
 {
    uint8_t *buf = android_keyboard_state_get(port);
-   int action  = AKeyEvent_getAction(event);
 
    /* some controllers send both the up and down events at once
     * when the button is released for "special" buttons, like menu buttons
@@ -847,9 +845,7 @@ static int android_input_get_id_index_from_name(android_input_t *android,
    return -1;
 }
 
-static void handle_hotplug(android_input_t *android,
-      struct android_app *android_app, int *port, int id,
-      int source)
+static void handle_hotplug(android_input_t *android, struct android_app *android_app, int *port, int id, int source)
 {
    char device_name[256];
    char device_model[256];
@@ -876,233 +872,10 @@ static void handle_hotplug(android_input_t *android,
       return;
    }
 
-   /* FIXME - per-device hacks for NVidia Shield, Xperia Play and
-    * similar devices
-    *
-    * These hacks depend on autoconf, but can work with user
-    * created autoconfs properly
-    */
-
-   /* NVIDIA Shield Console
-    * This is the most complicated example, the built-in controller
-    * has an extra button that can't be used and a remote.
-    *
-    * We map the remote for navigation and overwrite whenever a
-    * real controller is connected.
-    * Also group the NVIDIA button on the controller with the
-    * main controller inputs so it's usable. It's mapped to
-    * menu by default
-    *
-    * The NVIDIA button is identified as "Virtual" device when first
-    * pressed. CEC remote input is also identified as "Virtual" device.
-    * If a virtual device is detected before a controller then it will
-    * be assigned to port 0 as "SHIELD Virtual Controller". When a real
-    * controller is detected it will overwrite the virtual controller
-    * and be grouped with the NVIDIA button of the virtual device.
-    *
-    */
-   if(strstr(device_model, "SHIELD Android TV") && (
-      strstr(device_name, "Virtual") ||
-      strstr(device_name, "NVIDIA Corporation NVIDIA Controller v01.03")))
-   {
-      /* only use the hack if the device is one of the built-in devices */
-      RARCH_LOG("Special Device Detected: %s\n", device_model);
-      {
-#if 0
-         RARCH_LOG("- Pads Mapped: %d\n- Device Name: %s\n- IDS: %d, %d, %d",
-               android->pads_connected, device_name, id, pad_id1, pad_id2);
-#endif
-         /* remove the remote or virtual controller device if it is mapped */
-         if (strstr(android->pad_states[0].name,"SHIELD Remote") ||
-            strstr(android->pad_states[0].name,"SHIELD Virtual Controller"))
-         {
-            pad_id1 = -1;
-            pad_id2 = -1;
-            android->pads_connected = 0;
-            *port = 0;
-            strlcpy(name_buf, device_name, sizeof(name_buf));
-         }
-
-         /* if the actual controller has not been mapped yet,
-          * then configure Virtual device for now */
-         if (strstr(device_name, "Virtual") && android->pads_connected==0)
-            strlcpy (name_buf, "SHIELD Virtual Controller", sizeof(name_buf));
-         else
-            strlcpy (name_buf, "NVIDIA SHIELD Controller", sizeof(name_buf));
-
-         /* apply the hack only for the first controller
-          * store the id for later use
-         */
-         if (strstr(device_name, "NVIDIA Corporation NVIDIA Controller v01.03")
-               && android->pads_connected==0)
-            pad_id1 = id;
-         else if (strstr(device_name, "Virtual") && pad_id1 != -1)
-         {
-            id = pad_id1;
-            return;
-         }
-      }
-   }
-
-   else if(strstr(device_model, "SHIELD") && (
-      strstr(device_name, "Virtual") || strstr(device_name, "gpio") ||
-      strstr(device_name, "NVIDIA Corporation NVIDIA Controller v01.01") ||
-      strstr(device_name, "NVIDIA Corporation NVIDIA Controller v01.02")))
-   {
-      /* only use the hack if the device is one of the built-in devices */
-      RARCH_LOG("Special Device Detected: %s\n", device_model);
-      {
-         if ( pad_id1 < 0 )
-            pad_id1 = id;
-         else
-            pad_id2 = id;
-
-         if ( pad_id2 > 0)
-            return;
-         strlcpy (name_buf, "NVIDIA SHIELD Portable", sizeof(name_buf));
-      }
-   }
-
-   else if(strstr(device_model, "SHIELD") && (
-      strstr(device_name, "Virtual") || strstr(device_name, "gpio") ||
-      strstr(device_name, "NVIDIA Corporation NVIDIA Controller v01.03")))
-   {
-      /* only use the hack if the device is one of the built-in devices */
-      RARCH_LOG("Special Device Detected: %s\n", device_model);
-      {
-         if (strstr(device_name, "NVIDIA Corporation NVIDIA Controller v01.03")
-             && android->pads_connected==0)
-            pad_id1 = id;
-         else if (strstr(device_name, "Virtual") || strstr(device_name, "gpio"))
-         {
-            id = pad_id1;
-            return;
-         }
-         strlcpy (name_buf, "NVIDIA SHIELD Gamepad", sizeof(name_buf));
-      }
-   }
-
-   /* Other ATV Devices
-    * Add other common ATV devices that will follow the Android
-    * Gaempad convention as "Android Gamepad"
-    */
-    /* to-do: add DS4 on Bravia ATV */
-   else if (strstr(device_name, "NVIDIA"))
-      strlcpy (name_buf, "Android Gamepad", sizeof(name_buf));
-
-   /* GPD XD
-    * This is a simple hack, basically groups the "back"
-    * button with the rest of the gamepad
-    */
-   else if(strstr(device_model, "XD") && (
-      strstr(device_name, "Virtual") || strstr(device_name, "rk29-keypad") ||
-      strstr(device_name,"Playstation3") || strstr(device_name,"XBOX")))
-   {
-      /* only use the hack if the device is one of the built-in devices */
-      RARCH_LOG("Special Device Detected: %s\n", device_model);
-      {
-         if ( pad_id1 < 0 )
-            pad_id1 = id;
-         else
-            pad_id2 = id;
-
-         if ( pad_id2 > 0)
-            return;
-
-         strlcpy (name_buf, "GPD XD", sizeof(name_buf));
-         *port = 0;
-      }
-   }
-
-   /* XPERIA Play
-    * This device is composed of two hid devices
-    * We make it look like one device
-    */
-   else if(strstr(device_model, "R800") &&
-         (
-          strstr(device_name, "keypad-game-zeus") ||
-          strstr(device_name, "keypad-zeus")
-         )
-         )
-   {
-      /* only use the hack if the device is one of the built-in devices */
-      RARCH_LOG("Special Device Detected: %s\n", device_model);
-      {
-         if ( pad_id1 < 0 )
-            pad_id1 = id;
-         else
-            pad_id2 = id;
-
-         if ( pad_id2 > 0)
-            return;
-
-         strlcpy (name_buf, "XPERIA Play", sizeof(name_buf));
-         *port = 0;
-      }
-   }
-
-   /* ARCHOS Gamepad
-    * This device is composed of two hid devices
-    * We make it look like one device
-    */
-   else if(strstr(device_model, "ARCHOS GAMEPAD") && (
-      strstr(device_name, "joy_key") || strstr(device_name, "joystick")))
-   {
-      /* only use the hack if the device is one of the built-in devices */
-      RARCH_LOG("ARCHOS GAMEPAD Detected: %s\n", device_model);
-      {
-         if ( pad_id1 < 0 )
-            pad_id1 = id;
-         else
-            pad_id2 = id;
-
-         if ( pad_id2 > 0)
-            return;
-
-         strlcpy (name_buf, "ARCHOS GamePad", sizeof(name_buf));
-         *port = 0;
-      }
-   }
-
-   /* Other uncommon devices
-    * These are mostly remote control type devices, bind them always to port 0
-    * And overwrite the binding whenever a controller button is pressed
-    */
-   else if (strstr(device_name, "Amazon Fire TV Remote")
-         || strstr(device_name, "Nexus Remote")
-         || strstr(device_name, "SHIELD Remote"))
-   {
-      android->pads_connected = 0;
-      *port = 0;
-      strlcpy(name_buf, device_name, sizeof(name_buf));
-   }
-
-   else if (strstr(device_name, "iControlPad-"))
-      strlcpy(name_buf, "iControlPad HID Joystick profile", sizeof(name_buf));
-
-   else if (strstr(device_name, "TTT THT Arcade console 2P USB Play"))
-   {
-      if (*port == 0)
-         strlcpy(name_buf, "TTT THT Arcade (User 1)", sizeof(name_buf));
-      else if (*port == 1)
-         strlcpy(name_buf, "TTT THT Arcade (User 2)", sizeof(name_buf));
-   }
-   else if (strstr(device_name, "MOGA"))
-      strlcpy(name_buf, "Moga IME", sizeof(name_buf));
-
-   /* If device is keyboard only and didn't match any of the devices above
-    * then assume it is a keyboard, register the id, and return unless the
-    * maximum number of keyboards are already registered. */
-   else if(source == AINPUT_SOURCE_KEYBOARD && kbd_num < MAX_NUM_KEYBOARDS)
-   {
-      kbd_id[kbd_num] = id;
-      kbd_num++;
-      return;
-   }
 
    /* if device was not keyboard only, yet did not match any of the devices
     * then try to autoconfigure as gamepad based on device_name. */
-   else if (!string_is_empty(device_name))
+   if (!string_is_empty(device_name))
       strlcpy(name_buf, device_name, sizeof(name_buf));
 
    if (strstr(android_app->current_ime, "net.obsidianx.android.mogaime"))
@@ -1115,22 +888,17 @@ static void handle_hotplug(android_input_t *android,
    if (*port < 0)
       *port = android->pads_connected;
 
-   if (!input_autoconfigure_connect(
-         name_buf,
-         NULL,
-         android_joypad.ident,
-         *port,
-         vendorId,
-         productId))
-      input_config_set_device_name(*port, name_buf);
+   if (!input_autoconfigure_connect(name_buf, NULL, android_joypad.ident,
+         *port, vendorId, productId)) {
+       input_config_set_device_name(*port, name_buf);
+   }
 
    input_config_set_device_name(*port, name_buf);
 
    android->pad_states[android->pads_connected].id   = id;
    android->pad_states[android->pads_connected].port = *port;
 
-   strlcpy(android->pad_states[*port].name, name_buf,
-         sizeof(android->pad_states[*port].name));
+   strlcpy(android->pad_states[*port].name, name_buf, sizeof(android->pad_states[*port].name));
 
    android->pads_connected++;
 }
@@ -1164,8 +932,7 @@ static void android_input_poll_input(void *data)
          int          port = android_input_get_id_port(android, id, source);
 
          if (port < 0 && !is_keyboard_id(id))
-            handle_hotplug(android, android_app,
-            &port, id, source);
+            handle_hotplug(android, android_app, &port, id, source);
 
          switch (type_event)
          {
@@ -1185,7 +952,7 @@ static void android_input_poll_input(void *data)
                   {
                      if (!predispatched)
                      {
-                        android_input_poll_event_type_keyboard(event, keycode, &handled);
+//                        android_input_poll_event_type_keyboard(, keycode, &handled);
                         android_input_poll_event_type_key(android_app, event, ANDROID_KEYBOARD_PORT, keycode, source, type_event, &handled);
                      }
                   }
@@ -1199,6 +966,88 @@ static void android_input_poll_input(void *data)
             AInputQueue_finishEvent(android_app->inputQueue, event, handled);
       }
    }
+}
+
+
+static void android_input_poll_memcpy(void *data)
+{
+   unsigned i, j;
+   android_input_t *android = (android_input_t*)data;
+   struct android_app *android_app = (struct android_app*)g_android;
+
+   for (i = 0; i < MAX_PADS; i++)
+   {
+      for (j = 0; j < 2; j++)
+         android_app->hat_state[i][j]    = android->hat_state[i][j];
+      for (j = 0; j < MAX_AXIS; j++)
+         android_app->analog_state[i][j] = android->analog_state[i][j];
+   }
+}
+
+
+void android_dispatch_motion_event(int source, int id,
+                                   float x, float y, float z, float rz, float hatx, float haty,
+                                   float ltrig, float rtrig, float brake, float gas)
+{
+    struct android_app *android_app = (struct android_app*)g_android;
+    android_input_t    *android     = (android_input_t*)current_input_data;
+    if (id == pad_id2)
+        id = pad_id1;
+    int port = android_input_get_id_port(android, id, source);
+    if (port < 0 && !is_keyboard_id(id))
+        handle_hotplug(android, android_app, &port, id, source);
+
+    android->hat_state[port][0] = (int)hatx;
+    android->hat_state[port][1] = (int)haty;
+
+    /* XXX: this could be a loop instead, but do we really want to
+     * loop through every axis? */
+    android->analog_state[port][0] = (int16_t)(x * 32767.0f);
+    android->analog_state[port][1] = (int16_t)(y * 32767.0f);
+    android->analog_state[port][2] = (int16_t)(z * 32767.0f);
+    android->analog_state[port][3] = (int16_t)(rz * 32767.0f);
+    android->analog_state[port][6] = (int16_t)(ltrig * 32767.0f);
+    android->analog_state[port][7] = (int16_t)(rtrig * 32767.0f);
+    android->analog_state[port][8] = (int16_t)(brake * 32767.0f);
+    android->analog_state[port][9] = (int16_t)(gas * 32767.0f);
+
+    if (android_app->input_alive)
+        android_input_poll_memcpy(android);
+}
+
+void android_dispatch_key_event(int source, int id, int keycode, int action, int mate)
+{
+//    AInputEvent *event = NULL;
+    struct android_app *android_app = (struct android_app*)g_android;
+    android_input_t    *android     = (android_input_t*)current_input_data;
+
+         int32_t handled = 1;
+//   int predispatched = AInputQueue_preDispatchEvent(android_app->inputQueue, event);
+         int type_event = 0;//AInputEvent_getType(event);
+         if (id == pad_id2)
+            id = pad_id1;
+         int port = android_input_get_id_port(android, id, source);
+
+         if (port < 0 && !is_keyboard_id(id))
+            handle_hotplug(android, android_app, &port, id, source);
+
+
+         if (keycode == 109) {
+            command_event(CMD_EVENT_QUIT, NULL);
+            return;
+         }
+         if (is_keyboard_id(id)) {
+            android_input_poll_event_type_keyboard(action, mate, keycode, &handled);
+            android_input_poll_event_type_key(android_app, action, ANDROID_KEYBOARD_PORT, keycode,
+                                              source, type_event, &handled);
+         } else {
+            android_input_poll_event_type_key(android_app, action, port, keycode, source,
+                                              type_event, &handled);
+         }
+
+
+    if (android_app->input_alive)
+        android_input_poll_memcpy(android);
 }
 
 static void android_input_poll_user(void *data)
@@ -1215,21 +1064,6 @@ static void android_input_poll_user(void *data)
          android->accelerometer_state.y = event.acceleration.y;
          android->accelerometer_state.z = event.acceleration.z;
       }
-   }
-}
-
-static void android_input_poll_memcpy(void *data)
-{
-   unsigned i, j;
-   android_input_t *android = (android_input_t*)data;
-   struct android_app *android_app = (struct android_app*)g_android;
-
-   for (i = 0; i < MAX_PADS; i++)
-   {
-      for (j = 0; j < 2; j++)
-         android_app->hat_state[i][j]    = android->hat_state[i][j];
-      for (j = 0; j < MAX_AXIS; j++)
-         android_app->analog_state[i][j] = android->analog_state[i][j];
    }
 }
 

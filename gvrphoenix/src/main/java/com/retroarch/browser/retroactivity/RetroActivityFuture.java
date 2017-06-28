@@ -120,6 +120,13 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 						return false;
 					}
 				});
+		surfaceView.setOnKeyListener(
+				new View.OnKeyListener(){
+					public	boolean onKey(View v, int keyCode, KeyEvent event)
+					{
+						return true;
+					}
+				});
 		gvrLayout.setPresentationView(surfaceView);
 
 		// Add the GvrLayout to the View hierarchy.
@@ -135,6 +142,107 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 
 		// Enable VR Mode.
 		AndroidCompat.setVrModeEnabled(this, true);
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		boolean value = super.onTouchEvent(event);
+		System.out.println("super.onTouchEvent: " + value+ " event: " + event.getAction());
+		return value;
+	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev)
+	{
+		boolean value = super.dispatchTouchEvent( ev );
+		return value;
+	}
+	@Override
+	public boolean dispatchTrackballEvent(MotionEvent ev){
+		boolean value = super.dispatchTrackballEvent(ev);
+		return value;
+	}
+	@Override
+	public boolean dispatchGenericMotionEvent(MotionEvent ev){
+		super.dispatchGenericMotionEvent(ev);
+		int     AXIS_X = 0;
+		int		AXIS_Y = 1;
+		int		AXIS_Z = 11;
+		int		AXIS_RZ = 14;
+		int		AXIS_HAT_X = 15;
+		int		AXIS_HAT_Y = 16;
+		int		AXIS_LTRIGGER = 17;
+		int		AXIS_RTRIGGER = 18;
+		int		AXIS_GAS = 22;
+		int		AXIS_BRAKE = 23;
+
+		int motion_ptr = ev.getAction() >> 8;
+
+		int source = ev.getSource();
+		int id = ev.getDeviceId();
+		//////////////
+		float x = ev.getAxisValue(AXIS_X, motion_ptr);
+		float y           = ev.getAxisValue( AXIS_Y, motion_ptr);
+		float z           = ev.getAxisValue( AXIS_Z, motion_ptr);
+		float rz          = ev.getAxisValue( AXIS_RZ, motion_ptr);
+		float hatx        = ev.getAxisValue( AXIS_HAT_X, motion_ptr);
+		float haty        = ev.getAxisValue( AXIS_HAT_Y, motion_ptr);
+		float ltrig       = ev.getAxisValue( AXIS_LTRIGGER, motion_ptr);
+		float rtrig       = ev.getAxisValue( AXIS_RTRIGGER, motion_ptr);
+		float brake       = ev.getAxisValue( AXIS_BRAKE, motion_ptr);
+		float gas         = ev.getAxisValue( AXIS_GAS, motion_ptr);
+		nativeDispatchMotionEvent(nativeTreasureHuntRenderer, source, id, x, y, z, rz, hatx, haty, ltrig, rtrig, brake, gas);
+
+		return true;
+	}
+
+	@Override
+	public boolean onTrackballEvent(MotionEvent event)
+	{
+		boolean value = super.onTrackballEvent(event);
+		return value;
+	}
+
+//	@Override
+//	public boolean onGenericMotionEvent(MotionEvent event) {
+//		boolean value = super.onGenericMotionEvent( event);
+//		return  true;
+//	}
+
+	@Override
+	public boolean dispatchKeyEvent(android.view.KeyEvent event) {
+		int source = event.getSource();
+		int id = event.getDeviceId();
+		int keycode = event.getKeyCode();
+		int action = event.getAction();
+		int mata = event.getMetaState();
+
+		nativeDispatchKeyEvent(nativeTreasureHuntRenderer, source, id, keycode, action, mata);
+
+
+//		boolean handled = false;
+//		if ((event.getSource() & InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD)
+//		{
+//
+//			if (event.getAction() == KeyEvent.ACTION_DOWN)
+//			{
+//				switch (event.getKeyCode()) {
+//					default:
+//						Log.e("default:", "event code:" + event.getKeyCode());
+//				}
+//				if (!handled)
+//					Log.e("handle", "code is " + event.getKeyCode() + "\n");
+//			} else if (event.getAction() == KeyEvent.ACTION_UP)
+//			{
+//				//don't care, but need to handle it.
+//				handled = true;
+//			} else {
+//				Log.e("else", "unknown action " + event.getAction());
+//			}
+//			return handled;
+//		}
+
+		return true;
 	}
 
 	@Override
@@ -238,47 +346,6 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 
 	}
 
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		boolean value = super.onTouchEvent(event);
-		System.out.println("super.onTouchEvent: " + value+ " event: " + event.getAction());
-		return value;
-	}
-
-	@Override
-	public boolean dispatchTouchEvent(MotionEvent ev)
-	{
-		boolean value = super.dispatchTouchEvent( ev );
-		return value;
-	}
-	@Override
-	public boolean dispatchKeyEvent(android.view.KeyEvent event) {
-//        nativeDispatchKeyEvent(nativeTreasureHuntRenderer);
-		boolean handled = false;
-		if ((event.getSource() & InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD)
-		{
-
-			if (event.getAction() == KeyEvent.ACTION_DOWN)
-			{
-				switch (event.getKeyCode()) {
-					default:
-						Log.e("default:", "event code:" + event.getKeyCode());
-				}
-				if (!handled)
-					Log.e("handle", "code is " + event.getKeyCode() + "\n");
-			} else if (event.getAction() == KeyEvent.ACTION_UP)
-			{
-				//don't care, but need to handle it.
-				handled = true;
-			} else {
-				Log.e("else", "unknown action " + event.getAction());
-			}
-			return handled;
-		}
-
-		return handled;
-	}
-
 	private void setImmersiveSticky() {
 		getWindow()
 				.getDecorView()
@@ -292,7 +359,10 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 	}
 
 	private native void nativeOnCreate();
-	private native void nativeDispatchKeyEvent(long nativeTreasureHuntRenderer);
+	private native void nativeDispatchMotionEvent(long nativeTreasureHuntRenderer, int source, int id,
+												 float x, float y, float z, float rz, float hatx, float haty,
+												  float ltrig, float rtrig, float brake, float gas  );
+	private native void nativeDispatchKeyEvent(long nativeTreasureHuntRenderer, int source, int id, int keycode, int action, int mate);
 	private native long nativeCreateRenderer(ClassLoader appClassLoader, Context context, long nativeGvrContext);
 	private native void nativeDestroyRenderer(long nativeTreasureHuntRenderer);
 	private native void nativeInitializeGl(long nativeTreasureHuntRenderer);

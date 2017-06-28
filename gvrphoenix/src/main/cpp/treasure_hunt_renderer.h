@@ -47,7 +47,10 @@ public:
      */
     ~TreasureHuntRenderer();
 
-    void DispatchKeyEvent();
+    void DispatchMotionEvent(int source, int id,
+                             float x, float y, float z, float rz, float hatx, float haty,
+                             float ltrig, float rtrig, float brake, float gas);
+    void DispatchKeyEvent(int source, int id, int keycode, int action, int mate);
 
     /**
      * Initialize any GL-related objects. This should be called on the rendering

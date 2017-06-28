@@ -57,19 +57,25 @@ JNI_METHOD(void, nativeOnCreate)(JNIEnv *env, jobject obj)
     android_app_oncreate(gobj );
 }
 
-JNI_METHOD(void, nativeDispatchKeyEvent)(JNIEnv *env, jobject clazz, jlong native_treasure_hunt)
+JNI_METHOD(void, nativeDispatchMotionEvent)(JNIEnv *env, jobject obj, jlong native_treasure_hunt, int source, int id,
+                                            float x, float y, float z, float rz, float hatx, float haty,
+                                            float ltrig, float rtrig, float brake, float gas)
 {
-  native(native_treasure_hunt)->DispatchKeyEvent();
+    native(native_treasure_hunt)->DispatchMotionEvent(source, id, x, y, z, rz, hatx, haty, ltrig, rtrig, brake, gas);
+}
+JNI_METHOD(void, nativeDispatchKeyEvent)(JNIEnv *env, jobject obj, jlong native_treasure_hunt, int source, int id, int keycode, int action, int mate)
+{
+  native(native_treasure_hunt)->DispatchKeyEvent(source, id, keycode, action, mate);
 }
 
-JNI_METHOD(jlong, nativeCreateRenderer)(JNIEnv *env, jobject clazz, jobject class_loader, jobject android_context, jlong native_gvr_api)
+JNI_METHOD(jlong, nativeCreateRenderer)(JNIEnv *env, jobject obj, jobject class_loader, jobject android_context, jlong native_gvr_api)
 {
   std::unique_ptr<gvr::AudioApi> audio_context(new gvr::AudioApi);
   audio_context->Init(env, android_context, class_loader, GVR_AUDIO_RENDERING_BINAURAL_HIGH_QUALITY);
   return jptr(new TreasureHuntRenderer(reinterpret_cast<gvr_context *>(native_gvr_api), std::move(audio_context)));
 }
 
-JNI_METHOD(void, nativeDestroyRenderer)(JNIEnv *env, jclass clazz, jlong native_treasure_hunt)
+JNI_METHOD(void, nativeDestroyRenderer)(JNIEnv *env, jclass obj, jlong native_treasure_hunt)
 {
   delete native(native_treasure_hunt);
 }
