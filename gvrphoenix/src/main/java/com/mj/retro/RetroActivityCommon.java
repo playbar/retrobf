@@ -1,11 +1,11 @@
 package com.mj.retro;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
-import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
-import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
+//import com.google.android.gms.common.ConnectionResult;
+//import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+//import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
+//import com.google.android.gms.location.LocationClient;
+//import com.google.android.gms.location.LocationListener;
+//import com.google.android.gms.location.LocationRequest;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RetroActivityCommon extends NativeActivity
-implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener
+//implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener
 {
 	static {
 		System.loadLibrary("gvr");
@@ -35,11 +35,11 @@ implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener
 
 	/* LOCATION VARIABLES */
 	private static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 0;
-	private LocationClient mLocationClient = null;
+//	private LocationClient mLocationClient = null;
 	private Location mCurrentLocation;
 
 	// Define an object that holds accuracy and frequency parameters
-	LocationRequest mLocationRequest = null;
+//	LocationRequest mLocationRequest = null;
 	boolean mUpdatesRequested = false;
 	boolean locationChanged = false;
 	boolean location_service_running = false;
@@ -172,173 +172,8 @@ implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener
 		}
 	}
 
-	/**
-	 * Called by Location Services when the request to connect the
-	 * client finishes successfully. At this point, you can
-	 * request the current location or start periodic updates
-	 */
-	@Override
-	public void onConnected(Bundle dataBundle)
-	{
-		if (mLocationClient == null)
-			return;
-		
-		// Display the connection status
-		Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
-		location_service_running = true;
-
-		// If already requested, start periodic updates
-		if (mUpdatesRequested)
-		{
-			mLocationClient.requestLocationUpdates(mLocationRequest, this, null);
-		}
-		else
-		{
-			// Get last known location
-			mCurrentLocation = mLocationClient.getLastLocation();
-			locationChanged = true;
-		}
-	}
-
-	/**
-	 * Called by Location Services if the connection to the
-	 * location client drops because of an error.
-	 */
-	@Override
-	public void onDisconnected()
-	{
-		if (mLocationClient == null)
-			return;
-		
-		// Display the connection status
-		Toast.makeText(this, "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
-
-		// If the client is connected
-		if (mLocationClient.isConnected())
-		{
-			/*
-			 * Remove location updates for a listener.
-			 * The current Activity is the listener, so
-			 * the argument is "this".
-			 */
-			mLocationClient.removeLocationUpdates(this);
-		}
-
-		location_service_running = false;
-	}
-
-	/**
-	 * Called by Location Services if the attempt to
-	 * Location Services fails.
-	 */
-	@Override
-	public void onConnectionFailed(ConnectionResult connectionResult)
-	{
-		/*
-		 * Google Play services can resolve some errors it detects.
-		 * If the error has a resolution, try sending an Intent to
-		 * start a Google Play services activity that can resolve
-		 * error.
-		 */
-		if (connectionResult.hasResolution())
-		{
-			try
-			{
-				// Start an Activity that tries to resolve the error
-				connectionResult.startResolutionForResult(this, CONNECTION_FAILURE_RESOLUTION_REQUEST);
-			}
-			catch (IntentSender.SendIntentException e)
-			{
-				// Thrown if Google Play services cancelled the original PendingIntent
-				e.printStackTrace();
-			}
-		}
-		else
-		{
-			/*
-			 * If no resolution is available, display a dialog to the
-			 * user with the error.
-			 */
-			Log.e("Connection failed", "error code: " + connectionResult.getErrorCode());
-		}
-	}
-
-	/**
-	 * Sets the update interval at which location-based updates 
-	 * should occur
-	 */
-	public void onLocationSetInterval(int update_interval_in_ms, int distance_interval)
-	{
-		// Use high accuracy
-        if (mLocationRequest == null)
-        	return;
-        
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-		if (update_interval_in_ms == 0)
-			mLocationRequest.setInterval(5 * 1000); // 5 seconds
-		else
-			mLocationRequest.setInterval(update_interval_in_ms);
-
-		// Set the fastest update interval to 1 second
-		mLocationRequest.setFastestInterval(1000);
-	}
-
-	/**
-	 * Initializing methods for location based functionality.
-	 */
-	public void onLocationInit()
-	{
-		/*
-		 * Create a new location client, using the enclosing class to
-		 * handle callbacks.
-		 */
-		if (mLocationClient == null)
-			mLocationClient = new LocationClient(this, this, this);
-
-		// Start with updates turned off
-		mUpdatesRequested = false;
-
-		// Create the LocationRequest object
-		if (mLocationRequest == null)
-			mLocationRequest = LocationRequest.create();
-
-		onLocationSetInterval(0, 0);
-	}
 
 
-	/**
-	 * Executed upon starting the {@link LocationClient}.
-	 */
-	public void onLocationStart()
-	{
-		if (mLocationClient == null)
-			return;
-		
-		mUpdatesRequested = true;
-
-		// Connect the client.
-        mLocationClient.connect();
-	}
-
-	/**
-	 * Free up location services resources.
-	 */
-	public void onLocationFree()
-	{
-		/* TODO/FIXME */
-	}
-
-	/**
-	 * Executed upon stopping the location client.
-	 * Does nothing if called when the client is not started.
-	 */
-	public void onLocationStop()
-	{
-		// Disconnecting the client invalidates it.
-		if (mLocationClient != null && mUpdatesRequested)
-			mLocationClient.disconnect();
-	}
 
 	/**
 	 * Gets the latitude at the current location in degrees.
@@ -390,22 +225,6 @@ implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener
 		return hasChanged;
 	}
 
-	// Define the callback method that receives location updates
-	@Override
-	public void onLocationChanged(Location location)
-	{
-		if (!location_service_running)
-			return;
-		
-		locationChanged = true;
-		mCurrentLocation = location;
-
-		// Report to the UI that the location was updated
-		String msg = "Updated Location: " + location.getLatitude() + ", " + location.getLongitude();
-		Log.i("RetroArch GPS", msg);
-		//Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-	}
-
 	@Override
 	public void onPause()
 	{
@@ -447,7 +266,6 @@ implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener
 	@Override
 	public void onStop()
 	{
-		onLocationStop();
 		super.onStop();
 	}
 }
