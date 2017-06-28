@@ -17,6 +17,7 @@
 #include <jni.h>
 
 #include <memory>
+#include <src/paths.h>
 
 #include "treasure_hunt_renderer.h"  // NOLINT
 #include "gvr.h"
@@ -43,6 +44,17 @@ extern "C" {
 JNI_METHOD(void, nativeDispatchKeyEvent)(JNIEnv *env, jclass clazz, jlong native_treasure_hunt)
 {
   native(native_treasure_hunt)->DispatchKeyEvent();
+}
+
+
+JNI_METHOD(void, nativeSetPath)(JNIEnv *env, jclass clazz, jstring strPath)
+{
+  char buf[4096];
+  const char *str = env->GetStringUTFChars(strPath, 0);
+  path_set(RARCH_PATH_CORE, str);
+  env->ReleaseStringUTFChars(strPath, str);
+  return;
+
 }
 
 JNI_METHOD(jlong, nativeCreateRenderer)(JNIEnv *env, jclass clazz, jobject class_loader, jobject android_context, jlong native_gvr_api)

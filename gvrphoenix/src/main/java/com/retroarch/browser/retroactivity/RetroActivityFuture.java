@@ -60,7 +60,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		nativeSetPath("lib2048.so");
 		// Ensure fullscreen immersion.
 		setImmersiveSticky();
 		getWindow()
@@ -277,6 +277,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 	}
 
 	private native void nativeDispatchKeyEvent(long nativeTreasureHuntRenderer);
+	private native void nativeSetPath(String strPath);
 	private native long nativeCreateRenderer(ClassLoader appClassLoader, Context context, long nativeGvrContext);
 	private native void nativeDestroyRenderer(long nativeTreasureHuntRenderer);
 	private native void nativeInitializeGl(long nativeTreasureHuntRenderer);
