@@ -231,8 +231,7 @@ static bool android_input_lookup_name(char *buf,
    if (!class)
       goto error;
 
-   GET_STATIC_METHOD_ID(env, method, class, "getDevice",
-         "(I)Landroid/view/InputDevice;");
+   GET_STATIC_METHOD_ID(env, method, class, "getDevice", "(I)Landroid/view/InputDevice;");
    if (!method)
       goto error;
 

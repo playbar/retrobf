@@ -18,13 +18,7 @@ import android.hardware.input.InputManager;
 import com.google.vr.ndk.base.AndroidCompat;
 import com.google.vr.ndk.base.GvrLayout;
 
-public final class RetroActivityFuture extends RetroActivityCamera {
-
-	static {
-		System.loadLibrary("gvr");
-		System.loadLibrary("gvr_audio");
-		System.loadLibrary("gvrretro");
-	}
+public final class RetroActivityFuture extends RetroActivityCommon {
 
 	// If set to true then Retroarch will completely exit when it loses focus
 	private boolean quitfocus = false;
