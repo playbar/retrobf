@@ -285,7 +285,7 @@ error:
    return false;
 }
 
-static void android_input_poll_main_cmd(void)
+void android_input_poll_main_cmd(void)
 {
    int8_t cmd;
    struct android_app *android_app = (struct android_app*)g_android;

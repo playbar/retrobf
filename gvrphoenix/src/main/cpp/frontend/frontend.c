@@ -20,6 +20,7 @@
 #include <pthread.h>
 #include <src/log.h>
 #include <android/looper.h>
+#include <frontend/drivers/platform_linux.h>
 
 #ifdef HAVE_CONFIG_H
 #include "../config.h"
@@ -45,6 +46,7 @@
 struct StPause gPause;
 
 extern bool runloop_shutdown_initiated;
+extern void android_input_poll_main_cmd(void);
 
 /**
  * main_exit:
@@ -122,6 +124,7 @@ int rarch_main(int argc, char *argv[], void *data)
         slock_unlock(gPause.mutex);
         if( re ){
 //            scond_wait(gPause.cond, gPause.mutex);
+            android_input_poll_main_cmd();
             retro_sleep(10);
             continue;
         }

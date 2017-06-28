@@ -191,11 +191,11 @@ static void android_app_set_activity_state(struct android_app *android_app, int8
    if (!android_app)
       return;
 
-   slock_lock(android_app->mutex);
-   android_app_write_cmd(android_app, cmd);
-   while (android_app->activityState != cmd)
-      scond_wait(android_app->cond, android_app->mutex);
-   slock_unlock(android_app->mutex);
+//   slock_lock(android_app->mutex);
+//   android_app_write_cmd(android_app, cmd);
+//   while (android_app->activityState != cmd)
+//      scond_wait(android_app->cond, android_app->mutex);
+//   slock_unlock(android_app->mutex);
 }
 
 static void android_app_free(struct android_app* android_app)
@@ -253,21 +253,20 @@ static void* onSaveInstanceState(ANativeActivity* activity, size_t* outLen)
    struct android_app* android_app = (struct android_app*) activity->instance;
 
    RARCH_LOG("SaveInstanceState: %p\n", activity);
-   slock_lock(android_app->mutex);
-   android_app->stateSaved = 0;
-   android_app_write_cmd(android_app, APP_CMD_SAVE_STATE);
-
-   while (!android_app->stateSaved)
-      scond_wait(android_app->cond, android_app->mutex);
-
-   if (android_app->savedState != NULL)
-   {
-      savedState = android_app->savedState;
-      *outLen    = android_app->savedStateSize;
-      android_app->savedState = NULL;
-      android_app->savedStateSize = 0;
-   }
-   slock_unlock(android_app->mutex);
+//   slock_lock(android_app->mutex);
+//   android_app->stateSaved = 0;
+//   android_app_write_cmd(android_app, APP_CMD_SAVE_STATE);
+//   while (!android_app->stateSaved)
+//      scond_wait(android_app->cond, android_app->mutex);
+//
+//   if (android_app->savedState != NULL)
+//   {
+//      savedState = android_app->savedState;
+//      *outLen    = android_app->savedStateSize;
+//      android_app->savedState = NULL;
+//      android_app->savedStateSize = 0;
+//   }
+//   slock_unlock(android_app->mutex);
    return savedState;
 }
 
