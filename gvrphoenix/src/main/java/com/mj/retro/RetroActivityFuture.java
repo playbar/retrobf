@@ -1,4 +1,4 @@
-package com.retroarch.browser.retroactivity;
+package com.mj.retro;
 
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -17,9 +17,6 @@ import android.hardware.input.InputManager;
 
 import com.google.vr.ndk.base.AndroidCompat;
 import com.google.vr.ndk.base.GvrLayout;
-
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
 
 public final class RetroActivityFuture extends RetroActivityCamera {
 

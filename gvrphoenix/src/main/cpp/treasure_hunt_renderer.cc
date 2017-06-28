@@ -414,23 +414,6 @@ void TreasureHuntRenderer::InitializeGl() {
 //////    path_set(RARCH_PATH_CORE, "/data/user/0/com.retroarch/cores/2048_libretro_android.so");
 //    path_set(RARCH_PATH_CORE, "lib2048.so");
 
-  if (frontend_driver_is_inited())
-  {
-    content_ctx_info_t info;
-    char arguments[]  = "retroarch";
-    char *argv[] = {arguments,   NULL};
-    int argc = 1;
-    info.argc            = argc;
-    info.argv            = argv;
-    info.args            = (void*)g_android;
-    info.environ_get     = frontend_driver_environment_get_ptr();
-
-    if (!task_push_start_content_from_cli(NULL, NULL, &info, CORE_TYPE_PLAIN, NULL, NULL))
-      return;
-  }
-
-  ui_companion_driver_init_first();
-
 }
 
 void TreasureHuntRenderer::SurfaceChange(int width, int height)
@@ -533,6 +516,40 @@ void TreasureHuntRenderer::DrawFrame() {
     // Update audio head rotation in audio API.
     gvr_audio_api_->SetHeadPose(head_view_);
     gvr_audio_api_->Update();
+}
+
+void TreasureHuntRenderer::RetroInit()
+{
+    if (frontend_driver_is_inited())
+    {
+        content_ctx_info_t info;
+        char arguments[]  = "retroarch";
+        char *argv[] = {arguments,   NULL};
+        int argc = 1;
+        info.argc            = argc;
+        info.argv            = argv;
+        info.args            = (void*)g_android;
+        info.environ_get     = frontend_driver_environment_get_ptr();
+
+        if (!task_push_start_content_from_cli(NULL, NULL, &info, CORE_TYPE_PLAIN, NULL, NULL))
+            return;
+    }
+
+    ui_companion_driver_init_first();
+}
+
+void TreasureHuntRenderer::RetroSurfaceChange(int width, int height)
+{
+
+}
+
+void TreasureHuntRenderer::RetroDrawFrame()
+{
+    unsigned sleep_ms = 0;
+    int ret = runloop_iterate(&sleep_ms);
+    if (ret == 1 && sleep_ms > 0)
+        retro_sleep(sleep_ms);
+    task_queue_check();
 }
 
 
@@ -650,24 +667,17 @@ void TreasureHuntRenderer::DrawWorld(ViewType view) {
   if (view == kMultiview) {
     glViewport(0, 0, render_size_.width / 2, render_size_.height);
   } else {
-    const gvr::BufferViewport& viewport =
-        view == kLeftView ? viewport_left_ : viewport_right_;
-    const gvr::Recti pixel_rect =
-        CalculatePixelSpaceRect(render_size_, viewport.GetSourceUv());
-    glViewport(pixel_rect.left, pixel_rect.bottom,
-               pixel_rect.right - pixel_rect.left,
-               pixel_rect.top - pixel_rect.bottom);
+    const gvr::BufferViewport& viewport = view == kLeftView ? viewport_left_ : viewport_right_;
+    const gvr::Recti pixel_rect = CalculatePixelSpaceRect(render_size_, viewport.GetSourceUv());
+    glViewport(pixel_rect.left, pixel_rect.bottom, pixel_rect.right - pixel_rect.left, pixel_rect.top - pixel_rect.bottom);
   }
 
     //////////
 
 //    DrawCube(view);
 //    DrawFloor(view);
-    unsigned sleep_ms = 0;
-    int ret = runloop_iterate(&sleep_ms);
-    if (ret == 1 && sleep_ms > 0)
-        retro_sleep(sleep_ms);
-    task_queue_check();
+
+    RetroDrawFrame();
 
 //  Draw(&esContext);
 
@@ -680,44 +690,33 @@ void TreasureHuntRenderer::DrawCube(ViewType view) {
   glUseProgram(cube_program_);
 
   if (view == kMultiview) {
-    glUniform3fv(cube_light_pos_param_, 2,
-                 VectorPairToGLArray(light_pos_eye_space_).data());
-    glUniformMatrix4fv(cube_modelview_param_, 2, GL_FALSE,
-                       MatrixPairToGLArray(modelview_cube_).data());
-    glUniformMatrix4fv(cube_modelview_projection_param_, 2, GL_FALSE,
-                       MatrixPairToGLArray(modelview_projection_cube_).data());
+    glUniform3fv(cube_light_pos_param_, 2, VectorPairToGLArray(light_pos_eye_space_).data());
+    glUniformMatrix4fv(cube_modelview_param_, 2, GL_FALSE, MatrixPairToGLArray(modelview_cube_).data());
+    glUniformMatrix4fv(cube_modelview_projection_param_, 2, GL_FALSE, MatrixPairToGLArray(modelview_projection_cube_).data());
   } else {
     glUniform3fv(cube_light_pos_param_, 1, light_pos_eye_space_[view].data());
-    glUniformMatrix4fv(cube_modelview_param_, 1, GL_FALSE,
-                       MatrixToGLArray(modelview_cube_[view]).data());
-    glUniformMatrix4fv(
-        cube_modelview_projection_param_, 1, GL_FALSE,
-        MatrixToGLArray(modelview_projection_cube_[view]).data());
+    glUniformMatrix4fv(cube_modelview_param_, 1, GL_FALSE, MatrixToGLArray(modelview_cube_[view]).data());
+    glUniformMatrix4fv(cube_modelview_projection_param_, 1, GL_FALSE, MatrixToGLArray(modelview_projection_cube_[view]).data());
   }
 
   // Set the Model in the shader, used to calculate lighting
-  glUniformMatrix4fv(cube_model_param_, 1, GL_FALSE,
-                     MatrixToGLArray(model_cube_).data());
+  glUniformMatrix4fv(cube_model_param_, 1, GL_FALSE, MatrixToGLArray(model_cube_).data());
 
   // Set the position of the cube
-  glVertexAttribPointer(cube_position_param_, kCoordsPerVertex, GL_FLOAT, false,
-                        0, cube_vertices_);
+  glVertexAttribPointer(cube_position_param_, kCoordsPerVertex, GL_FLOAT, false, 0, cube_vertices_);
   glEnableVertexAttribArray(cube_position_param_);
 
   // Set the normal positions of the cube, again for shading
-  glVertexAttribPointer(cube_normal_param_, 3, GL_FLOAT, false, 0,
-                        cube_normals_);
+  glVertexAttribPointer(cube_normal_param_, 3, GL_FLOAT, false, 0, cube_normals_);
   glEnableVertexAttribArray(cube_normal_param_);
 
   // Set vertex colors
   if (ObjectIsFound()) {
     const float* found_color = world_layout_data_.cube_found_color.data();
-    glVertexAttrib4f(cube_color_param_, found_color[0], found_color[1],
-                     found_color[2], 1.0f);
+    glVertexAttrib4f(cube_color_param_, found_color[0], found_color[1], found_color[2], 1.0f);
     glDisableVertexAttribArray(cube_color_param_);
   } else {
-    glVertexAttribPointer(cube_color_param_, 3, GL_FLOAT, false, 0,
-                          cube_colors_);
+    glVertexAttribPointer(cube_color_param_, 3, GL_FLOAT, false, 0, cube_colors_);
     glEnableVertexAttribArray(cube_color_param_);
   }
 

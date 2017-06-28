@@ -339,46 +339,46 @@ void input_poll(void)
 
    current_input->poll(current_input_data);
 
-   input_driver_turbo_btns.count++;
-
-   for (i = 0; i < max_users; i++)
-   {
-      input_driver_turbo_btns.frame_enable[i] = 0;
-
-      if (!input_driver_block_libretro_input && libretro_input_binds[i][RARCH_TURBO_ENABLE].valid)
-      {
-         rarch_joypad_info_t joypad_info;
-         joypad_info.axis_threshold = input_driver_axis_threshold;
-         joypad_info.joy_idx        = settings->uints.input_joypad_map[i];
-         joypad_info.auto_binds     = input_autoconf_binds[joypad_info.joy_idx];
-
-         input_driver_turbo_btns.frame_enable[i] = current_input->input_state(
-               current_input_data, joypad_info, libretro_input_binds,
-               (unsigned)i, RETRO_DEVICE_JOYPAD, 0, RARCH_TURBO_ENABLE);
-      }
-   }
-
-   if (input_driver_block_libretro_input)
-      return;
-
-#ifdef HAVE_OVERLAY
-   if (overlay_ptr && input_overlay_is_alive(overlay_ptr))
-      input_poll_overlay(
-            overlay_ptr,
-            settings->floats.input_overlay_opacity,
-            settings->uints.input_analog_dpad_mode[0],
-            input_driver_axis_threshold);
-#endif
-
-#ifdef HAVE_COMMAND
-   if (input_driver_command)
-      command_poll(input_driver_command);
-#endif
-
-#ifdef HAVE_NETWORKGAMEPAD
-   if (input_driver_remote)
-      input_remote_poll(input_driver_remote, max_users);
-#endif
+//   input_driver_turbo_btns.count++;
+//
+//   for (i = 0; i < max_users; i++)
+//   {
+//      input_driver_turbo_btns.frame_enable[i] = 0;
+//
+//      if (!input_driver_block_libretro_input && libretro_input_binds[i][RARCH_TURBO_ENABLE].valid)
+//      {
+//         rarch_joypad_info_t joypad_info;
+//         joypad_info.axis_threshold = input_driver_axis_threshold;
+//         joypad_info.joy_idx        = settings->uints.input_joypad_map[i];
+//         joypad_info.auto_binds     = input_autoconf_binds[joypad_info.joy_idx];
+//
+//         input_driver_turbo_btns.frame_enable[i] = current_input->input_state(
+//               current_input_data, joypad_info, libretro_input_binds,
+//               (unsigned)i, RETRO_DEVICE_JOYPAD, 0, RARCH_TURBO_ENABLE);
+//      }
+//   }
+//
+//   if (input_driver_block_libretro_input)
+//      return;
+//
+//#ifdef HAVE_OVERLAY
+//   if (overlay_ptr && input_overlay_is_alive(overlay_ptr))
+//      input_poll_overlay(
+//            overlay_ptr,
+//            settings->floats.input_overlay_opacity,
+//            settings->uints.input_analog_dpad_mode[0],
+//            input_driver_axis_threshold);
+//#endif
+//
+//#ifdef HAVE_COMMAND
+//   if (input_driver_command)
+//      command_poll(input_driver_command);
+//#endif
+//
+//#ifdef HAVE_NETWORKGAMEPAD
+//   if (input_driver_remote)
+//      input_remote_poll(input_driver_remote, max_users);
+//#endif
 }
 
 /**

@@ -15,22 +15,19 @@
 
 #include <android/log.h>
 #include <jni.h>
-
 #include <memory>
 #include <src/paths.h>
-
 #include "treasure_hunt_renderer.h"  // NOLINT
 #include "gvr.h"
 #include "gvr_audio.h"
 
-#define JNI_METHOD(return_type, method_name) \
-JNIEXPORT return_type JNICALL Java_com_retroarch_browser_retroactivity_BfRenderer_##method_name
+#define JNI_METHOD(return_type, method_name) JNIEXPORT return_type JNICALL Java_com_mj_retro_BfRenderer_##method_name
 
 namespace {
 
-inline jlong jptr(TreasureHuntRenderer *native_treasure_hunt)
+inline jlong jptr(TreasureHuntRenderer *nativePtr)
 {
-  return reinterpret_cast<intptr_t>(native_treasure_hunt);
+  return reinterpret_cast<intptr_t>(nativePtr);
 }
 
 inline TreasureHuntRenderer *native(jlong ptr)
@@ -41,9 +38,9 @@ inline TreasureHuntRenderer *native(jlong ptr)
 
 extern "C" {
 
-JNI_METHOD(void, nativeDispatchKeyEvent)(JNIEnv *env, jclass clazz, jlong native_treasure_hunt)
+JNI_METHOD(void, nativeDispatchKeyEvent)(JNIEnv *env, jclass clazz, jlong nativePtr)
 {
-  native(native_treasure_hunt)->DispatchKeyEvent();
+  native(nativePtr)->DispatchKeyEvent();
 }
 
 
@@ -64,39 +61,53 @@ JNI_METHOD(jlong, nativeCreateRenderer)(JNIEnv *env, jclass clazz, jobject class
   return jptr(new TreasureHuntRenderer(reinterpret_cast<gvr_context *>(native_gvr_api), std::move(audio_context)));
 }
 
-JNI_METHOD(void, nativeDestroyRenderer)(JNIEnv *env, jclass clazz, jlong native_treasure_hunt)
+JNI_METHOD(void, nativeDestroyRenderer)(JNIEnv *env, jclass clazz, jlong nativePtr)
 {
-  delete native(native_treasure_hunt);
+  delete native(nativePtr);
 }
 
-JNI_METHOD(void, nativeInitializeGl)(JNIEnv *env, jobject obj, jlong native_treasure_hunt)
+JNI_METHOD(void, nativeInitializeGl)(JNIEnv *env, jobject obj, jlong nativePtr)
 {
-  native(native_treasure_hunt)->InitializeGl();
+  native(nativePtr)->InitializeGl();
 }
 
-JNI_METHOD(void, nativeSurfaceChange)(JNIEnv *env, jobject obj, jlong native_treasure_hunt, jint width, jint height)
+JNI_METHOD(void, nativeSurfaceChange)(JNIEnv *env, jobject obj, jlong nativePtr, jint width, jint height)
 {
-  native(native_treasure_hunt)->SurfaceChange(width, height );
+  native(nativePtr)->SurfaceChange(width, height );
 }
 
-JNI_METHOD(void, nativeDrawFrame)(JNIEnv *env, jobject obj, jlong native_treasure_hunt)
+JNI_METHOD(void, nativeDrawFrame)(JNIEnv *env, jobject obj, jlong nativePtr)
 {
-  native(native_treasure_hunt)->DrawFrame();
+  native(nativePtr)->DrawFrame();
 }
 
-JNI_METHOD(void, nativeOnTriggerEvent)(JNIEnv *env, jobject obj, jlong native_treasure_hunt)
+JNI_METHOD(void,  nativeRetroInit)(long nativePtr)
 {
-  native(native_treasure_hunt)->OnTriggerEvent();
+    native(nativePtr)->RetroInit();
+}
+JNI_METHOD(void,  nativeRetroSurfaceChange)(long nativePtr, int width, int height )
+{
+    native(nativePtr)->RetroSurfaceChange(width, height);
 }
 
-JNI_METHOD(void, nativeOnPause)(JNIEnv *env, jobject obj, jlong native_treasure_hunt)
+JNI_METHOD(void,  nativeRetroDrawFrame)(long nativePtr)
 {
-  native(native_treasure_hunt)->OnPause();
+    native(nativePtr)->RetroDrawFrame();
 }
 
-JNI_METHOD(void, nativeOnResume)(JNIEnv *env, jobject obj, jlong native_treasure_hunt)
+JNI_METHOD(void, nativeOnTriggerEvent)(JNIEnv *env, jobject obj, jlong nativePtr)
 {
-  native(native_treasure_hunt)->OnResume();
+  native(nativePtr)->OnTriggerEvent();
+}
+
+JNI_METHOD(void, nativeOnPause)(JNIEnv *env, jobject obj, jlong nativePtr)
+{
+  native(nativePtr)->OnPause();
+}
+
+JNI_METHOD(void, nativeOnResume)(JNIEnv *env, jobject obj, jlong nativePtr)
+{
+  native(nativePtr)->OnResume();
 }
 
 }  // extern "C"

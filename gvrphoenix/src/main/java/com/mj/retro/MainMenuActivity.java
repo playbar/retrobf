@@ -1,12 +1,8 @@
-package com.retroarch.browser.mainmenu;
-
-import com.retroarch.browser.preferences.util.UserPreferences;
-import com.retroarch.browser.retroactivity.RetroActivityFuture;
+package com.mj.retro;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceActivity;
@@ -50,9 +46,7 @@ public final class MainMenuActivity extends PreferenceActivity
 		Intent retro = new Intent(this, RetroActivityFuture.class);
 		retro.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-		startRetroActivity(
-				retro,
-				null,
+		startRetroActivity(retro, null,
 				prefs.getString("libretro_path", getApplicationInfo().dataDir + "/cores/"),
 				UserPreferences.getDefaultConfigPath(this),
 				Settings.Secure.getString(getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD),
