@@ -33,10 +33,11 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 	private boolean quitfocus = false;
 
 	// Opaque native pointer to the native TreasureHuntRenderer instance.
-	private long nativeTreasureHuntRenderer;
+
 
 	private GvrLayout gvrLayout;
 	private GLSurfaceView surfaceView;
+    private BfRenderer render;
 
 	// Note that pause and resume signals to the native renderer are performed on the GL thread,
 	// ensuring thread-safety.
@@ -44,7 +45,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 			new Runnable() {
 				@Override
 				public void run() {
-					nativeOnPause(nativeTreasureHuntRenderer);
+					render.onPause();
 				}
 			};
 
@@ -52,7 +53,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 			new Runnable() {
 				@Override
 				public void run() {
-					nativeOnResume(nativeTreasureHuntRenderer);
+                    render.onResume();
 				}
 			};
 
@@ -60,12 +61,9 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		nativeSetPath("lib2048.so");
 		// Ensure fullscreen immersion.
 		setImmersiveSticky();
-		getWindow()
-				.getDecorView()
-				.setOnSystemUiVisibilityChangeListener(
+		getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(
 						new View.OnSystemUiVisibilityChangeListener() {
 							@Override
 							public void onSystemUiVisibilityChange(int visibility) {
@@ -77,30 +75,14 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 
 		// Initialize GvrLayout and the native renderer.
 		gvrLayout = new GvrLayout(this);
-		nativeTreasureHuntRenderer = nativeCreateRenderer(getClass().getClassLoader(), this.getApplicationContext(), gvrLayout.getGvrApi().getNativeGvrContext());
-
+		render = new BfRenderer(getClass().getClassLoader(), getApplicationContext(), gvrLayout.getGvrApi().getNativeGvrContext());
+		render.setPath("lib2048.so");
 		// Add the GLSurfaceView to the GvrLayout.
 		surfaceView = new GLSurfaceView(this);
 		surfaceView.setEGLContextClientVersion(2);
 		surfaceView.setEGLConfigChooser(8, 8, 8, 0, 0, 0);
 		surfaceView.setPreserveEGLContextOnPause(true);
-		surfaceView.setRenderer(
-				new GLSurfaceView.Renderer() {
-					@Override
-					public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-						nativeInitializeGl(nativeTreasureHuntRenderer);
-					}
-
-					@Override
-					public void onSurfaceChanged(GL10 gl, int width, int height) {
-						nativeSurfaceChange(nativeTreasureHuntRenderer, width, height);
-					}
-
-					@Override
-					public void onDrawFrame(GL10 gl) {
-						nativeDrawFrame(nativeTreasureHuntRenderer);
-					}
-				});
+		surfaceView.setRenderer(render);
 		surfaceView.setOnTouchListener(
 				new View.OnTouchListener() {
 					@Override
@@ -112,7 +94,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 									new Runnable() {
 										@Override
 										public void run() {
-											nativeOnTriggerEvent(nativeTreasureHuntRenderer);
+											render.onTriggerEvent();
 										}
 									});
 							return true;
@@ -225,8 +207,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 		// the GLSurfaceView and stop the GL thread, allowing safe shutdown of
 		// native resources from the UI thread.
 		gvrLayout.shutdown();
-		nativeDestroyRenderer(nativeTreasureHuntRenderer);
-		nativeTreasureHuntRenderer = 0;
+        render.destroyRenderer();
 	}
 
 	@Override
@@ -265,26 +246,15 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 	}
 
 	private void setImmersiveSticky() {
-		getWindow()
-				.getDecorView()
-				.setSystemUiVisibility(
-						View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-								| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-								| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-								| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-								| View.SYSTEM_UI_FLAG_FULLSCREEN
-								| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+		getWindow().getDecorView().setSystemUiVisibility(
+				View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+					| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+					| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+					| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+					| View.SYSTEM_UI_FLAG_FULLSCREEN
+					| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 	}
 
-	private native void nativeDispatchKeyEvent(long nativeTreasureHuntRenderer);
-	private native void nativeSetPath(String strPath);
-	private native long nativeCreateRenderer(ClassLoader appClassLoader, Context context, long nativeGvrContext);
-	private native void nativeDestroyRenderer(long nativeTreasureHuntRenderer);
-	private native void nativeInitializeGl(long nativeTreasureHuntRenderer);
-	private native void nativeSurfaceChange(long nativeTreasureHuntRenderer, int width, int height);
-	private native long nativeDrawFrame(long nativeTreasureHuntRenderer);
-	private native void nativeOnTriggerEvent(long nativeTreasureHuntRenderer);
-	private native void nativeOnPause(long nativeTreasureHuntRenderer);
-	private native void nativeOnResume(long nativeTreasureHuntRenderer);
+
 
 }
