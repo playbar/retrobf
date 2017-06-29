@@ -35,6 +35,7 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 	private GvrLayout gvrLayout;
 	private GLSurfaceView surfaceView;
 	private BfRenderer render;
+	private RetroRender retroRender;
 
 	// Note that pause and resume signals to the native renderer are performed on the GL thread,
 	// ensuring thread-safety.
@@ -59,6 +60,7 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		nativeOnCreate();
+		retroRender = new RetroRender();
 		// Ensure fullscreen immersion.
 		setImmersiveSticky();
 		getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(
@@ -75,7 +77,7 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 		gvrLayout = new GvrLayout(this);
 		render = new BfRenderer(getClass().getClassLoader(), getApplicationContext(), gvrLayout.getGvrApi().getNativeGvrContext());
 //		render.onCreate();
-		render.setPath("lib2048.so");
+		retroRender.setPath("lib2048.so");
 
 		// Add the GLSurfaceView to the GvrLayout.
 		surfaceView = new GLSurfaceView(this);
@@ -172,7 +174,7 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 		float rtrig       = ev.getAxisValue( AXIS_RTRIGGER, motion_ptr);
 		float brake       = ev.getAxisValue( AXIS_BRAKE, motion_ptr);
 		float gas         = ev.getAxisValue( AXIS_GAS, motion_ptr);
-		render.dispatchMotionEvent( source, id, x, y, z, rz, hatx, haty, ltrig, rtrig, brake, gas);
+		retroRender.dispatchMotionEvent( source, id, x, y, z, rz, hatx, haty, ltrig, rtrig, brake, gas);
 
 		return true;
 	}
@@ -192,7 +194,7 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 		int action = event.getAction();
 		int mata = event.getMetaState();
 
-		render.dispatchKeyEvent( source, id, keycode, action, mata);
+		retroRender.dispatchKeyEvent( source, id, keycode, action, mata);
 
 		return true;
 	}

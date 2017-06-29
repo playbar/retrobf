@@ -22,10 +22,12 @@
 #include "treasure_hunt_renderer.h"  // NOLINT
 #include "gvr.h"
 #include "gvr_audio.h"
+#include "retro_render.h"
 
 
-#define JNI_METHOD(return_type, method_name) \
-JNIEXPORT return_type JNICALL Java_com_mj_retro_BfRenderer_##method_name
+#define JNI_METHOD(return_type, method_name) JNIEXPORT return_type JNICALL Java_com_mj_retro_BfRenderer_##method_name
+
+#define JNI_RETRO(return_type, method_name) JNIEXPORT return_type JNICALL Java_com_mj_retro_RetroRender_##method_name
 
 namespace {
 
@@ -41,6 +43,14 @@ inline TreasureHuntRenderer *native(jlong ptr)
 }  // anonymous namespace
 
 extern "C" {
+
+extern void android_app_oncreate(jobject clazz );
+extern void android_dispatch_motion_event(int source, int id,
+                                          float x, float y, float z, float rz, float hatx, float haty,
+                                          float ltrig, float rtrig, float brake, float gas);
+extern void android_dispatch_key_event(int source, int id, int keycode, int action, int mate);
+
+
 JavaVM* gvm = NULL;
 
 jint JNI_OnLoad(JavaVM* vm, void* reserved){
@@ -48,7 +58,6 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved){
     return JNI_VERSION_1_6;
 }
 
-extern void android_app_oncreate(jobject clazz );
 
 JNIEXPORT void JNICALL Java_com_mj_retro_RetroActivityFuture_nativeOnCreate(JNIEnv *env, jobject obj)
 {
@@ -58,18 +67,19 @@ JNIEXPORT void JNICALL Java_com_mj_retro_RetroActivityFuture_nativeOnCreate(JNIE
     android_app_oncreate(gobj );
 }
 
-JNI_METHOD(void, nativeDispatchMotionEvent)(JNIEnv *env, jobject obj, jlong native_treasure_hunt, int source, int id,
-                                            float x, float y, float z, float rz, float hatx, float haty,
-                                            float ltrig, float rtrig, float brake, float gas)
+JNI_RETRO(void, nativeDispatchMotionEvent)(JNIEnv *env, jobject obj, int source, int id,
+                                           float x, float y, float z, float rz, float hatx, float haty,
+                                           float ltrig, float rtrig, float brake, float gas)
 {
-    native(native_treasure_hunt)->DispatchMotionEvent(source, id, x, y, z, rz, hatx, haty, ltrig, rtrig, brake, gas);
-}
-JNI_METHOD(void, nativeDispatchKeyEvent)(JNIEnv *env, jobject obj, jlong native_treasure_hunt, int source, int id, int keycode, int action, int mate)
-{
-  native(native_treasure_hunt)->DispatchKeyEvent(source, id, keycode, action, mate);
+    android_dispatch_motion_event( source, id, x, y, z, rz, hatx, haty, ltrig, rtrig, brake, gas);
 }
 
-JNI_METHOD(void, nativeSetPath)(JNIEnv *env, jclass clazz, jstring strPath)
+JNI_RETRO(void, nativeDispatchKeyEvent)(JNIEnv *env, jobject obj, int source, int id, int keycode, int action, int mate)
+{
+    android_dispatch_key_event(source, id, keycode, action, mate);
+}
+
+JNI_RETRO(void, nativeSetPath)(JNIEnv *env, jclass clazz, jstring strPath)
 {
     char buf[4096];
     const char *str = env->GetStringUTFChars(strPath, 0);
@@ -78,6 +88,24 @@ JNI_METHOD(void, nativeSetPath)(JNIEnv *env, jclass clazz, jstring strPath)
     return;
 
 }
+
+
+JNI_RETRO(void,  nativeRetroInit)()
+{
+    RetroInit();
+}
+JNI_RETRO(void,  nativeRetroSurfaceChange)( int width, int height )
+{
+    RetroSurfaceChange(width, height);
+}
+
+JNI_RETRO(void,  nativeRetroDrawFrame)()
+{
+    RetroDrawFrame();
+}
+
+///////////////////////////////////////////////
+
 
 JNI_METHOD(jlong, nativeCreateRenderer)(JNIEnv *env, jobject obj, jobject class_loader, jobject android_context, jlong native_gvr_api)
 {
@@ -104,20 +132,6 @@ JNI_METHOD(void, nativeSurfaceChange)(JNIEnv *env, jobject obj, jlong native_tre
 JNI_METHOD(void, nativeDrawFrame)(JNIEnv *env, jobject obj, jlong native_treasure_hunt)
 {
   native(native_treasure_hunt)->DrawFrame();
-}
-
-JNI_METHOD(void,  nativeRetroInit)(long nativePtr)
-{
-    native(nativePtr)->RetroInit();
-}
-JNI_METHOD(void,  nativeRetroSurfaceChange)(long nativePtr, int width, int height )
-{
-    native(nativePtr)->RetroSurfaceChange(width, height);
-}
-
-JNI_METHOD(void,  nativeRetroDrawFrame)(long nativePtr)
-{
-    native(nativePtr)->RetroDrawFrame();
 }
 
 JNI_METHOD(void, nativeOnTriggerEvent)(JNIEnv *env, jobject obj, jlong native_treasure_hunt)

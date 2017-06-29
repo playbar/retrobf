@@ -328,6 +328,7 @@ add_library(gvrretro SHARED
                 ${RARCH_DIR}/deps/miniupnpc/minixml.c
                 ${RARCH_DIR}/deps/miniupnpc/minisoap.c
                 ${RARCH_DIR}/treasure_hunt_jni.cc
+                ${RARCH_DIR}/retro_render.cc
                 ${RARCH_DIR}/treasure_hunt_renderer.cc
                 ${RARCH_DIR}/esShader.cpp
                 ${RARCH_DIR}/esShapes.cpp

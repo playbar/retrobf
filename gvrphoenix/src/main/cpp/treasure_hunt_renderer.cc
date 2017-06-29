@@ -16,6 +16,7 @@
 #include "treasure_hunt_renderer.h"  // NOLINT
 #include "treasure_hunt_shaders.h"  // NOLINT
 #include "Texture2D.h"
+#include "retro_render.h"
 
 #include <android/log.h>
 #include <assert.h>
@@ -41,12 +42,7 @@
     abort();                                                               \
   }
 
-extern "C" {
-extern void android_dispatch_motion_event(int source, int id,
-                                   float x, float y, float z, float rz, float hatx, float haty,
-                                   float ltrig, float rtrig, float brake, float gas);
-extern void android_dispatch_key_event(int source, int id, int keycode, int action, int mate);
-}
+
 
 namespace {
 static const float kZNear = 1.0f;
@@ -293,18 +289,6 @@ TreasureHuntRenderer::~TreasureHuntRenderer() {
   }
 }
 
-void TreasureHuntRenderer::DispatchMotionEvent(int source, int id,
-                                               float x, float y, float z, float rz, float hatx, float haty,
-                                               float ltrig, float rtrig, float brake, float gas)
-{
-  android_dispatch_motion_event( source, id, x, y, z, rz, hatx, haty, ltrig, rtrig, brake, gas);
-}
-
-void TreasureHuntRenderer::DispatchKeyEvent(int source, int id, int keycode, int action, int mate)
-{
-  android_dispatch_key_event(source, id, keycode, action, mate);
-//    input_poll();
-}
 
 void TreasureHuntRenderer::InitializeGl() {
   gvr_api_->InitializeGl();
@@ -428,6 +412,7 @@ void TreasureHuntRenderer::InitializeGl() {
 ////    // todo set path
 //////    path_set(RARCH_PATH_CORE, "/data/user/0/com.retroarch/cores/2048_libretro_android.so");
 //    path_set(RARCH_PATH_CORE, "lib2048.so");
+    RetroInit();
 
 }
 
@@ -532,42 +517,6 @@ void TreasureHuntRenderer::DrawFrame() {
     gvr_audio_api_->SetHeadPose(head_view_);
     gvr_audio_api_->Update();
 }
-
-
-void TreasureHuntRenderer::RetroInit()
-{
-  if (frontend_driver_is_inited())
-  {
-    content_ctx_info_t info;
-    char arguments[]  = "retroarch";
-    char *argv[] = {arguments,   NULL};
-    int argc = 1;
-    info.argc            = argc;
-    info.argv            = argv;
-    info.args            = (void*)g_android;
-    info.environ_get     = frontend_driver_environment_get_ptr();
-
-    if (!task_push_start_content_from_cli(NULL, NULL, &info, CORE_TYPE_PLAIN, NULL, NULL))
-      return;
-  }
-
-  ui_companion_driver_init_first();
-}
-
-void TreasureHuntRenderer::RetroSurfaceChange(int width, int height)
-{
-
-}
-
-void TreasureHuntRenderer::RetroDrawFrame()
-{
-  unsigned sleep_ms = 0;
-  int ret = runloop_iterate(&sleep_ms);
-  if (ret == 1 && sleep_ms > 0)
-    retro_sleep(sleep_ms);
-  task_queue_check();
-}
-
 
 void TreasureHuntRenderer::ResumeControllerApiAsNeeded() {
   switch (gvr_viewer_type_) {
