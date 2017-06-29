@@ -1,10 +1,8 @@
-package com.retroarch.browser.retroactivity;
+package com.mj.retro;
 
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Log;
-import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;

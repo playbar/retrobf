@@ -1,4 +1,4 @@
-package com.retroarch.browser.retroactivity;
+package com.mj.retro;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
@@ -6,10 +6,9 @@ import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailed
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
-import com.retroarch.browser.preferences.util.UserPreferences;
+import com.mj.retro.UserPreferences;
 
 import android.app.Activity;
-import android.app.NativeActivity;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.location.Location;

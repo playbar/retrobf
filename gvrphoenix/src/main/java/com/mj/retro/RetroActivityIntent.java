@@ -1,6 +1,4 @@
-package com.retroarch.browser.retroactivity;
-
-import com.retroarch.browser.mainmenu.MainMenuActivity;
+package com.mj.retro;
 
 import android.content.Intent;
 import android.util.Log;

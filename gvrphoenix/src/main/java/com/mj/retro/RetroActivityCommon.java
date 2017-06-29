@@ -1,8 +1,8 @@
-package com.retroarch.browser.retroactivity;
+package com.mj.retro;
 
 import java.util.List;
 import java.util.ArrayList;
-import com.retroarch.browser.preferences.util.UserPreferences;
+
 import android.content.res.Configuration;
 import android.app.UiModeManager;
 import android.util.Log;

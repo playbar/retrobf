@@ -1,8 +1,6 @@
-package com.retroarch.browser.retroactivity;
+package com.mj.retro;
 
 import java.io.IOException;
-
-import com.retroarch.browser.preferences.util.UserPreferences;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;

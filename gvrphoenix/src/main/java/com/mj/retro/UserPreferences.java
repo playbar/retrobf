@@ -1,4 +1,4 @@
-package com.retroarch.browser.preferences.util;
+package com.mj.retro;
 
 import java.io.File;
 import java.io.IOException;

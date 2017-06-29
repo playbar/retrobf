@@ -24,7 +24,7 @@
 
 
 #define JNI_METHOD(return_type, method_name) \
-JNIEXPORT return_type JNICALL Java_com_retroarch_browser_retroactivity_RetroActivityFuture_##method_name
+JNIEXPORT return_type JNICALL Java_com_mj_retro_RetroActivityFuture_##method_name
 
 namespace {
 

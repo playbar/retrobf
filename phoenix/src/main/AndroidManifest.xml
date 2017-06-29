@@ -22,7 +22,7 @@
         android:debuggable="true"
         >
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
-        <activity android:name="com.retroarch.browser.mainmenu.MainMenuActivity"
+        <activity android:name="com.mj.retro.MainMenuActivity"
             android:exported="true"
             android:launchMode="singleInstance">
             <intent-filter>
@@ -32,7 +32,7 @@
                 <category android:name="tv.ouya.intent.category.GAME" />
             </intent-filter>
         </activity>
-        <activity android:name="com.retroarch.browser.retroactivity.RetroActivityFuture"
+        <activity android:name="com.mj.retro.RetroActivityFuture"
             android:exported="true"
             android:screenOrientation="landscape"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"

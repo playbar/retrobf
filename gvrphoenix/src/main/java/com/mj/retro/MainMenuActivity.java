@@ -1,12 +1,8 @@
-package com.retroarch.browser.mainmenu;
-
-import com.retroarch.browser.preferences.util.UserPreferences;
-import com.retroarch.browser.retroactivity.RetroActivityFuture;
+package com.mj.retro;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceActivity;
