@@ -132,7 +132,7 @@ int rarch_main(int argc, char *argv[], void *data)
 
         input_poll();
         if( runloop_shutdown_initiated ) {
-            break;
+            exit(0);
         }
     }
 

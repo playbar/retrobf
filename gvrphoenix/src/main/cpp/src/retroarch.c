@@ -2726,30 +2726,7 @@ int runloop_iterate(unsigned *sleep_ms)
       runloop_frame_time.callback(delta);
    }
 
-   switch ((enum runloop_state) runloop_check_state(settings, input_nonblock_state, sleep_ms))
-   {
-      case RUNLOOP_STATE_QUIT:
-         frame_limit_last_time = 0.0;
-         command_event(CMD_EVENT_QUIT, NULL);
-         return -1;
-      case RUNLOOP_STATE_POLLED_AND_SLEEP:
-         runloop_netplay_pause();
-         *sleep_ms = 10;
-         return 1;
-      case RUNLOOP_STATE_SLEEP:
-         retro_ctx.poll_cb();
-         runloop_netplay_pause();
-         *sleep_ms = 10;
-         return 1;
-      case RUNLOOP_STATE_END:
-         runloop_netplay_pause();
-         goto end;
-      case RUNLOOP_STATE_MENU_ITERATE:
-         runloop_netplay_pause();
-         return 0;
-      case RUNLOOP_STATE_ITERATE:
-         break;
-   }
+   runloop_check_state(settings, input_nonblock_state, sleep_ms);
 
    if (runloop_autosave)
       autosave_lock();

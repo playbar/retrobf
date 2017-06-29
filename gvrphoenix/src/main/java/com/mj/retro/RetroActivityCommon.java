@@ -18,6 +18,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Process;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -52,6 +53,8 @@ public class RetroActivityCommon extends NativeActivity
 	public void onRetroArchExit()
 	{
 		finish();
+		System.exit(0);
+		Process.killProcess( Process.myPid());
 	}
 
 	public void showMessageOKCancel(String message, DialogInterface.OnClickListener onClickListener)
