@@ -99,11 +99,10 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 									});
 							return true;
 						}
-						return false;
+			 			return false;
 					}
 				});
-		surfaceView.setOnKeyListener(
-				new View.OnKeyListener(){
+		surfaceView.setOnKeyListener(new View.OnKeyListener(){
 					public	boolean onKey(View v, int keyCode, KeyEvent event)
 					{
 						return true;

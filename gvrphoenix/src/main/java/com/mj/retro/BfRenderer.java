@@ -34,12 +34,12 @@ public class BfRenderer implements Renderer {
     public void onTriggerEvent()
     {
         nativeOnTriggerEvent(nativePtr);
-        nativePtr = 0;
     }
 
     public void destroyRenderer()
     {
         nativeDestroyRenderer(nativePtr);
+        nativePtr = 0;
     }
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         nativeInitializeGl(nativePtr);
