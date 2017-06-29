@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-    compile project(':googleplay')
+//    compile project(':googleplay')
     compile project(':gvrres')
     compile files('libs/protobuf-javanano-3.1.0.jar')
     compile files('libs/sdk-audio.jar')

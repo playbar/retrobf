@@ -19,12 +19,11 @@ import com.google.vr.ndk.base.GvrLayout;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public final class RetroActivityFuture extends RetroActivityCamera {
+public final class RetroActivityFuture extends RetroActivityCommon {
 
 	static {
 		System.loadLibrary("gvr");
 		System.loadLibrary("gvr_audio");
-		System.loadLibrary("gvrretro");
 	}
 
 	// If set to true then Retroarch will completely exit when it loses focus
@@ -35,6 +34,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 
 	private GvrLayout gvrLayout;
 	private GLSurfaceView surfaceView;
+	private BfRenderer render;
 
 	// Note that pause and resume signals to the native renderer are performed on the GL thread,
 	// ensuring thread-safety.
@@ -42,7 +42,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 			new Runnable() {
 				@Override
 				public void run() {
-					nativeOnPause(nativeTreasureHuntRenderer);
+					render.onPause();
 				}
 			};
 
@@ -50,7 +50,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 			new Runnable() {
 				@Override
 				public void run() {
-					nativeOnResume(nativeTreasureHuntRenderer);
+					render.onResume();
 				}
 			};
 
@@ -61,9 +61,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 		nativeOnCreate();
 		// Ensure fullscreen immersion.
 		setImmersiveSticky();
-		getWindow()
-				.getDecorView()
-				.setOnSystemUiVisibilityChangeListener(
+		getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(
 						new View.OnSystemUiVisibilityChangeListener() {
 							@Override
 							public void onSystemUiVisibilityChange(int visibility) {
@@ -75,30 +73,16 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 
 		// Initialize GvrLayout and the native renderer.
 		gvrLayout = new GvrLayout(this);
-		nativeTreasureHuntRenderer = nativeCreateRenderer(getClass().getClassLoader(), this.getApplicationContext(), gvrLayout.getGvrApi().getNativeGvrContext());
+		render = new BfRenderer(getClass().getClassLoader(), getApplicationContext(), gvrLayout.getGvrApi().getNativeGvrContext());
+//		render.onCreate();
+		render.setPath("lib2048.so");
 
 		// Add the GLSurfaceView to the GvrLayout.
 		surfaceView = new GLSurfaceView(this);
 		surfaceView.setEGLContextClientVersion(2);
 		surfaceView.setEGLConfigChooser(8, 8, 8, 0, 0, 0);
 		surfaceView.setPreserveEGLContextOnPause(true);
-		surfaceView.setRenderer(
-				new GLSurfaceView.Renderer() {
-					@Override
-					public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-						nativeInitializeGl(nativeTreasureHuntRenderer);
-					}
-
-					@Override
-					public void onSurfaceChanged(GL10 gl, int width, int height) {
-						nativeSurfaceChange(nativeTreasureHuntRenderer, width, height);
-					}
-
-					@Override
-					public void onDrawFrame(GL10 gl) {
-						nativeDrawFrame(nativeTreasureHuntRenderer);
-					}
-				});
+		surfaceView.setRenderer(render);
 		surfaceView.setOnTouchListener(
 				new View.OnTouchListener() {
 					@Override
@@ -110,7 +94,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 									new Runnable() {
 										@Override
 										public void run() {
-											nativeOnTriggerEvent(nativeTreasureHuntRenderer);
+											render.onTriggerEvent();
 										}
 									});
 							return true;
@@ -189,7 +173,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 		float rtrig       = ev.getAxisValue( AXIS_RTRIGGER, motion_ptr);
 		float brake       = ev.getAxisValue( AXIS_BRAKE, motion_ptr);
 		float gas         = ev.getAxisValue( AXIS_GAS, motion_ptr);
-		nativeDispatchMotionEvent(nativeTreasureHuntRenderer, source, id, x, y, z, rz, hatx, haty, ltrig, rtrig, brake, gas);
+		render.dispatchMotionEvent( source, id, x, y, z, rz, hatx, haty, ltrig, rtrig, brake, gas);
 
 		return true;
 	}
@@ -201,12 +185,6 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 		return value;
 	}
 
-//	@Override
-//	public boolean onGenericMotionEvent(MotionEvent event) {
-//		boolean value = super.onGenericMotionEvent( event);
-//		return  true;
-//	}
-
 	@Override
 	public boolean dispatchKeyEvent(android.view.KeyEvent event) {
 		int source = event.getSource();
@@ -215,30 +193,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 		int action = event.getAction();
 		int mata = event.getMetaState();
 
-		nativeDispatchKeyEvent(nativeTreasureHuntRenderer, source, id, keycode, action, mata);
-
-
-//		boolean handled = false;
-//		if ((event.getSource() & InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD)
-//		{
-//
-//			if (event.getAction() == KeyEvent.ACTION_DOWN)
-//			{
-//				switch (event.getKeyCode()) {
-//					default:
-//						Log.e("default:", "event code:" + event.getKeyCode());
-//				}
-//				if (!handled)
-//					Log.e("handle", "code is " + event.getKeyCode() + "\n");
-//			} else if (event.getAction() == KeyEvent.ACTION_UP)
-//			{
-//				//don't care, but need to handle it.
-//				handled = true;
-//			} else {
-//				Log.e("else", "unknown action " + event.getAction());
-//			}
-//			return handled;
-//		}
+		render.dispatchKeyEvent( source, id, keycode, action, mata);
 
 		return true;
 	}
@@ -331,8 +286,7 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 		// the GLSurfaceView and stop the GL thread, allowing safe shutdown of
 		// native resources from the UI thread.
 		gvrLayout.shutdown();
-		nativeDestroyRenderer(nativeTreasureHuntRenderer);
-		nativeTreasureHuntRenderer = 0;
+		render.destroyRenderer();
 	}
 
 	@Override
@@ -357,17 +311,5 @@ public final class RetroActivityFuture extends RetroActivityCamera {
 	}
 
 	private native void nativeOnCreate();
-	private native void nativeDispatchMotionEvent(long nativeTreasureHuntRenderer, int source, int id,
-												 float x, float y, float z, float rz, float hatx, float haty,
-												  float ltrig, float rtrig, float brake, float gas  );
-	private native void nativeDispatchKeyEvent(long nativeTreasureHuntRenderer, int source, int id, int keycode, int action, int mate);
-	private native long nativeCreateRenderer(ClassLoader appClassLoader, Context context, long nativeGvrContext);
-	private native void nativeDestroyRenderer(long nativeTreasureHuntRenderer);
-	private native void nativeInitializeGl(long nativeTreasureHuntRenderer);
-	private native void nativeSurfaceChange(long nativeTreasureHuntRenderer, int width, int height);
-	private native long nativeDrawFrame(long nativeTreasureHuntRenderer);
-	private native void nativeOnTriggerEvent(long nativeTreasureHuntRenderer);
-	private native void nativeOnPause(long nativeTreasureHuntRenderer);
-	private native void nativeOnResume(long nativeTreasureHuntRenderer);
 
 }

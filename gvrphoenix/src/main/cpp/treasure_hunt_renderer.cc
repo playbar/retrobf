@@ -429,23 +429,6 @@ void TreasureHuntRenderer::InitializeGl() {
 //////    path_set(RARCH_PATH_CORE, "/data/user/0/com.retroarch/cores/2048_libretro_android.so");
 //    path_set(RARCH_PATH_CORE, "lib2048.so");
 
-  if (frontend_driver_is_inited())
-  {
-    content_ctx_info_t info;
-    char arguments[]  = "retroarch";
-    char *argv[] = {arguments,   NULL};
-    int argc = 1;
-    info.argc            = argc;
-    info.argv            = argv;
-    info.args            = (void*)g_android;
-    info.environ_get     = frontend_driver_environment_get_ptr();
-
-    if (!task_push_start_content_from_cli(NULL, NULL, &info, CORE_TYPE_PLAIN, NULL, NULL))
-      return;
-  }
-
-  ui_companion_driver_init_first();
-
 }
 
 void TreasureHuntRenderer::SurfaceChange(int width, int height)
@@ -548,6 +531,41 @@ void TreasureHuntRenderer::DrawFrame() {
     // Update audio head rotation in audio API.
     gvr_audio_api_->SetHeadPose(head_view_);
     gvr_audio_api_->Update();
+}
+
+
+void TreasureHuntRenderer::RetroInit()
+{
+  if (frontend_driver_is_inited())
+  {
+    content_ctx_info_t info;
+    char arguments[]  = "retroarch";
+    char *argv[] = {arguments,   NULL};
+    int argc = 1;
+    info.argc            = argc;
+    info.argv            = argv;
+    info.args            = (void*)g_android;
+    info.environ_get     = frontend_driver_environment_get_ptr();
+
+    if (!task_push_start_content_from_cli(NULL, NULL, &info, CORE_TYPE_PLAIN, NULL, NULL))
+      return;
+  }
+
+  ui_companion_driver_init_first();
+}
+
+void TreasureHuntRenderer::RetroSurfaceChange(int width, int height)
+{
+
+}
+
+void TreasureHuntRenderer::RetroDrawFrame()
+{
+  unsigned sleep_ms = 0;
+  int ret = runloop_iterate(&sleep_ms);
+  if (ret == 1 && sleep_ms > 0)
+    retro_sleep(sleep_ms);
+  task_queue_check();
 }
 
 
@@ -679,12 +697,8 @@ void TreasureHuntRenderer::DrawWorld(ViewType view) {
 
 //    DrawCube(view);
 //    DrawFloor(view);
-    unsigned sleep_ms = 0;
-    int ret = runloop_iterate(&sleep_ms);
-    if (ret == 1 && sleep_ms > 0)
-        retro_sleep(sleep_ms);
-    task_queue_check();
 
+  RetroDrawFrame();
 //  Draw(&esContext);
 
   if (gvr_viewer_type_ == GVR_VIEWER_TYPE_DAYDREAM) {

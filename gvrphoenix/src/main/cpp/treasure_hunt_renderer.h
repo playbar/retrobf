@@ -65,6 +65,12 @@ public:
      */
     void DrawFrame();
 
+    void RetroInit();
+
+    void RetroSurfaceChange(int width, int height);
+
+    void RetroDrawFrame();
+
     /**
      * Hide the cube if it's being targeted.
      */
