@@ -33,40 +33,21 @@ public class RetroActivityCommon extends Activity
     boolean locationChanged = false;
     boolean location_service_running = false;
 
-	private native void nativeOnCreate();
+//	private native void nativeOnCreate();
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		nativeOnCreate();
+//		nativeOnCreate();
 	}
 
-    /**
-     * Gets the latitude at the current location in degrees.
-     *
-     * @return the latitude at the current location.
-     */
     public double onLocationGetLatitude()
     {
         return mCurrentLocation.getLatitude();
     }
-
-    /**
-     * Gets the longitude at the current location in degrees.
-     *
-     * @return the longitude at the current location.
-     */
     public double onLocationGetLongitude()
     {
         return mCurrentLocation.getLongitude();
     }
-
-    /**
-     * Gets the horizontal accuracy of the current location
-     * in meters. (NOTE: There seems to be no vertical accuracy
-     * for a given location with the Android location API)
-     *
-     * @return the horizontal accuracy of the current position.
-     */
     public double onLocationGetHorizontalAccuracy()
     {
         return mCurrentLocation.getAccuracy();

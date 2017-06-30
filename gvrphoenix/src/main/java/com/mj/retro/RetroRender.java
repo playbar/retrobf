@@ -1,5 +1,6 @@
 package com.mj.retro;
 
+import android.content.Context;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
@@ -8,6 +9,10 @@ import android.view.MotionEvent;
  */
 
 public class RetroRender {
+
+    public RetroRender(Context ctx){
+        nativeOnCreate(ctx);
+    }
 
     public void setPath(String strPath)
     {
@@ -59,6 +64,7 @@ public class RetroRender {
         nativeDispatchKeyEvent( source, id, keycode, action, mate);
     }
 
+    private native void nativeOnCreate(Context ctx);
     private native void nativeDispatchMotionEvent(int source, int id,
                                                   float x, float y, float z, float rz, float hatx, float haty,
                                                   float ltrig, float rtrig, float brake, float gas  );

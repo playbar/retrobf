@@ -164,12 +164,9 @@ static bool android_location_get_position(void *data, double *latitude,
    if (!newLocation)
       goto fail;
 
-   CALL_DOUBLE_METHOD(env, lat,        android_app->clazz,
-         androidlocation->onLocationGetLatitude);
-   CALL_DOUBLE_METHOD(env, lon,        android_app->clazz,
-         androidlocation->onLocationGetLongitude);
-   CALL_DOUBLE_METHOD(env, horiz_accu, android_app->clazz,
-         androidlocation->onLocationGetHorizontalAccuracy);
+   CALL_DOUBLE_METHOD(env, lat,        android_app->clazz, androidlocation->onLocationGetLatitude);
+   CALL_DOUBLE_METHOD(env, lon,        android_app->clazz, androidlocation->onLocationGetLongitude);
+   CALL_DOUBLE_METHOD(env, horiz_accu, android_app->clazz, androidlocation->onLocationGetHorizontalAccuracy);
 
    if (lat != 0.0)
       *latitude = lat;

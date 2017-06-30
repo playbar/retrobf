@@ -59,7 +59,7 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		retroRender = new RetroRender();
+		retroRender = new RetroRender(this);
 		// Ensure fullscreen immersion.
 		setImmersiveSticky();
 		getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(

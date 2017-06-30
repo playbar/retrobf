@@ -59,11 +59,11 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved){
 }
 
 
-JNIEXPORT void JNICALL Java_com_mj_retro_RetroActivityCommon_nativeOnCreate(JNIEnv *env, jobject obj)
+JNI_RETRO(void, nativeOnCreate)(JNIEnv *env, jobject obj, jobject ctx)
 {
-    jclass claz = env->GetObjectClass(obj);
+    jclass claz = env->GetObjectClass(ctx);
     jmethodID getIntent = env->GetMethodID(claz, "getIntent", "()Landroid/content/Intent;");
-    jobject gobj = env->NewGlobalRef( obj );
+    jobject gobj = env->NewGlobalRef( ctx );
     android_app_oncreate(gobj );
 }
 
