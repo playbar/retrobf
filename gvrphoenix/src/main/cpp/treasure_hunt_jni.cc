@@ -59,7 +59,7 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved){
 }
 
 
-JNIEXPORT void JNICALL Java_com_mj_retro_RetroActivityFuture_nativeOnCreate(JNIEnv *env, jobject obj)
+JNIEXPORT void JNICALL Java_com_mj_retro_RetroActivityCommon_nativeOnCreate(JNIEnv *env, jobject obj)
 {
     jclass claz = env->GetObjectClass(obj);
     jmethodID getIntent = env->GetMethodID(claz, "getIntent", "()Landroid/content/Intent;");

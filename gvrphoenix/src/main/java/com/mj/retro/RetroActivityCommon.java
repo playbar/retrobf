@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.app.UiModeManager;
 import android.location.Location;
+import android.os.Bundle;
 import android.util.Log;
 import android.content.pm.PackageManager;
 import android.Manifest;
@@ -31,6 +32,13 @@ public class RetroActivityCommon extends Activity
     boolean mUpdatesRequested = false;
     boolean locationChanged = false;
     boolean location_service_running = false;
+
+	private native void nativeOnCreate();
+
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		nativeOnCreate();
+	}
 
     /**
      * Gets the latitude at the current location in degrees.

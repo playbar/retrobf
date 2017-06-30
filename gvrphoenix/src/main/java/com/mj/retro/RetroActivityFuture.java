@@ -59,7 +59,6 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		nativeOnCreate();
 		retroRender = new RetroRender();
 		// Ensure fullscreen immersion.
 		setImmersiveSticky();
@@ -148,34 +147,7 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 	@Override
 	public boolean dispatchGenericMotionEvent(MotionEvent ev){
 		super.dispatchGenericMotionEvent(ev);
-		int     AXIS_X = 0;
-		int		AXIS_Y = 1;
-		int		AXIS_Z = 11;
-		int		AXIS_RZ = 14;
-		int		AXIS_HAT_X = 15;
-		int		AXIS_HAT_Y = 16;
-		int		AXIS_LTRIGGER = 17;
-		int		AXIS_RTRIGGER = 18;
-		int		AXIS_GAS = 22;
-		int		AXIS_BRAKE = 23;
-
-		int motion_ptr = ev.getAction() >> 8;
-
-		int source = ev.getSource();
-		int id = ev.getDeviceId();
-		//////////////
-		float x = ev.getAxisValue(AXIS_X, motion_ptr);
-		float y           = ev.getAxisValue( AXIS_Y, motion_ptr);
-		float z           = ev.getAxisValue( AXIS_Z, motion_ptr);
-		float rz          = ev.getAxisValue( AXIS_RZ, motion_ptr);
-		float hatx        = ev.getAxisValue( AXIS_HAT_X, motion_ptr);
-		float haty        = ev.getAxisValue( AXIS_HAT_Y, motion_ptr);
-		float ltrig       = ev.getAxisValue( AXIS_LTRIGGER, motion_ptr);
-		float rtrig       = ev.getAxisValue( AXIS_RTRIGGER, motion_ptr);
-		float brake       = ev.getAxisValue( AXIS_BRAKE, motion_ptr);
-		float gas         = ev.getAxisValue( AXIS_GAS, motion_ptr);
-		retroRender.dispatchMotionEvent( source, id, x, y, z, rz, hatx, haty, ltrig, rtrig, brake, gas);
-
+		retroRender.dispatchMotionEvent( ev);
 		return true;
 	}
 
@@ -188,14 +160,7 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 
 	@Override
 	public boolean dispatchKeyEvent(android.view.KeyEvent event) {
-		int source = event.getSource();
-		int id = event.getDeviceId();
-		int keycode = event.getKeyCode();
-		int action = event.getAction();
-		int mata = event.getMetaState();
-
-		retroRender.dispatchKeyEvent( source, id, keycode, action, mata);
-
+		retroRender.dispatchKeyEvent( event);
 		return true;
 	}
 
@@ -310,7 +275,5 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 								| View.SYSTEM_UI_FLAG_FULLSCREEN
 								| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 	}
-
-	private native void nativeOnCreate();
 
 }

@@ -1032,10 +1032,10 @@ void android_dispatch_key_event(int source, int id, int keycode, int action, int
             handle_hotplug(android, android_app, &port, id, source);
 
 
-         if (keycode == 109) {
-            command_event(CMD_EVENT_QUIT, NULL);
-            return;
-         }
+//         if (keycode == 109) {
+//            command_event(CMD_EVENT_QUIT, NULL);
+//            return;
+//         }
          if (is_keyboard_id(id)) {
             android_input_poll_event_type_keyboard(action, mate, keycode, &handled);
             android_input_poll_event_type_key(android_app, action, ANDROID_KEYBOARD_PORT, keycode,
