@@ -1020,6 +1020,8 @@ void android_dispatch_key_event(int source, int id, int keycode, int action, int
 //    AInputEvent *event = NULL;
     struct android_app *android_app = (struct android_app*)g_android;
     android_input_t    *android     = (android_input_t*)current_input_data;
+    if( current_input_data == NULL )
+        return;
 
          int32_t handled = 1;
 //   int predispatched = AInputQueue_preDispatchEvent(android_app->inputQueue, event);

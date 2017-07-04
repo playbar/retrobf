@@ -40,10 +40,10 @@ public class RetroActivityCommon extends Activity
 //		nativeOnCreate();
 	}
 
-    public double onLocationGetLatitude()
-    {
-        return mCurrentLocation.getLatitude();
-    }
+//    public double onLocationGetLatitude()
+//    {
+//        return mCurrentLocation.getLatitude();
+//    }
     public double onLocationGetLongitude()
     {
         return mCurrentLocation.getLongitude();

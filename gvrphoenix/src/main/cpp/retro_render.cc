@@ -4,6 +4,8 @@
 #include <tasks/tasks_internal.h>
 #include <ui/ui_companion_driver.h>
 #include <src/retroarch.h>
+#include <pthread.h>
+#include <src/log.h>
 #include "retro_render.h"
 
 
@@ -34,6 +36,8 @@ void RetroSurfaceChange(int width, int height)
 
 void RetroDrawFrame()
 {
+    pthread_t pid = pthread_self();
+    LOGE("threadid:RetroDrawFrame, pid=%ld", pid);
     unsigned sleep_ms = 0;
     int ret = runloop_iterate(&sleep_ms);
     if (ret == 1 && sleep_ms > 0)

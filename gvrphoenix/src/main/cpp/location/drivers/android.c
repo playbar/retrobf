@@ -26,7 +26,7 @@ typedef struct android_location
    jmethodID onLocationStop;
    jmethodID onLocationSetInterval;
    jmethodID onLocationGetLongitude;
-   jmethodID onLocationGetLatitude;
+//   jmethodID onLocationGetLatitude;
    jmethodID onLocationGetHorizontalAccuracy;
    jmethodID onLocationHasChanged;
 } androidlocation_t;
@@ -70,10 +70,9 @@ static void *android_location_init(void)
    if (!androidlocation->onLocationStop)
       goto dealloc;
 
-   GET_METHOD_ID(env, androidlocation->onLocationGetLatitude, class,
-         "onLocationGetLatitude", "()D");
-   if (!androidlocation->onLocationGetLatitude)
-      goto dealloc;
+//   GET_METHOD_ID(env, androidlocation->onLocationGetLatitude, class, "onLocationGetLatitude", "()D");
+//   if (!androidlocation->onLocationGetLatitude)
+//      goto dealloc;
 
    GET_METHOD_ID(env, androidlocation->onLocationGetLongitude, class,
          "onLocationGetLongitude", "()D");
@@ -164,7 +163,7 @@ static bool android_location_get_position(void *data, double *latitude,
    if (!newLocation)
       goto fail;
 
-   CALL_DOUBLE_METHOD(env, lat,        android_app->clazz, androidlocation->onLocationGetLatitude);
+//   CALL_DOUBLE_METHOD(env, lat,        android_app->clazz, androidlocation->onLocationGetLatitude);
    CALL_DOUBLE_METHOD(env, lon,        android_app->clazz, androidlocation->onLocationGetLongitude);
    CALL_DOUBLE_METHOD(env, horiz_accu, android_app->clazz, androidlocation->onLocationGetHorizontalAccuracy);
 

@@ -303,6 +303,7 @@ void gl_set_viewport(void *data, video_frame_info_t *video_info,
    float device_aspect      = (float)viewport_width / viewport_height;
    gl_t           *gl       = (gl_t*)data;
    unsigned height          = video_info->height;
+   force_full = true;
 
    aspect_data.aspect       = &device_aspect;
    aspect_data.width        = viewport_width;
