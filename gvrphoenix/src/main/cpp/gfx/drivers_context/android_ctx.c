@@ -100,7 +100,7 @@ static void android_gfx_ctx_destroy(void *data)
 
 static void *android_gfx_ctx_init(video_frame_info_t *video_info, void *video_driver)
 {
-#ifdef HAVE_OPENGLES
+#ifdef HAVE_EGL
    EGLint n, major, minor;
    EGLint format;
    EGLint context_attributes[] = {
@@ -124,7 +124,7 @@ static void *android_gfx_ctx_init(video_frame_info_t *video_info, void *video_dr
    if (!android_app || !and)
       return false;
 
-#ifdef HAVE_OPENGLES
+#ifdef HAVE_EGL
    if (g_es3)
       attribs[1] = EGL_OPENGL_ES3_BIT_KHR;
 #endif
@@ -237,6 +237,8 @@ static void android_gfx_ctx_check_window(void *data, bool *quit,
 #ifdef HAVE_EGL
          egl_get_video_size(&and->egl, &new_width, &new_height);
 #endif
+        new_width = 2560;
+           new_height = 1440;
          break;
       case GFX_CTX_VULKAN_API:
 #ifdef HAVE_VULKAN

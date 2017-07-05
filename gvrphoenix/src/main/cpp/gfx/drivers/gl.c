@@ -91,12 +91,14 @@
 
 static struct video_ortho default_ortho = {0, 1, 0, 1, -1, 1};
 
+
 #ifdef IOS
 /* There is no default frame buffer on iOS. */
 void cocoagl_bind_game_view_fbo(void);
 #define gl_bind_backbuffer() cocoagl_bind_game_view_fbo()
 #else
-#define gl_bind_backbuffer() glBindFramebuffer(RARCH_GL_FRAMEBUFFER, 0)
+extern GLint frameBuffer;
+#define gl_bind_backbuffer() glBindFramebuffer(RARCH_GL_FRAMEBUFFER, frameBuffer)
 #endif
 
 /* Used for the last pass when rendering to the back buffer. */
@@ -292,6 +294,8 @@ static void gl_set_viewport_wrapper(void *data, unsigned viewport_width,
    gl_set_viewport(data, &video_info, viewport_width, viewport_height, force_full, allow_rotate);
 }
 
+extern int gViewType;
+
 void gl_set_viewport(void *data, video_frame_info_t *video_info,
       unsigned viewport_width,
       unsigned viewport_height,
@@ -376,7 +380,10 @@ void gl_set_viewport(void *data, video_frame_info_t *video_info,
       gl->vp.y *= 2;
 #endif
 
-   glViewport(gl->vp.x, gl->vp.y, gl->vp.width, gl->vp.height);
+    if(gViewType == 0)
+        glViewport(gl->vp.x, gl->vp.y, 1280, gl->vp.height);
+    else
+        glViewport(1280, gl->vp.y, 1280, gl->vp.height);
    gl_set_projection(gl, &default_ortho, allow_rotate);
 
    /* Set last backbuffer viewport. */

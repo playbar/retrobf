@@ -42,7 +42,8 @@
     abort();                                                               \
   }
 
-
+int gViewType = 0; // 0:left, 1:right
+GLint frameBuffer = 0;
 
 namespace {
 static const float kZNear = 1.0f;
@@ -429,6 +430,7 @@ void TreasureHuntRenderer::DrawFrame() {
     }
     PrepareFramebuffer();
     gvr::Frame frame = swapchain_->AcquireFrame();
+    frameBuffer = frame.GetFramebufferObject(0);
 
     // A client app does its rendering here.
     gvr::ClockTimePoint target_time = gvr::GvrApi::GetTimePointNow();
@@ -485,6 +487,11 @@ void TreasureHuntRenderer::DrawFrame() {
 
     // Draw the world.
     frame.BindBuffer(0);
+    GLint  framebuf = frame.GetFramebufferObject(0);
+    GLboolean  re=    glIsFramebuffer(framebuf);
+    if( re == GL_TRUE ){
+        LOGE("frame is framebuffer, frameid:%d", framebuf);
+    }
     glClearColor(0.8f, 0.8f, 0.8f, 0.5f);  // Dark background so text shows up.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (multiview_enabled_) {
@@ -493,9 +500,25 @@ void TreasureHuntRenderer::DrawFrame() {
         DrawWorld(kLeftView);
         DrawWorld(kRightView);
     }
+  RetroDrawFrame();
     frame.Unbind();
+    framebuf = frame.GetFramebufferObject(0);
+    re=    glIsFramebuffer(framebuf);
+    if( re == GL_TRUE ){
+        LOGE("frame is framebuffer");
+    }
+  GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+  if( status != GL_FRAMEBUFFER_COMPLETE)
+    LOGE("Framebuffer incomplete!\n");
+  else
+    LOGE("Framebuffer complete!\n");
 
     frame.BindBuffer(1);
+    framebuf = frame.GetFramebufferObject(1);
+    re=    glIsFramebuffer(framebuf);
+    if( re == GL_TRUE ){
+        LOGE("frame is framebuffer");
+    }
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -633,8 +656,8 @@ void TreasureHuntRenderer::DrawWorld(ViewType view) {
   if (view == kMultiview) {
     glViewport(0, 0, render_size_.width / 2, render_size_.height);
   } else {
-    const gvr::BufferViewport& viewport =
-        view == kLeftView ? viewport_left_ : viewport_right_;
+    const gvr::BufferViewport& viewport = view == kLeftView ? viewport_left_ : viewport_right_;
+    gViewType = view;
     const gvr::Recti pixel_rect =
         CalculatePixelSpaceRect(render_size_, viewport.GetSourceUv());
     glViewport(pixel_rect.left, pixel_rect.bottom,
@@ -647,7 +670,7 @@ void TreasureHuntRenderer::DrawWorld(ViewType view) {
 //    DrawCube(view);
 //    DrawFloor(view);
 
-  RetroDrawFrame();
+//  RetroDrawFrame();
 //  Draw(&esContext);
 
   if (gvr_viewer_type_ == GVR_VIEWER_TYPE_DAYDREAM) {
