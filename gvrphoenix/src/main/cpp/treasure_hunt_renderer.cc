@@ -255,7 +255,7 @@ static float VectorInnerProduct(const std::array<float, 4>& vect1, const std::ar
 
 TreasureHuntRenderer::TreasureHuntRenderer(gvr_context* gvr_context, std::unique_ptr<gvr::AudioApi> gvr_audio_api)
     : gvr_api_(gvr::GvrApi::WrapNonOwned(gvr_context)),
-      gvr_audio_api_(std::move(gvr_audio_api)),
+//      gvr_audio_api_(std::move(gvr_audio_api)),
       viewport_left_(gvr_api_->CreateBufferViewport()),
       viewport_right_(gvr_api_->CreateBufferViewport()),
       floor_vertices_(world_layout_data_.floor_coords.data()),
@@ -267,8 +267,8 @@ TreasureHuntRenderer::TreasureHuntRenderer(gvr_context* gvr_context, std::unique
       reticle_render_size_{128, 128},
       light_pos_world_space_({0.0f, 2.0f, 0.0f, 1.0f}),
       object_distance_(kMinCubeDistance),
-      audio_source_id_(-1),
-      success_source_id_(-1),
+//      audio_source_id_(-1),
+//      success_source_id_(-1),
       gvr_controller_api_(nullptr),
       gvr_viewer_type_(gvr_api_->GetViewerType())
 {
@@ -285,9 +285,9 @@ TreasureHuntRenderer::TreasureHuntRenderer(gvr_context* gvr_context, std::unique
 
 TreasureHuntRenderer::~TreasureHuntRenderer() {
   // Join the audio initialization thread in case it still exists.
-  if (audio_initialization_thread_.joinable()) {
-    audio_initialization_thread_.join();
-  }
+//  if (audio_initialization_thread_.joinable()) {
+//    audio_initialization_thread_.join();
+//  }
 }
 
 
@@ -398,9 +398,9 @@ void TreasureHuntRenderer::InitializeGl() {
 
   // Initialize audio engine and preload sample in a separate thread to avoid
   // any delay during construction and app initialization. Only do this once.
-  if (!audio_initialization_thread_.joinable()) {
-    audio_initialization_thread_ = std::thread(&TreasureHuntRenderer::LoadAndPlayCubeSound, this);
-  }
+//  if (!audio_initialization_thread_.joinable()) {
+//    audio_initialization_thread_ = std::thread(&TreasureHuntRenderer::LoadAndPlayCubeSound, this);
+//  }
 
     Init(&esContext);
 
@@ -500,7 +500,6 @@ void TreasureHuntRenderer::DrawFrame() {
         DrawWorld(kLeftView);
         DrawWorld(kRightView);
     }
-  RetroDrawFrame();
     frame.Unbind();
     framebuf = frame.GetFramebufferObject(0);
     re=    glIsFramebuffer(framebuf);
@@ -537,8 +536,8 @@ void TreasureHuntRenderer::DrawFrame() {
     CheckGLError("onDrawFrame");
 
     // Update audio head rotation in audio API.
-    gvr_audio_api_->SetHeadPose(head_view_);
-    gvr_audio_api_->Update();
+//    gvr_audio_api_->SetHeadPose(head_view_);
+//    gvr_audio_api_->Update();
 }
 
 void TreasureHuntRenderer::ResumeControllerApiAsNeeded() {
@@ -602,22 +601,22 @@ void TreasureHuntRenderer::PrepareFramebuffer() {
 void TreasureHuntRenderer::OnTriggerEvent() {
 //    input_poll();
   if (ObjectIsFound()) {
-    success_source_id_ = gvr_audio_api_->CreateStereoSound(kSuccessSoundFile);
-    gvr_audio_api_->PlaySound(success_source_id_, false /* looping disabled */);
+//    success_source_id_ = gvr_audio_api_->CreateStereoSound(kSuccessSoundFile);
+//    gvr_audio_api_->PlaySound(success_source_id_, false /* looping disabled */);
     HideObject();
   }
 }
 
 void TreasureHuntRenderer::OnPause() {
   gvr_api_->PauseTracking();
-  gvr_audio_api_->Pause();
+//  gvr_audio_api_->Pause();
   if (gvr_controller_api_) gvr_controller_api_->Pause();
 }
 
 void TreasureHuntRenderer::OnResume() {
   gvr_api_->ResumeTracking();
   gvr_api_->RefreshViewerProfile();
-  gvr_audio_api_->Resume();
+//  gvr_audio_api_->Resume();
   gvr_viewer_type_ = gvr_api_->GetViewerType();
   ResumeControllerApiAsNeeded();
 }
@@ -670,7 +669,7 @@ void TreasureHuntRenderer::DrawWorld(ViewType view) {
 //    DrawCube(view);
 //    DrawFloor(view);
 
-//  RetroDrawFrame();
+  RetroDrawFrame();
 //  Draw(&esContext);
 
   if (gvr_viewer_type_ == GVR_VIEWER_TYPE_DAYDREAM) {
@@ -834,10 +833,9 @@ void TreasureHuntRenderer::HideObject() {
   model_cube_.m[1][3] = cube_position[1];
   model_cube_.m[2][3] = cube_position[2];
 
-  if (audio_source_id_ >= 0) {
-    gvr_audio_api_->SetSoundObjectPosition(audio_source_id_, cube_position[0],
-                                           cube_position[1], cube_position[2]);
-  }
+//  if (audio_source_id_ >= 0) {
+//    gvr_audio_api_->SetSoundObjectPosition(audio_source_id_, cube_position[0], cube_position[1], cube_position[2]);
+//  }
 }
 
 bool TreasureHuntRenderer::ObjectIsFound() {
@@ -887,14 +885,12 @@ bool TreasureHuntRenderer::IsPointingAtObject() {
 
 void TreasureHuntRenderer::LoadAndPlayCubeSound() {
   // Preload sound files.
-  gvr_audio_api_->PreloadSoundfile(kObjectSoundFile);
-  gvr_audio_api_->PreloadSoundfile(kSuccessSoundFile);
-  // Create sound file handler from preloaded sound file.
-  audio_source_id_ = gvr_audio_api_->CreateSoundObject(kObjectSoundFile);
-  // Set sound object to current cube position.
-  gvr_audio_api_->SetSoundObjectPosition(audio_source_id_, model_cube_.m[0][3],
-                                         model_cube_.m[1][3],
-                                         model_cube_.m[2][3]);
-  // Trigger sound object playback.
-  gvr_audio_api_->PlaySound(audio_source_id_, true /* looped playback */);
+//  gvr_audio_api_->PreloadSoundfile(kObjectSoundFile);
+//  gvr_audio_api_->PreloadSoundfile(kSuccessSoundFile);
+//  // Create sound file handler from preloaded sound file.
+//  audio_source_id_ = gvr_audio_api_->CreateSoundObject(kObjectSoundFile);
+//  // Set sound object to current cube position.
+//  gvr_audio_api_->SetSoundObjectPosition(audio_source_id_, model_cube_.m[0][3], model_cube_.m[1][3], model_cube_.m[2][3]);
+//  // Trigger sound object playback.
+//  gvr_audio_api_->PlaySound(audio_source_id_, true /* looped playback */);
 }

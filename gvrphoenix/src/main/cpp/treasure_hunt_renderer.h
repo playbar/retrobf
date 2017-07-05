@@ -54,7 +54,7 @@ private:
     void ResumeControllerApiAsNeeded();
 
     std::unique_ptr<gvr::GvrApi> gvr_api_;
-    std::unique_ptr<gvr::AudioApi> gvr_audio_api_;
+//    std::unique_ptr<gvr::AudioApi> gvr_audio_api_;
     std::unique_ptr<gvr::BufferViewportList> viewport_list_;
     std::unique_ptr<gvr::SwapChain> swapchain_;
     gvr::BufferViewport viewport_left_;
@@ -123,11 +123,11 @@ private:
     float reticle_distance_;
     bool multiview_enabled_;
 
-    gvr::AudioSourceId audio_source_id_;
+//    gvr::AudioSourceId audio_source_id_;
 
-    gvr::AudioSourceId success_source_id_;
+//    gvr::AudioSourceId success_source_id_;
 
-    std::thread audio_initialization_thread_;
+//    std::thread audio_initialization_thread_;
 
     // Controller API entry point.
     std::unique_ptr<gvr::ControllerApi> gvr_controller_api_;

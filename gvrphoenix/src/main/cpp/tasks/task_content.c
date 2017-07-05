@@ -1468,7 +1468,7 @@ bool task_push_start_content_from_cli(const char *core_path, const char *fullpat
    if( !content_load(content_info))
       return false;
 
-   const char* path = "/storage/emulated/0/apsp/9000715.iso";
+   const char* path = "/storage/emulated/0/apsp/sola.iso";
    const char* new_core_path = "/data/data/com.retroarch/cores/ppsspp_libretro_android.so";
    content_ctx_info_t ctinfo;
    ctinfo.argc                   = 0;

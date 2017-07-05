@@ -20,6 +20,7 @@
 #endif
 
 #include <rthreads/rthreads.h>
+#include <src/verbosity.h>
 
 #include "../audio_driver.h"
 

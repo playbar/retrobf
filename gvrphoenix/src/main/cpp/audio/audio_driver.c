@@ -49,72 +49,7 @@
 #define AUDIO_MIXER_MAX_STREAMS 8
 
 static const audio_driver_t *audio_drivers[] = {
-#ifdef HAVE_ALSA
-   &audio_alsa,
-#if !defined(__QNX__) && defined(HAVE_THREADS)
-   &audio_alsathread,
-#endif
-#endif
-#if defined(HAVE_OSS) || defined(HAVE_OSS_BSD)
-   &audio_oss,
-#endif
-#ifdef HAVE_RSOUND
-   &audio_rsound,
-#endif
-#ifdef HAVE_COREAUDIO
-   &audio_coreaudio,
-#endif
-#ifdef HAVE_AL
-   &audio_openal,
-#endif
-#ifdef HAVE_SL
    &audio_opensl,
-#endif
-#ifdef HAVE_ROAR
-   &audio_roar,
-#endif
-#ifdef HAVE_JACK
-   &audio_jack,
-#endif
-#if defined(HAVE_SDL) || defined(HAVE_SDL2)
-   &audio_sdl,
-#endif
-#ifdef HAVE_XAUDIO
-   &audio_xa,
-#endif
-#ifdef HAVE_DSOUND
-   &audio_dsound,
-#endif
-#ifdef HAVE_WASAPI
-   &audio_wasapi,
-#endif
-#ifdef HAVE_PULSE
-   &audio_pulse,
-#endif
-#ifdef __CELLOS_LV2__
-   &audio_ps3,
-#endif
-#ifdef XENON
-   &audio_xenon360,
-#endif
-#ifdef GEKKO
-   &audio_gx,
-#endif
-#ifdef WIIU
-   &audio_ax,
-#endif
-#ifdef EMSCRIPTEN
-   &audio_rwebaudio,
-#endif
-#if defined(PSP) || defined(VITA)
-  &audio_psp,
-#endif
-#ifdef _3DS
-   &audio_ctr_csnd,
-   &audio_ctr_dsp,
-#endif
-   &audio_null,
-   NULL,
 };
 
 struct audio_mixer_stream
@@ -676,8 +611,12 @@ void audio_driver_sample(int16_t left, int16_t right)
  * Returns: amount of frames sampled. Will be equal to @frames
  * unless @frames exceeds (AUDIO_CHUNK_SIZE_NONBLOCKING / 2).
  **/
+extern int gViewType;
+
 size_t audio_driver_sample_batch(const int16_t *data, size_t frames)
 {
+//    if( gViewType == 1 )
+//        return 0;
    if (frames > (AUDIO_CHUNK_SIZE_NONBLOCKING >> 1))
       frames = AUDIO_CHUNK_SIZE_NONBLOCKING >> 1;
 
