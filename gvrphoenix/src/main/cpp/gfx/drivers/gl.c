@@ -142,129 +142,6 @@ void context_bind_hw_render(bool enable)
 }
 
 
-#ifdef HAVE_OVERLAY
-static void gl_free_overlay(gl_t *gl)
-{
-   if (!gl)
-      return;
-
-   glDeleteTextures(gl->overlays, gl->overlay_tex);
-
-   free(gl->overlay_tex);
-   free(gl->overlay_vertex_coord);
-   free(gl->overlay_tex_coord);
-   free(gl->overlay_color_coord);
-   gl->overlay_tex          = NULL;
-   gl->overlay_vertex_coord = NULL;
-   gl->overlay_tex_coord    = NULL;
-   gl->overlay_color_coord  = NULL;
-   gl->overlays             = 0;
-}
-
-static void gl_overlay_vertex_geom(void *data,
-      unsigned image,
-      float x, float y,
-      float w, float h)
-{
-   GLfloat *vertex = NULL;
-   gl_t *gl        = (gl_t*)data;
-
-   if (!gl)
-      return;
-
-   if (image > gl->overlays)
-   {
-      RARCH_ERR("[GL]: Invalid overlay id: %u\n", image);
-      return;
-   }
-
-   vertex = (GLfloat*)&gl->overlay_vertex_coord[image * 8];
-
-   /* Flipped, so we preserve top-down semantics. */
-   y = 1.0f - y;
-   h = -h;
-
-   vertex[0] = x;
-   vertex[1] = y;
-   vertex[2] = x + w;
-   vertex[3] = y;
-   vertex[4] = x;
-   vertex[5] = y + h;
-   vertex[6] = x + w;
-   vertex[7] = y + h;
-}
-
-static void gl_overlay_tex_geom(void *data,
-      unsigned image,
-      GLfloat x, GLfloat y,
-      GLfloat w, GLfloat h)
-{
-   GLfloat *tex = NULL;
-   gl_t *gl     = (gl_t*)data;
-
-   if (!gl)
-      return;
-
-   tex          = (GLfloat*)&gl->overlay_tex_coord[image * 8];
-
-   tex[0]       = x;
-   tex[1]       = y;
-   tex[2]       = x + w;
-   tex[3]       = y;
-   tex[4]       = x;
-   tex[5]       = y + h;
-   tex[6]       = x + w;
-   tex[7]       = y + h;
-}
-
-static void gl_render_overlay(gl_t *gl, video_frame_info_t *video_info)
-{
-   video_shader_ctx_coords_t coords;
-   unsigned i;
-   unsigned width                      = video_info->width;
-   unsigned height                     = video_info->height;
-
-   if (!gl || !gl->overlay_enable)
-      return;
-
-   glEnable(GL_BLEND);
-
-   if (gl->overlay_full_screen)
-      glViewport(0, 0, width, height);
-
-   /* Ensure that we reset the attrib array. */
-   video_info->cb_shader_use(gl,
-         video_info->shader_data, VIDEO_SHADER_STOCK_BLEND, true);
-
-   gl->coords.vertex    = gl->overlay_vertex_coord;
-   gl->coords.tex_coord = gl->overlay_tex_coord;
-   gl->coords.color     = gl->overlay_color_coord;
-   gl->coords.vertices  = 4 * gl->overlays;
-
-   coords.handle_data   = NULL;
-   coords.data          = &gl->coords;
-
-   video_shader_driver_set_coords(coords);
-
-   video_info->cb_shader_set_mvp(gl, video_info->shader_data, &gl->mvp_no_rot);
-
-   for (i = 0; i < gl->overlays; i++)
-   {
-      glBindTexture(GL_TEXTURE_2D, gl->overlay_tex[i]);
-      glDrawArrays(GL_TRIANGLE_STRIP, 4 * i, 4);
-   }
-
-   glDisable(GL_BLEND);
-   gl->coords.vertex    = gl->vertex_ptr;
-   gl->coords.tex_coord = gl->tex_info.coord;
-   gl->coords.color     = gl->white_color_ptr;
-   gl->coords.vertices  = 4;
-   if (gl->overlay_full_screen)
-      glViewport(gl->vp.x, gl->vp.y, gl->vp.width, gl->vp.height);
-}
-#endif
-
-
 static void gl_set_projection(gl_t *gl,
       struct video_ortho *ortho, bool allow_rotate)
 {
@@ -295,6 +172,7 @@ static void gl_set_viewport_wrapper(void *data, unsigned viewport_width,
 }
 
 extern int gViewType;
+extern struct video_viewport gViewPort;
 
 void gl_set_viewport(void *data, video_frame_info_t *video_info,
       unsigned viewport_width,
@@ -380,10 +258,12 @@ void gl_set_viewport(void *data, video_frame_info_t *video_info,
       gl->vp.y *= 2;
 #endif
 
-    if(gViewType == 0)
-        glViewport(gl->vp.x, gl->vp.y, 1280, gl->vp.height);
-    else
-        glViewport(1280, gl->vp.y, 1280, gl->vp.height);
+   glViewport(gViewPort.x, gViewPort.y, gViewPort.width, gViewPort.height);
+//    if(gViewType == 0)
+//        glViewport(gl->vp.x, gl->vp.y, 1280, gl->vp.height);
+//    else
+//        glViewport(1280, gl->vp.y, 1280, gl->vp.height);
+
    gl_set_projection(gl, &default_ortho, allow_rotate);
 
    /* Set last backbuffer viewport. */

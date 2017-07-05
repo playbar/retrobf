@@ -31,6 +31,7 @@
 #include <src/retroarch.h>
 #include <src/paths.h>
 #include <input/input_driver.h>
+#include <gfx/video_driver.h>
 
 #define LOG_TAG "TreasureHuntCPP"
 #define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
@@ -43,6 +44,7 @@
   }
 
 int gViewType = 0; // 0:left, 1:right
+video_viewport gViewPort;
 GLint frameBuffer = 0;
 
 namespace {
@@ -413,7 +415,7 @@ void TreasureHuntRenderer::InitializeGl() {
 ////    // todo set path
 //////    path_set(RARCH_PATH_CORE, "/data/user/0/com.retroarch/cores/2048_libretro_android.so");
 //    path_set(RARCH_PATH_CORE, "lib2048.so");
-//    RetroInit();
+    RetroInit(NULL, NULL);
 
 }
 
@@ -657,8 +659,11 @@ void TreasureHuntRenderer::DrawWorld(ViewType view) {
   } else {
     const gvr::BufferViewport& viewport = view == kLeftView ? viewport_left_ : viewport_right_;
     gViewType = view;
-    const gvr::Recti pixel_rect =
-        CalculatePixelSpaceRect(render_size_, viewport.GetSourceUv());
+    const gvr::Recti pixel_rect = CalculatePixelSpaceRect(render_size_, viewport.GetSourceUv());
+    gViewPort.x = pixel_rect.left;
+    gViewPort.y = pixel_rect.bottom;
+    gViewPort.width = pixel_rect.right - pixel_rect.left;
+    gViewPort.height = pixel_rect.top - pixel_rect.bottom;
     glViewport(pixel_rect.left, pixel_rect.bottom,
                pixel_rect.right - pixel_rect.left,
                pixel_rect.top - pixel_rect.bottom);

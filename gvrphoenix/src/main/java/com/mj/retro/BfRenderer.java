@@ -45,7 +45,7 @@ public class BfRenderer implements Renderer {
     }
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         nativeInitializeGl(nativePtr);
-        retroRender.retroInit();
+//        retroRender.retroInit();
     }
 
     @Override
