@@ -77,6 +77,7 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 		render = new BfRenderer(getClass().getClassLoader(), getApplicationContext(), gvrLayout.getGvrApi().getNativeGvrContext());
 //		render.onCreate();
 		retroRender.setPath("lib2048.so");
+		render.setRetroRender(retroRender);
 
 		// Add the GLSurfaceView to the GvrLayout.
 		surfaceView = new GLSurfaceView(this);

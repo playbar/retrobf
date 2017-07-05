@@ -3,7 +3,7 @@
 
 #ifdef   __cplusplus
 extern "C"{
-void RetroInit();
+void RetroInit(const char *core_path, const char *game_path);
 void RetroSurfaceChange(int width, int height);
 void RetroDrawFrame();
 }

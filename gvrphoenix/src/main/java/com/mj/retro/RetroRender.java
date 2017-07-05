@@ -21,7 +21,9 @@ public class RetroRender {
 
     public void retroInit()
     {
-        nativeRetroInit();
+        String corepath = "/data/data/com.retroarch/cores/ppsspp_libretro_android.so";
+        String gamepath = "/storage/emulated/0/apsp/sola.iso";
+        nativeRetroInit(corepath, gamepath);
     }
 
     public void dispatchMotionEvent(MotionEvent ev )
@@ -70,7 +72,7 @@ public class RetroRender {
                                                   float ltrig, float rtrig, float brake, float gas  );
     private native void nativeDispatchKeyEvent( int source, int id, int keycode, int action, int mate);
     private native void nativeSetPath(String strPath);
-    private native void nativeRetroInit();
+    private native void nativeRetroInit(String strCorepath, String strGamePath);
     private native void nativeRetroSurfaceChange(int width, int height );
     private native void nativeRetroDrawFrame( );
 

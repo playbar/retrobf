@@ -12,9 +12,14 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class BfRenderer implements Renderer {
     private long nativePtr;
+    private RetroRender retroRender;
 
     public BfRenderer(ClassLoader appClassLoader, Context context, long nativeGvrContext){
         nativePtr = nativeCreateRenderer(appClassLoader, context, nativeGvrContext);
+    }
+
+    public void setRetroRender(RetroRender render){
+        retroRender = render;
     }
 
     public void onPause()
@@ -40,6 +45,7 @@ public class BfRenderer implements Renderer {
     }
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         nativeInitializeGl(nativePtr);
+        retroRender.retroInit();
     }
 
     @Override

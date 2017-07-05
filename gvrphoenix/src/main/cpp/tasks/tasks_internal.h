@@ -161,6 +161,11 @@ bool task_push_start_content_from_cli(
         retro_task_callback_t cb,
         void *user_data);
 
+bool task_push_start_content(const char *core_path, const char *fullpath,
+                             content_ctx_info_t *content_info,
+                             enum rarch_core_type type, retro_task_callback_t cb,
+                             void *user_data);
+
 bool task_push_load_new_core(
       const char *core_path,
       const char *fullpath,

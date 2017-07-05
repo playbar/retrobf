@@ -90,16 +90,24 @@ JNI_RETRO(void, nativeSetPath)(JNIEnv *env, jclass clazz, jstring strPath)
 }
 
 
-JNI_RETRO(void,  nativeRetroInit)()
+JNI_RETRO(void,  nativeRetroInit)(JNIEnv *env, jclass clazz, jstring strCorePath, jstring strGamePath)
 {
-    RetroInit();
+    char corePath[4096];
+    char gamePath[4096];
+    const char *strCore = env->GetStringUTFChars(strCorePath, 0);
+    const char *strGame = env->GetStringUTFChars(strGamePath, 0);
+
+    RetroInit(strCore, strGame);
+    env->ReleaseStringUTFChars(strCorePath, strCore);
+    env->ReleaseStringUTFChars(strGamePath, strGame);
+    return;
 }
-JNI_RETRO(void,  nativeRetroSurfaceChange)( int width, int height )
+JNI_RETRO(void,  nativeRetroSurfaceChange)(JNIEnv *env, jclass clazz, int width, int height )
 {
     RetroSurfaceChange(width, height);
 }
 
-JNI_RETRO(void,  nativeRetroDrawFrame)()
+JNI_RETRO(void,  nativeRetroDrawFrame)(JNIEnv *env, jclass clazz)
 {
     RetroDrawFrame();
 }

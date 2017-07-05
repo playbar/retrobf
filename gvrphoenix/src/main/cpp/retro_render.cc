@@ -9,7 +9,7 @@
 #include "retro_render.h"
 
 
-void RetroInit()
+void RetroInit(const char *core_path, const char *game_path)
 {
     if (frontend_driver_is_inited())
     {
@@ -22,7 +22,7 @@ void RetroInit()
         info.args            = (void*)g_android;
         info.environ_get     = frontend_driver_environment_get_ptr();
 
-        if (!task_push_start_content_from_cli(NULL, NULL, &info, CORE_TYPE_PLAIN, NULL, NULL))
+        if (!task_push_start_content(core_path, game_path, &info, CORE_TYPE_PLAIN, NULL, NULL))
             return;
     }
 
