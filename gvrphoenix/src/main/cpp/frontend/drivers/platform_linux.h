@@ -160,11 +160,11 @@ struct android_app
     bool input_alive;
     int16_t analog_state[MAX_PADS][MAX_AXIS];
     int8_t hat_state[MAX_PADS][2];
-    jmethodID getIntent;
-    jmethodID onRetroArchExit;
-    jmethodID getStringExtra;
-    jmethodID isAndroidTV;
-    jmethodID checkRuntimePermissions;
+//    jmethodID getIntent;
+//    jmethodID onRetroArchExit;
+//    jmethodID getStringExtra;
+//    jmethodID isAndroidTV;
+//    jmethodID checkRuntimePermissions;
 
 };
 

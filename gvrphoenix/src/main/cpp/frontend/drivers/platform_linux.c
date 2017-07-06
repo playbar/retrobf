@@ -81,21 +81,21 @@ enum
 struct android_app *g_android;
 static pthread_key_t thread_key;
 
-char rom_dir[PATH_MAX_LENGTH];
-char libretro_dir[PATH_MAX_LENGTH];
-char configfile_dir[PATH_MAX_LENGTH];
-char ime_dir[PATH_MAX_LENGTH];
-char data_dir[PATH_MAX_LENGTH];
-char apk_dir[PATH_MAX_LENGTH];
-char sdcard_dir[PATH_MAX_LENGTH];
-char downloads_dir[PATH_MAX_LENGTH];
-char screenshot_dir[PATH_MAX_LENGTH];
-char external_dir[PATH_MAX_LENGTH];
-char internal_storage_path[PATH_MAX_LENGTH];
-char internal_storage_app_path[PATH_MAX_LENGTH];
+char rom_dir[PATH_MAX_LENGTH] = {0};
+char libretro_dir[PATH_MAX_LENGTH] = {0};
+char configfile_dir[PATH_MAX_LENGTH] = {0};
+char ime_dir[PATH_MAX_LENGTH] = {0};
+char data_dir[PATH_MAX_LENGTH] = {0};
+char apk_dir[PATH_MAX_LENGTH] = {0};
+char sdcard_dir[PATH_MAX_LENGTH] = {0};
+char downloads_dir[PATH_MAX_LENGTH] = {0};
+char screenshot_dir[PATH_MAX_LENGTH] = {0};
+char external_dir[PATH_MAX_LENGTH] = {0};
+char internal_storage_path[PATH_MAX_LENGTH] = {0};
+char internal_storage_app_path[PATH_MAX_LENGTH] = {0};
 
 
-static char app_dir[PATH_MAX_LENGTH];
+static char app_dir[PATH_MAX_LENGTH] = {0};
 static bool is_android_tv_device = false;
 
 extern JavaVM* gvm;
@@ -538,11 +538,6 @@ static bool device_is_game_console(const char *name)
    return false;
 }
 
-static bool device_is_android_tv()
-{
-   return is_android_tv_device;
-}
-
 bool test_permissions(const char *path)
 {
    bool ret = false;
@@ -689,212 +684,46 @@ static void frontend_linux_get_env(int *argc, char *argv[], void *data, void *pa
 
    __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV] Android version (major : %d, minor : %d, rel : %d)\n", major, minor, rel);
 
-   CALL_OBJ_METHOD(env, obj, android_app->clazz, android_app->getIntent);
-   __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV] Checking arguments passed from intent ...\n");
+//   CALL_OBJ_METHOD(env, obj, android_app->clazz, android_app->getIntent);
+//   __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV] Checking arguments passed from intent ...\n");
 
-   /* Config file. */
-   CALL_OBJ_METHOD_PARAM(env, jstr, obj, android_app->getStringExtra, (*env)->NewStringUTF(env, "CONFIGFILE"));
+    if (args)
+        args->config_path = configfile_dir;
 
-   if (android_app->getStringExtra && jstr)
-   {
-      static char config_path[PATH_MAX_LENGTH] = {0};
-      const char *argv = (*env)->GetStringUTFChars(env, jstr, 0);
+    strlcpy(android_app->current_ime, ime_dir, sizeof(android_app->current_ime));
 
-      if (argv && *argv)
-         strlcpy(config_path, argv, sizeof(config_path));
-      (*env)->ReleaseStringUTFChars(env, jstr, argv);
+    if (args)
+        args->libretro_path = libretro_dir;
 
-      __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: config file: [%s]\n", config_path);
-      if (args && *config_path)
-         args->config_path = config_path;
-   }
+    if (args && *rom_dir )
+        args->content_path = rom_dir;
 
-   /* Current IME. */
-   CALL_OBJ_METHOD_PARAM(env, jstr, obj, android_app->getStringExtra, (*env)->NewStringUTF(env, "IME"));
+    strlcpy(internal_storage_path, sdcard_dir, sizeof(internal_storage_path));
 
-   if (android_app->getStringExtra && jstr)
-   {
-      const char *argv = (*env)->GetStringUTFChars(env, jstr, 0);
+    strlcpy(internal_storage_app_path, external_dir, sizeof(internal_storage_app_path));
 
-      strlcpy(android_app->current_ime, argv, sizeof(android_app->current_ime));
-      (*env)->ReleaseStringUTFChars(env, jstr, argv);
+    int perms = 0;
+    *app_dir = '\0';
+    strlcpy(app_dir, data_dir, sizeof(app_dir));
 
-      __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: current IME: [%s]\n", android_app->current_ime);
-   }
-
-   CALL_OBJ_METHOD_PARAM(env, jstr, obj, android_app->getStringExtra, (*env)->NewStringUTF(env, "USED"));
-
-   if (android_app->getStringExtra && jstr)
-   {
-      const char *argv = (*env)->GetStringUTFChars(env, jstr, 0);
-      bool used = string_is_equal_fast(argv, "false", 5) ? false : true;
-
-      (*env)->ReleaseStringUTFChars(env, jstr, argv);
-
-      __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: used: [%s].\n", used ? "true" : "false");
-   }
-
-   /* LIBRETRO. */
-   CALL_OBJ_METHOD_PARAM(env, jstr, obj, android_app->getStringExtra, (*env)->NewStringUTF(env, "LIBRETRO"));
-
-   if (android_app->getStringExtra && jstr)
-   {
-      static char core_path[PATH_MAX_LENGTH];
-      const char *argv = (*env)->GetStringUTFChars(env, jstr, 0);
-
-      *core_path = '\0';
-      if (argv && *argv)
-         strlcpy(core_path, argv, sizeof(core_path));
-      (*env)->ReleaseStringUTFChars(env, jstr, argv);
-
-      __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: libretro path: [%s]\n", core_path);
-      if (args && *core_path)
-         args->libretro_path = core_path;
-   }
-
-   /* Content. */
-   CALL_OBJ_METHOD_PARAM(env, jstr, obj, android_app->getStringExtra, (*env)->NewStringUTF(env, "ROM"));
-
-   if (android_app->getStringExtra && jstr)
-   {
-      static char path[PATH_MAX_LENGTH];
-      const char *argv = (*env)->GetStringUTFChars(env, jstr, 0);
-
-      *path = '\0';
-
-      if (argv && *argv)
-         strlcpy(path, argv, sizeof(path));
-      (*env)->ReleaseStringUTFChars(env, jstr, argv);
-
-      if (!string_is_empty(path))
-      {
-         __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: auto-start game [%s]\n", path);
-         if (args && *path)
-            args->content_path = path;
-      }
-   }
-
-   /* Internal Storage */
-   CALL_OBJ_METHOD_PARAM(env, jstr, obj, android_app->getStringExtra, (*env)->NewStringUTF(env, "SDCARD"));
-
-   if (android_app->getStringExtra && jstr)
-   {
-      const char *argv = (*env)->GetStringUTFChars(env, jstr, 0);
-      internal_storage_path[0] = '\0';
-      if (argv && *argv)
-         strlcpy(internal_storage_path, argv, sizeof(internal_storage_path));
-
-      (*env)->ReleaseStringUTFChars(env, jstr, argv);
-      if (!string_is_empty(internal_storage_path))
-      {
-         __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: android internal storage location: [%s]\n", internal_storage_path);
-      }
-   }
-
-   /* Screenshots */
-   CALL_OBJ_METHOD_PARAM(env, jstr, obj, android_app->getStringExtra, (*env)->NewStringUTF(env, "SCREENSHOTS"));
-
-   if (android_app->getStringExtra && jstr)
-   {
-      const char *argv = (*env)->GetStringUTFChars(env, jstr, 0);
-      *screenshot_dir = '\0';
-      if (argv && *argv)
-         strlcpy(screenshot_dir, argv, sizeof(screenshot_dir));
-      (*env)->ReleaseStringUTFChars(env, jstr, argv);
-
-      if (!string_is_empty(screenshot_dir))
-      {
-         __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: android picture folder location [%s]\n", screenshot_dir);
-      }
-   }
-
-   /* Downloads */
-   CALL_OBJ_METHOD_PARAM(env, jstr, obj, android_app->getStringExtra, (*env)->NewStringUTF(env, "DOWNLOADS"));
-
-   if (android_app->getStringExtra && jstr)
-   {
-      const char *argv = (*env)->GetStringUTFChars(env, jstr, 0);
-      *downloads_dir = '\0';
-      if (argv && *argv)
-         strlcpy(downloads_dir, argv, sizeof(downloads_dir));
-      (*env)->ReleaseStringUTFChars(env, jstr, argv);
-
-      if (!string_is_empty(downloads_dir))
-      {
-         __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: android download folder location [%s]\n", downloads_dir);
-      }
-   }
-
-   CALL_OBJ_METHOD_PARAM(env, jstr, obj, android_app->getStringExtra, (*env)->NewStringUTF(env, "APK"));
-
-   if (android_app->getStringExtra && jstr)
-   {
-      const char *argv = (*env)->GetStringUTFChars(env, jstr, 0);
-      *apk_dir = '\0';
-      if (argv && *argv)
-         strlcpy(apk_dir, argv, sizeof(apk_dir));
-      (*env)->ReleaseStringUTFChars(env, jstr, argv);
-
-      if (!string_is_empty(apk_dir))
-      {
-         __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: APK location [%s]\n", apk_dir);
-      }
-   }
-
-   CALL_OBJ_METHOD_PARAM(env, jstr, obj, android_app->getStringExtra, (*env)->NewStringUTF(env, "EXTERNAL"));
-
-   if (android_app->getStringExtra && jstr)
-   {
-      const char *argv = (*env)->GetStringUTFChars(env, jstr, 0);
-      *internal_storage_app_path = '\0';
-      if (argv && *argv)
-         strlcpy(internal_storage_app_path, argv, sizeof(internal_storage_app_path));
-      (*env)->ReleaseStringUTFChars(env, jstr, argv);
-      if (!string_is_empty(internal_storage_app_path))
-      {
-         __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: android external files location [%s]\n", internal_storage_app_path);
-      }
-   }
-
-   /* Content. */
-   CALL_OBJ_METHOD_PARAM(env, jstr, obj, android_app->getStringExtra, (*env)->NewStringUTF(env, "DATADIR"));
-
-   if (android_app->getStringExtra && jstr)
-   {
-      int perms = 0;
-      const char *argv = (*env)->GetStringUTFChars(env, jstr, 0);
-      *app_dir = '\0';
-      if (argv && *argv)
-         strlcpy(app_dir, argv, sizeof(app_dir));
-      (*env)->ReleaseStringUTFChars(env, jstr, argv);
-
-      __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: app dir: [%s]\n", app_dir);
-
-      /* Check for runtime permissions on Android 6.0+ */
-      if (env && android_app->checkRuntimePermissions)
-         CALL_VOID_METHOD(env, android_app->clazz, android_app->checkRuntimePermissions);
-
-      /* set paths depending on the ability to write
-       * to internal_storage_path */
-
-      if(!string_is_empty(internal_storage_path))
-      {
-         if(test_permissions(internal_storage_path))
+    if(!string_is_empty(internal_storage_path))
+    {
+        if(test_permissions(internal_storage_path))
             perms = INTERNAL_STORAGE_WRITABLE;
-      }
-      else if(!string_is_empty(internal_storage_app_path))
-      {
-         if(test_permissions(internal_storage_app_path))
+    }
+    else if(!string_is_empty(internal_storage_app_path))
+    {
+        if(test_permissions(internal_storage_app_path))
             perms = INTERNAL_STORAGE_APPDIR_WRITABLE;
-      }
-      else
-         perms = INTERNAL_STORAGE_NOT_WRITABLE;
+    }
+    else
+        perms = INTERNAL_STORAGE_NOT_WRITABLE;
 
-      if (!string_is_empty(app_dir))
-      {
-         __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: application location: [%s]\n", app_dir);
-         if (args && *app_dir)
-         {
+    if (!string_is_empty(app_dir))
+    {
+        __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: application location: [%s]\n", app_dir);
+        if (args && *app_dir)
+        {
             fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_ASSETS], app_dir, "assets", sizeof(g_defaults.dirs[DEFAULT_DIR_ASSETS]));
             fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_CACHE], app_dir, "tmp", sizeof(g_defaults.dirs[DEFAULT_DIR_CACHE]));
             fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SHADER], app_dir, "shaders", sizeof(g_defaults.dirs[DEFAULT_DIR_SHADER]));
@@ -910,91 +739,90 @@ static void frontend_linux_get_env(int *argc, char *argv[], void *data, void *pa
             fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_WALLPAPERS], app_dir, "assets/wallpapers", sizeof(g_defaults.dirs[DEFAULT_DIR_WALLPAPERS]));
             if(!string_is_empty(downloads_dir) && test_permissions(downloads_dir))
             {
-               fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_CORE_ASSETS], downloads_dir, "", sizeof(g_defaults.dirs[DEFAULT_DIR_CORE_ASSETS]));
+                fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_CORE_ASSETS], downloads_dir, "", sizeof(g_defaults.dirs[DEFAULT_DIR_CORE_ASSETS]));
             }
             else
             {
-               fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_CORE_ASSETS], app_dir, "downloads", sizeof(g_defaults.dirs[DEFAULT_DIR_CORE_ASSETS]));
+                fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_CORE_ASSETS], app_dir, "downloads", sizeof(g_defaults.dirs[DEFAULT_DIR_CORE_ASSETS]));
             }
 
             __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: default download folder: [%s]", g_defaults.dirs[DEFAULT_DIR_CORE_ASSETS]);
 
             switch (perms)
             {
-               /* Set defaults for this since we can't guarantee
-                * saving on content dir will work in this case */
-               case INTERNAL_STORAGE_APPDIR_WRITABLE:
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SRAM], internal_storage_app_path, "saves", sizeof(g_defaults.dirs[DEFAULT_DIR_SRAM]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SAVESTATE], internal_storage_app_path, "states", sizeof(g_defaults.dirs[DEFAULT_DIR_SAVESTATE]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SYSTEM], internal_storage_app_path, "system", sizeof(g_defaults.dirs[DEFAULT_DIR_SYSTEM]));
+                /* Set defaults for this since we can't guarantee
+                 * saving on content dir will work in this case */
+                case INTERNAL_STORAGE_APPDIR_WRITABLE:
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SRAM], internal_storage_app_path, "saves", sizeof(g_defaults.dirs[DEFAULT_DIR_SRAM]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SAVESTATE], internal_storage_app_path, "states", sizeof(g_defaults.dirs[DEFAULT_DIR_SAVESTATE]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SYSTEM], internal_storage_app_path, "system", sizeof(g_defaults.dirs[DEFAULT_DIR_SYSTEM]));
 
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG], internal_storage_app_path, "config", sizeof(g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_REMAP], g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG], "remaps", sizeof(g_defaults.dirs[DEFAULT_DIR_REMAP]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS], internal_storage_app_path, "thumbnails", sizeof(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_PLAYLIST], internal_storage_app_path, "playlists", sizeof(g_defaults.dirs[DEFAULT_DIR_PLAYLIST]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_CHEATS], internal_storage_app_path, "cheats", sizeof(g_defaults.dirs[DEFAULT_DIR_CHEATS]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG], internal_storage_app_path, "config", sizeof(g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_REMAP], g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG], "remaps", sizeof(g_defaults.dirs[DEFAULT_DIR_REMAP]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS], internal_storage_app_path, "thumbnails", sizeof(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_PLAYLIST], internal_storage_app_path, "playlists", sizeof(g_defaults.dirs[DEFAULT_DIR_PLAYLIST]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_CHEATS], internal_storage_app_path, "cheats", sizeof(g_defaults.dirs[DEFAULT_DIR_CHEATS]));
 
-                  if(!string_is_empty(screenshot_dir) && test_permissions(screenshot_dir))
-                  {
-                     fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT], screenshot_dir, "", sizeof(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT]));
-                  }
-                  else
-                  {
-                     fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT], internal_storage_app_path, "screenshots", sizeof(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT]));
-                  }
+                    if(!string_is_empty(screenshot_dir) && test_permissions(screenshot_dir))
+                    {
+                        fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT], screenshot_dir, "", sizeof(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT]));
+                    }
+                    else
+                    {
+                        fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT], internal_storage_app_path, "screenshots", sizeof(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT]));
+                    }
 
-                  break;
-               case INTERNAL_STORAGE_NOT_WRITABLE:
-                  /* Set defaults for this since we can't guarantee
-                   * saving on content dir will work in this case. */
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SRAM], app_dir, "saves", sizeof(g_defaults.dirs[DEFAULT_DIR_SRAM]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SAVESTATE], app_dir, "states", sizeof(g_defaults.dirs[DEFAULT_DIR_SAVESTATE]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SYSTEM], app_dir, "system", sizeof(g_defaults.dirs[DEFAULT_DIR_SYSTEM]));
+                    break;
+                case INTERNAL_STORAGE_NOT_WRITABLE:
+                    /* Set defaults for this since we can't guarantee
+                     * saving on content dir will work in this case. */
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SRAM], app_dir, "saves", sizeof(g_defaults.dirs[DEFAULT_DIR_SRAM]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SAVESTATE], app_dir, "states", sizeof(g_defaults.dirs[DEFAULT_DIR_SAVESTATE]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SYSTEM], app_dir, "system", sizeof(g_defaults.dirs[DEFAULT_DIR_SYSTEM]));
 
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG], app_dir, "config", sizeof(g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_REMAP], g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG], "remaps", sizeof(g_defaults.dirs[DEFAULT_DIR_REMAP]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS], app_dir, "thumbnails", sizeof(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_PLAYLIST], app_dir, "playlists", sizeof(g_defaults.dirs[DEFAULT_DIR_PLAYLIST]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_CHEATS], app_dir, "cheats", sizeof(g_defaults.dirs[DEFAULT_DIR_CHEATS]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG], app_dir, "config", sizeof(g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_REMAP], g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG], "remaps", sizeof(g_defaults.dirs[DEFAULT_DIR_REMAP]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS], app_dir, "thumbnails", sizeof(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_PLAYLIST], app_dir, "playlists", sizeof(g_defaults.dirs[DEFAULT_DIR_PLAYLIST]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_CHEATS], app_dir, "cheats", sizeof(g_defaults.dirs[DEFAULT_DIR_CHEATS]));
 
-                  if(!string_is_empty(screenshot_dir) && test_permissions(screenshot_dir))
-                  {
-                     fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT], screenshot_dir, "", sizeof(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT]));
-                  }
-                  else
-                  {
-                     fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT], app_dir, "screenshots", sizeof(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT]));
-                  }
+                    if(!string_is_empty(screenshot_dir) && test_permissions(screenshot_dir))
+                    {
+                        fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT], screenshot_dir, "", sizeof(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT]));
+                    }
+                    else
+                    {
+                        fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT], app_dir, "screenshots", sizeof(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT]));
+                    }
 
-                  break;
-               case INTERNAL_STORAGE_WRITABLE:
-                  /* Don't set defaults for saves, states, system or screenshots
-                     in this case to be able to honour saving on content dir */
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG], internal_storage_path, "RetroArch/config", sizeof(g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_REMAP], g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG], "remaps", sizeof(g_defaults.dirs[DEFAULT_DIR_REMAP]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS], internal_storage_path, "RetroArch/thumbnails", sizeof(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_PLAYLIST], internal_storage_path, "RetroArch/playlists", sizeof(g_defaults.dirs[DEFAULT_DIR_PLAYLIST]));
-                  fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_CHEATS], internal_storage_path, "RetroArch/cheats", sizeof(g_defaults.dirs[DEFAULT_DIR_CHEATS]));
-               default:
-                  break;
+                    break;
+                case INTERNAL_STORAGE_WRITABLE:
+                    /* Don't set defaults for saves, states, system or screenshots
+                       in this case to be able to honour saving on content dir */
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG], internal_storage_path, "RetroArch/config", sizeof(g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_REMAP], g_defaults.dirs[DEFAULT_DIR_MENU_CONFIG], "remaps", sizeof(g_defaults.dirs[DEFAULT_DIR_REMAP]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS], internal_storage_path, "RetroArch/thumbnails", sizeof(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_PLAYLIST], internal_storage_path, "RetroArch/playlists", sizeof(g_defaults.dirs[DEFAULT_DIR_PLAYLIST]));
+                    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_CHEATS], internal_storage_path, "RetroArch/cheats", sizeof(g_defaults.dirs[DEFAULT_DIR_CHEATS]));
+                default:
+                    break;
             }
 
             __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: default savefile folder: [%s]", g_defaults.dirs[DEFAULT_DIR_SRAM]);
             __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: default savestate folder: [%s]", g_defaults.dirs[DEFAULT_DIR_SAVESTATE]);
             __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: default system folder: [%s]", g_defaults.dirs[DEFAULT_DIR_SYSTEM]);
             __android_log_print(ANDROID_LOG_INFO, "RetroArch", "[ENV]: default screenshot folder: [%s]", g_defaults.dirs[DEFAULT_DIR_SCREENSHOT]);
-         }
-      }
-   }
+        }
+    }
 
-   /* Check if we are an Android TV device */
-   if (env && android_app->isAndroidTV)
-   {
-      CALL_BOOLEAN_METHOD(env, jbool, android_app->clazz, android_app->isAndroidTV);
-
-      if (jbool != JNI_FALSE)
-         is_android_tv_device = true;
-   }
+//   /* Check if we are an Android TV device */
+//   if (env && android_app->isAndroidTV)
+//   {
+//      CALL_BOOLEAN_METHOD(env, jbool, android_app->clazz, android_app->isAndroidTV);
+//
+//      if (jbool != JNI_FALSE)
+//         is_android_tv_device = true;
+//   }
 
    frontend_android_get_name(device_model, sizeof(device_model));
    system_property_get("getprop", "ro.product.id", device_id);
@@ -1018,7 +846,7 @@ static void frontend_linux_get_env(int *argc, char *argv[], void *data, void *pa
       g_defaults.settings.video_refresh_rate = 59.65;
 
 
-   if (device_is_game_console(device_model) || device_is_android_tv())
+   if (device_is_game_console(device_model))
    {
       g_defaults.overlay.set    = true;
       g_defaults.overlay.enable = false;
@@ -1059,8 +887,8 @@ static void android_app_destroy(struct android_app *android_app)
    free_saved_state(android_app);
    slock_lock(android_app->mutex);
    env = jni_thread_getenv();
-   if (env && android_app->onRetroArchExit)
-      CALL_VOID_METHOD(env, android_app->clazz, android_app->onRetroArchExit);
+//   if (env && android_app->onRetroArchExit)
+//      CALL_VOID_METHOD(env, android_app->clazz, android_app->onRetroArchExit);
 
    if (android_app->inputQueue)
       AInputQueue_detachLooper(android_app->inputQueue);
@@ -1129,14 +957,13 @@ static void frontend_linux_init(void *data)
 //   GET_OBJECT_CLASS(env, class, android_app->clazz);
 //    GET_METHOD_ID(env, android_app->getIntent, clazz, "getIntent", "()Landroid/content/Intent;");
     clazz = (*env)->GetObjectClass(env, android_app->clazz);
-    android_app->getIntent = (*env)->GetMethodID(env, clazz, "getIntent", "()Landroid/content/Intent;");
-   GET_METHOD_ID(env, android_app->onRetroArchExit, clazz, "onRetroArchExit", "()V");
-   GET_METHOD_ID(env, android_app->isAndroidTV, clazz, "isAndroidTV", "()Z");
-   GET_METHOD_ID(env, android_app->checkRuntimePermissions, clazz, "checkRuntimePermissions", "()V");
-   CALL_OBJ_METHOD(env, obj, android_app->clazz, android_app->getIntent);
+//    android_app->getIntent = (*env)->GetMethodID(env, clazz, "getIntent", "()Landroid/content/Intent;");
+//   GET_METHOD_ID(env, android_app->onRetroArchExit, clazz, "onRetroArchExit", "()V");
+//   GET_METHOD_ID(env, android_app->checkRuntimePermissions, clazz, "checkRuntimePermissions", "()V");
+//   CALL_OBJ_METHOD(env, obj, android_app->clazz, android_app->getIntent);
 
-   GET_OBJECT_CLASS(env, clazz, obj);
-   GET_METHOD_ID(env, android_app->getStringExtra, clazz, "getStringExtra", "(Ljava/lang/String;)Ljava/lang/String;");
+//   GET_OBJECT_CLASS(env, clazz, obj);
+//   GET_METHOD_ID(env, android_app->getStringExtra, clazz, "getStringExtra", "(Ljava/lang/String;)Ljava/lang/String;");
 
 }
 
