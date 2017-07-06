@@ -1453,60 +1453,32 @@ bool task_push_load_content_with_new_core_from_companion_ui(
    return true;
 }
 
-bool task_push_start_content_from_cli(const char *core_path, const char *fullpath,
-                                      content_ctx_info_t *content_info,
-                                      enum rarch_core_type type, retro_task_callback_t cb,
-                                      void *user_data)
-{
-   /* Load content */
-//   if (!task_load_content_callback(content_info, true, true))
-//      return false;
-
-//   if (!task_push_start_current_core(content_info))
-//      return false;
-
-   if( !content_load(content_info))
-      return false;
-
-   const char* path = "/storage/emulated/0/apsp/sola.iso";
-   const char* new_core_path = "/data/data/com.retroarch/cores/ppsspp_libretro_android.so";
-   content_ctx_info_t ctinfo;
-   ctinfo.argc                   = 0;
-   ctinfo.argv                   = NULL;
-   ctinfo.args                   = NULL;
-   ctinfo.environ_get            = NULL;
-   if (!task_push_load_content_from_playlist_from_menu(new_core_path, path, content_info, NULL, NULL))
-      return false;
-
-   return true;
-}
-
 bool task_push_start_content(const char *core_path, const char *fullpath,
                                       content_ctx_info_t *content_info,
                                       enum rarch_core_type type, retro_task_callback_t cb,
                                       void *user_data)
 {
     /* Load content */
-   if (!task_load_content_callback(content_info, true, true))
-      return false;
+//   if (!task_load_content_callback(content_info, true, true))
+//      return false;
 
 //   if (!task_push_start_current_core(content_info))
 //      return false;
 
-//    if( !content_load(content_info))
-//        return false;
+    if( !content_load(content_info))
+        return false;
 //
-////   core_path = "/data/data/com.retroarch/lib/ppsspp_libretro_android.so";
-//   core_path = "libppsspp.so";
-//   fullpath = "/storage/emulated/0/apsp/9000715.iso";
+//   core_path = "/data/data/com.retroarch/lib/ppsspp_libretro_android.so";
+   core_path = "libppsspp.so";
+   fullpath = "/storage/emulated/0/apsp/9000715.iso";
 //
-//    content_ctx_info_t ctinfo;
-//    ctinfo.argc                   = 0;
-//    ctinfo.argv                   = NULL;
-//    ctinfo.args                   = NULL;
-//    ctinfo.environ_get            = NULL;
-//    if (!task_push_load_content_from_playlist_from_menu(core_path, fullpath, &ctinfo, NULL, NULL))
-//        return false;
+    content_ctx_info_t ctinfo;
+    ctinfo.argc                   = 0;
+    ctinfo.argv                   = NULL;
+    ctinfo.args                   = NULL;
+    ctinfo.environ_get            = NULL;
+    if (!task_push_load_content_from_playlist_from_menu(core_path, fullpath, &ctinfo, NULL, NULL))
+        return false;
 
     return true;
 }

@@ -18,6 +18,7 @@
 
 #include <memory>
 #include <src/paths.h>
+#include <frontend/drivers/platform_linux.h>
 
 #include "treasure_hunt_renderer.h"  // NOLINT
 #include "gvr.h"
@@ -59,12 +60,60 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved){
 }
 
 
-JNI_RETRO(void, nativeOnCreate)(JNIEnv *env, jobject obj, jobject ctx)
+void Java_com_mj_retro_RetroActivityFuture_nativeOnCreate(JNIEnv *env, jobject obj, jstring strROM, jstring strLIBRETRO, jstring strCONFIGFILE,
+                                                          jstring strIME, jstring strDATADIR, jstring strAPK, jstring strSDCARD,
+                                                          jstring strDOWNLOADS, jstring strSCREENSHOTS, jstring strEXTERNAL)
 {
-    jclass claz = env->GetObjectClass(ctx);
-    jmethodID getIntent = env->GetMethodID(claz, "getIntent", "()Landroid/content/Intent;");
-    jobject gobj = env->NewGlobalRef( ctx );
-    android_app_oncreate(gobj );
+//    jclass claz = env->GetObjectClass(ctx);
+//    jmethodID getIntent = env->GetMethodID(claz, "getIntent", "()Landroid/content/Intent;");
+
+    if( strROM != NULL)
+    {
+        const char *chrom = env->GetStringUTFChars(strROM, 0 );
+        memcpy(rom_dir, chrom, sizeof(rom_dir));
+        env->ReleaseStringUTFChars(strROM, chrom);
+    }
+
+    const char *chlibretro = env->GetStringUTFChars(strLIBRETRO, 0);
+    memcpy(libretro_dir, chlibretro, sizeof( libretro_dir));
+    env->ReleaseStringUTFChars(strLIBRETRO, chlibretro);
+
+    const char *chconfigfile = env->GetStringUTFChars(strCONFIGFILE, 0);
+    memcpy(configfile_dir, chconfigfile, sizeof(configfile_dir));
+    env->ReleaseStringUTFChars(strCONFIGFILE, chconfigfile);
+
+    const char *chime = env->GetStringUTFChars(strIME, 0);
+    memcpy(ime_dir, chime, sizeof( ime_dir));
+    env->ReleaseStringUTFChars(strIME, chime);
+
+    const char *chdatadir = env->GetStringUTFChars(strDATADIR, 0);
+    memcpy( data_dir, chdatadir, sizeof(data_dir));
+    env->ReleaseStringUTFChars(strDATADIR, chdatadir);
+
+    const char *chapk = env->GetStringUTFChars(strAPK, 0 );
+    memcpy(apk_dir, chapk, sizeof(apk_dir));
+    env->ReleaseStringUTFChars(strAPK, chapk);
+
+    const char *chsdcard = env->GetStringUTFChars(strSDCARD, 0);
+    memcpy(sdcard_dir, chsdcard, sizeof(sdcard_dir));
+    env->ReleaseStringUTFChars(strSDCARD, chsdcard);
+
+    const char *chdownload = env->GetStringUTFChars(strDOWNLOADS, 0);
+    memcpy(downloads_dir, chdownload, sizeof(downloads_dir));
+    env->ReleaseStringUTFChars(strDOWNLOADS, chdownload);
+
+    const char *chscreenshot = env->GetStringUTFChars(strSCREENSHOTS, 0);
+    memcpy(screenshot_dir, chscreenshot, sizeof(screenshot_dir));
+    env->ReleaseStringUTFChars(strSCREENSHOTS, chscreenshot);
+
+    const char *chexternal = env->GetStringUTFChars(strEXTERNAL, 0);
+    memcpy(external_dir, chexternal, sizeof(external_dir));
+    env->ReleaseStringUTFChars(strEXTERNAL, chexternal);
+
+    jobject gobj = env->NewGlobalRef( obj );
+    android_app_oncreate( gobj);
+    return;
+
 }
 
 JNI_RETRO(void, nativeDispatchMotionEvent)(JNIEnv *env, jobject obj, int source, int id,

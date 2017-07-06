@@ -80,11 +80,21 @@ enum
 
 struct android_app *g_android;
 static pthread_key_t thread_key;
+
+char rom_dir[PATH_MAX_LENGTH];
+char libretro_dir[PATH_MAX_LENGTH];
+char configfile_dir[PATH_MAX_LENGTH];
+char ime_dir[PATH_MAX_LENGTH];
+char data_dir[PATH_MAX_LENGTH];
+char apk_dir[PATH_MAX_LENGTH];
+char sdcard_dir[PATH_MAX_LENGTH];
+char downloads_dir[PATH_MAX_LENGTH];
+char screenshot_dir[PATH_MAX_LENGTH];
+char external_dir[PATH_MAX_LENGTH];
 char internal_storage_path[PATH_MAX_LENGTH];
 char internal_storage_app_path[PATH_MAX_LENGTH];
-static char screenshot_dir[PATH_MAX_LENGTH];
-static char downloads_dir[PATH_MAX_LENGTH];
-static char apk_dir[PATH_MAX_LENGTH];
+
+
 static char app_dir[PATH_MAX_LENGTH];
 static bool is_android_tv_device = false;
 
@@ -382,7 +392,12 @@ void android_app_oncreate(jobject clazz )
     }
     android_app->msgread  = msgpipe[0];
     android_app->msgwrite = msgpipe[1];
-    android_app->thread   = sthread_create(android_app_entry, android_app);
+//    android_app->thread   = sthread_create(android_app_entry, android_app);
+
+    char arguments[]  = "retroarch";
+    char *argv[] = {arguments,   NULL};
+    int argc = 1;
+    rarch_main(argc, argv, android_app);
 
     /* Wait for thread to start. */
     slock_lock(android_app->mutex);

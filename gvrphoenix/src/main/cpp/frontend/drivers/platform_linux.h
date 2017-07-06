@@ -46,6 +46,16 @@
 
 bool test_permissions(const char *path);
 
+extern char rom_dir[PATH_MAX_LENGTH];
+extern char libretro_dir[PATH_MAX_LENGTH];
+extern char configfile_dir[PATH_MAX_LENGTH];
+extern char ime_dir[PATH_MAX_LENGTH];
+extern char data_dir[PATH_MAX_LENGTH];
+extern char apk_dir[PATH_MAX_LENGTH];
+extern char sdcard_dir[PATH_MAX_LENGTH];
+extern char downloads_dir[PATH_MAX_LENGTH];
+extern char screenshot_dir[PATH_MAX_LENGTH];
+extern char external_dir[PATH_MAX_LENGTH];
 extern char internal_storage_path[PATH_MAX_LENGTH];
 extern char internal_storage_app_path[PATH_MAX_LENGTH];
 

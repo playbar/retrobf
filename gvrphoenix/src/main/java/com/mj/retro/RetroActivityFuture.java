@@ -1,8 +1,12 @@
 package com.mj.retro;
 
+import android.content.SharedPreferences;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -59,6 +63,21 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		UserPreferences.updateConfigFile(this);
+		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		nativeOnCreate(null,
+				prefs.getString("libretro_path", getApplicationInfo().dataDir + "/cores/"),
+				UserPreferences.getDefaultConfigPath(this),
+				Settings.Secure.getString(getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD),
+				getApplicationInfo().dataDir,
+				getApplicationInfo().sourceDir,
+				Environment.getExternalStorageDirectory().getAbsolutePath(),
+				Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath(),
+				Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath(),
+				Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.retroarch/files");
+
+		checkRuntimePermissions();
+
 		retroRender = new RetroRender(this);
 		// Ensure fullscreen immersion.
 		setImmersiveSticky();
@@ -76,7 +95,7 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 		gvrLayout = new GvrLayout(this);
 		render = new BfRenderer(getClass().getClassLoader(), getApplicationContext(), gvrLayout.getGvrApi().getNativeGvrContext());
 //		render.onCreate();
-		retroRender.setPath("lib2048.so");
+//		retroRender.setPath("lib2048.so");
 		render.setRetroRender(retroRender);
 
 		// Add the GLSurfaceView to the GvrLayout.
@@ -276,5 +295,8 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 								| View.SYSTEM_UI_FLAG_FULLSCREEN
 								| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 	}
+
+	private native void nativeOnCreate(String strROM, String strLIBRETRO, String strCONFIGFILE, String strIME, String strDATADIR,
+									   String strAPK, String strSDCARD, String strDOWNLOADS, String strSCREENSHOTS, String strEXTERNAL);
 
 }

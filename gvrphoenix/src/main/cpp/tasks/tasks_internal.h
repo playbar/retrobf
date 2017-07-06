@@ -153,14 +153,6 @@ bool task_push_load_content_with_current_core_from_companion_ui(
       retro_task_callback_t cb,
       void *user_data);
 
-bool task_push_start_content_from_cli(
-        const char *core_path,
-        const char *fullpath,
-        content_ctx_info_t *content_info,
-        enum rarch_core_type type,
-        retro_task_callback_t cb,
-        void *user_data);
-
 bool task_push_start_content(const char *core_path, const char *fullpath,
                              content_ctx_info_t *content_info,
                              enum rarch_core_type type, retro_task_callback_t cb,
