@@ -136,8 +136,8 @@ void egl_set_swap_interval(egl_ctx_data_t *egl, unsigned interval)
 
 void egl_get_video_size(egl_ctx_data_t *egl, unsigned *width, unsigned *height)
 {
-   *width  = 2560;
-   *height = 1440;
+   *width  = 1124;
+   *height = 1381;
 
 }
 

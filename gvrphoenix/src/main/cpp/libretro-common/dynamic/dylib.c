@@ -52,18 +52,21 @@ int is_file_exist(const char *file_path)
  **/
 dylib_t dylib_load(const char *path)
 {
-//   FILE *pFile = fopen(path, "rb");
-//   FILE *pOut = fopen("/sdcard/2048_libretro_android.so","wb");
-//   char tmp[1024] = {0};
-//   while( true){
-//      int len = fread(tmp, 1, 1024, pFile);
-//      if( len <= 0 ){
-//         break;
-//      }
-//      fwrite(tmp, 1, len, pOut );
-//   }
-//   fclose(pFile);
-//   fclose(pOut);
+   FILE *pFile = fopen(path, "rb");
+   FILE *pOut = fopen("/sdcard/ppsspp_libretro_android.so","wb");
+    if( pFile != NULL && pOut != NULL)
+    {
+        char tmp[1024] = {0};
+        while (true) {
+            int len = fread(tmp, 1, 1024, pFile);
+            if (len <= 0) {
+                break;
+            }
+            fwrite(tmp, 1, len, pOut);
+        }
+        fclose(pFile);
+        fclose(pOut);
+    }
 
    bool b = is_file_exist(path);
    ////

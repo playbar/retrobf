@@ -45,7 +45,6 @@ add_library(gvrretro SHARED
             ${LIBRETRO_COMM_DIR}/audio/conversion/s16_to_float_neon.S
             ${LIBRETRO_COMM_DIR}/audio/conversion/float_to_s16_neon.S
             ${LIBRETRO_COMM_DIR}/audio/resampler/drivers/sinc_resampler_neon.S
-            ${RARCH_DIR}/audio/drivers_resampler/cc_resampler_neon.S
                 ${RARCH_DIR}/src/verbosity.c
                 ${RARCH_DIR}/libretro-common/file/archive_file.c
                 ${RARCH_DIR}/libretro-common/file/archive_file_zlib.c

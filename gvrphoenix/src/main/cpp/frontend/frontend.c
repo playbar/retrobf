@@ -106,7 +106,7 @@ int rarch_main(int argc, char *argv[], void *data)
 
 //    todo set path
 //    path_set(RARCH_PATH_CORE, "/data/user/0/com.retroarch/cores/2048_libretro_android.so");
-   path_set(RARCH_PATH_CORE, "lib2048.so");
+//   path_set(RARCH_PATH_CORE, "lib2048.so");
 
 //    while(true) {
 //        input_poll();
