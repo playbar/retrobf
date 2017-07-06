@@ -363,7 +363,7 @@ static void android_app_entry(void *data)
 }
 
 
-void android_app_oncreate(jobject clazz )
+void android_app_oncreate( )
 {
     int msgpipe[2];
     struct android_app *android_app = (struct android_app*)calloc(1, sizeof(*android_app));
@@ -373,7 +373,7 @@ void android_app_oncreate(jobject clazz )
         RARCH_ERR("Failed to initialize android_app\n");
         return;
     }
-    android_app->clazz = clazz;
+//    android_app->clazz = clazz;
     android_app->mutex    = slock_new();
     android_app->cond     = scond_new();
 //   if (savedState != NULL)
@@ -912,10 +912,10 @@ static void frontend_linux_deinit(void *data)
 
 static void frontend_linux_init(void *data)
 {
-   JNIEnv *env = NULL;
+//   JNIEnv *env = NULL;
    ALooper *looper = NULL;
-   jclass clazz = NULL;
-   jobject obj = NULL;
+//   jclass clazz = NULL;
+//   jobject obj = NULL;
    struct android_app* android_app = (struct android_app*)data;
 
    if (!android_app)
@@ -950,13 +950,13 @@ static void frontend_linux_init(void *data)
 
    RARCH_LOG("Android Native Window initialized.\n");
 
-   env = jni_thread_getenv();
-   if (!env)
-      return;
+//   env = jni_thread_getenv();
+//   if (!env)
+//      return;
 
 //   GET_OBJECT_CLASS(env, class, android_app->clazz);
 //    GET_METHOD_ID(env, android_app->getIntent, clazz, "getIntent", "()Landroid/content/Intent;");
-    clazz = (*env)->GetObjectClass(env, android_app->clazz);
+//    clazz = (*env)->GetObjectClass(env, android_app->clazz);
 //    android_app->getIntent = (*env)->GetMethodID(env, clazz, "getIntent", "()Landroid/content/Intent;");
 //   GET_METHOD_ID(env, android_app->onRetroArchExit, clazz, "onRetroArchExit", "()V");
 //   GET_METHOD_ID(env, android_app->checkRuntimePermissions, clazz, "checkRuntimePermissions", "()V");

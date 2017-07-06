@@ -29,20 +29,6 @@
 #include "../src/verbosity.h"
 
 static const camera_driver_t *camera_drivers[] = {
-#ifdef HAVE_V4L2
-   &camera_v4l2,
-#endif
-#ifdef EMSCRIPTEN
-   &camera_rwebcam,
-#endif
-#ifdef ANDROID
-   &camera_android,
-#endif
-#if defined(HAVE_AVFOUNDATION)
-#if defined(HAVE_COCOA) || defined(HAVE_COCOATOUCH)
-    &camera_avfoundation,
-#endif
-#endif
    &camera_null,
    NULL,
 };

@@ -45,7 +45,7 @@ inline TreasureHuntRenderer *native(jlong ptr)
 
 extern "C" {
 
-extern void android_app_oncreate(jobject clazz );
+extern void android_app_oncreate( );
 extern void android_dispatch_motion_event(int source, int id,
                                           float x, float y, float z, float rz, float hatx, float haty,
                                           float ltrig, float rtrig, float brake, float gas);
@@ -110,8 +110,8 @@ void Java_com_mj_retro_RetroActivityFuture_nativeOnCreate(JNIEnv *env, jobject o
     memcpy(external_dir, chexternal, sizeof(external_dir));
     env->ReleaseStringUTFChars(strEXTERNAL, chexternal);
 
-    jobject gobj = env->NewGlobalRef( obj );
-    android_app_oncreate( gobj);
+//    jobject gobj = env->NewGlobalRef( obj );
+    android_app_oncreate( );
     return;
 
 }

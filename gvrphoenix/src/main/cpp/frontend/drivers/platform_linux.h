@@ -92,7 +92,7 @@ struct android_app
 
    /* The ANativeActivity object instance that this app is running in. */
 //   ANativeActivity* activity;
-    jobject clazz;
+//    jobject clazz;
 
    /* The current configuration the app is running in. */
 //   AConfiguration *config;

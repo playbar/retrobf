@@ -127,9 +127,7 @@ add_library(gvrretro SHARED
                 ${RARCH_DIR}/libretro-common/audio/resampler/drivers/nearest_resampler.c
                 ${RARCH_DIR}/libretro-common/audio/resampler/drivers/null_resampler.c
                 ${RARCH_DIR}/audio/drivers_resampler/cc_resampler.c
-                ${RARCH_DIR}/camera/drivers/android.c
                 ${RARCH_DIR}/camera/drivers/nullcamera.c
-                ${RARCH_DIR}/location/drivers/android.c
                 ${RARCH_DIR}/location/drivers/nulllocation.c
                 ${RARCH_DIR}/audio/drivers/opensl.c
                 ${RARCH_DIR}/gfx/video_driver.c
