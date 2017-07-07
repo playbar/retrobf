@@ -67,7 +67,6 @@
 #include "../../menu/menu_entries.h"
 #endif
 
-#ifdef ANDROID
 enum
 {
    /* Internal SDCARD writable */
@@ -100,13 +99,7 @@ static bool is_android_tv_device = false;
 
 extern JavaVM* gvm;
 
-#else
-static const char *proc_apm_path                   = "/proc/apm";
-static const char *proc_acpi_battery_path          = "/proc/acpi/battery";
-static const char *proc_acpi_sysfs_ac_adapter_path = "/sys/class/power_supply/ACAD";
-static const char *proc_acpi_sysfs_battery_path    = "/sys/class/power_supply";
-static const char *proc_acpi_ac_adapter_path       = "/proc/acpi/ac_adapter";
-#endif
+
 
 static volatile sig_atomic_t linux_sighandler_quit;
 
@@ -170,8 +163,8 @@ static void android_app_set_input(struct android_app *android_app, AInputQueue* 
    android_app->pendingInputQueue = inputQueue;
    android_app_write_cmd(android_app, APP_CMD_INPUT_CHANGED);
 
-   while (android_app->inputQueue != android_app->pendingInputQueue)
-      scond_wait(android_app->cond, android_app->mutex);
+//   while (android_app->inputQueue != android_app->pendingInputQueue)
+//      scond_wait(android_app->cond, android_app->mutex);
 
    slock_unlock(android_app->mutex);
 }
@@ -211,7 +204,7 @@ static void android_app_set_activity_state(struct android_app *android_app, int8
 static void android_app_free(struct android_app* android_app)
 {
    slock_lock(android_app->mutex);
-   sthread_join(android_app->thread);
+//   sthread_join(android_app->thread);
    RARCH_LOG("Joined with RetroArch native thread.\n");
 
    slock_unlock(android_app->mutex);
@@ -436,7 +429,13 @@ struct android_app* android_app_create(ANativeActivity* activity )
    }
    android_app->msgread  = msgpipe[0];
    android_app->msgwrite = msgpipe[1];
-   android_app->thread   = sthread_create(android_app_entry, android_app);
+//   android_app->thread   = sthread_create(android_app_entry, android_app);
+
+    char arguments[]  = "retroarch";
+    char *argv[] = {arguments,   NULL};
+    int argc = 1;
+
+    rarch_main(argc, argv, android_app);
 
    /* Wait for thread to start. */
    slock_lock(android_app->mutex);
@@ -890,8 +889,8 @@ static void android_app_destroy(struct android_app *android_app)
 //   if (env && android_app->onRetroArchExit)
 //      CALL_VOID_METHOD(env, android_app->clazz, android_app->onRetroArchExit);
 
-   if (android_app->inputQueue)
-      AInputQueue_detachLooper(android_app->inputQueue);
+//   if (android_app->inputQueue)
+//      AInputQueue_detachLooper(android_app->inputQueue);
 
 //   AConfiguration_delete(android_app->config);
    android_app->destroyed = 1;
@@ -913,7 +912,7 @@ static void frontend_linux_deinit(void *data)
 static void frontend_linux_init(void *data)
 {
 //   JNIEnv *env = NULL;
-   ALooper *looper = NULL;
+//   ALooper *looper = NULL;
 //   jclass clazz = NULL;
 //   jobject obj = NULL;
    struct android_app* android_app = (struct android_app*)data;
@@ -924,9 +923,9 @@ static void frontend_linux_init(void *data)
 //   android_app->config = AConfiguration_new();
 //   AConfiguration_fromAssetManager(android_app->config, android_app->activity->assetManager);
 
-   looper = (ALooper*)ALooper_prepare(ALOOPER_PREPARE_ALLOW_NON_CALLBACKS);
-   ALooper_addFd(looper, android_app->msgread, LOOPER_ID_MAIN, ALOOPER_EVENT_INPUT, NULL, NULL);
-   android_app->looper = looper;
+//   looper = (ALooper*)ALooper_prepare(ALOOPER_PREPARE_ALLOW_NON_CALLBACKS);
+//   ALooper_addFd(looper, android_app->msgread, LOOPER_ID_MAIN, ALOOPER_EVENT_INPUT, NULL, NULL);
+//   android_app->looper = looper;
 
    slock_lock(android_app->mutex);
    android_app->running = 1;

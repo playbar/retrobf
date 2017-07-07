@@ -110,11 +110,11 @@ struct android_app
 //   size_t savedStateSize;
 
    /* The ALooper associated with the app's thread. */
-   ALooper* looper;
+//   ALooper* looper;
 
    /* When non-NULL, this is the input queue from which the app will
     * receive user input events. */
-   AInputQueue* inputQueue;
+//   AInputQueue* inputQueue;
 
 
    /* When non-NULL, this is the window surface that the app can draw in. */
@@ -137,7 +137,7 @@ struct android_app
    int msgread;
    int msgwrite;
 
-   sthread_t *thread;
+//   sthread_t *thread;
 
    struct android_poll_source cmdPollSource;
    struct android_poll_source inputPollSource;

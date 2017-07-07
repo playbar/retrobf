@@ -63,7 +63,7 @@
 #if defined(_XBOX1) || defined(_3DS) || defined(PSP) || defined(GEKKO)|| defined(WIIU)
 #define PATH_MAX_LENGTH 512
 #else
-#define PATH_MAX_LENGTH 4096
+#define PATH_MAX_LENGTH 512
 #endif
 #endif
 

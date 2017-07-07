@@ -304,26 +304,26 @@ static void android_input_poll_main_cmd(void)
          slock_unlock(android_app->mutex);
          break;
 
-      case APP_CMD_INPUT_CHANGED:
-         slock_lock(android_app->mutex);
-
-         if (android_app->inputQueue)
-            AInputQueue_detachLooper(android_app->inputQueue);
-
-         android_app->inputQueue = android_app->pendingInputQueue;
-
-         if (android_app->inputQueue)
-         {
-            RARCH_LOG("Attaching input queue to looper");
-            AInputQueue_attachLooper(android_app->inputQueue,
-                  android_app->looper, LOOPER_ID_INPUT, NULL,
-                  NULL);
-         }
-
-         scond_broadcast(android_app->cond);
-         slock_unlock(android_app->mutex);
-
-         break;
+//      case APP_CMD_INPUT_CHANGED:
+//         slock_lock(android_app->mutex);
+//
+//         if (android_app->inputQueue)
+//            AInputQueue_detachLooper(android_app->inputQueue);
+//
+//         android_app->inputQueue = android_app->pendingInputQueue;
+//
+//         if (android_app->inputQueue)
+//         {
+//            RARCH_LOG("Attaching input queue to looper");
+//            AInputQueue_attachLooper(android_app->inputQueue,
+//                  android_app->looper, LOOPER_ID_INPUT, NULL,
+//                  NULL);
+//         }
+//
+//         scond_broadcast(android_app->cond);
+//         slock_unlock(android_app->mutex);
+//
+//         break;
 
       case APP_CMD_INIT_WINDOW:
          slock_lock(android_app->mutex);
@@ -919,53 +919,53 @@ static void android_input_poll_input(void *data)
    struct android_app *android_app = (struct android_app*)g_android;
    android_input_t    *android     = (android_input_t*)data;
 
-   /* Read all pending events. */
-   while (AInputQueue_hasEvents(android_app->inputQueue))
-   {
-      while (AInputQueue_getEvent(android_app->inputQueue, &event) >= 0)
-      {
-         int32_t   handled = 1;
-         int predispatched = AInputQueue_preDispatchEvent(android_app->inputQueue, event);
-         int        source = AInputEvent_getSource(event);
-         int    type_event = AInputEvent_getType(event);
-         int            id = android_input_get_id(event);
-         int          port = android_input_get_id_port(android, id, source);
-
-         if (port < 0 && !is_keyboard_id(id))
-            handle_hotplug(android, android_app, &port, id, source);
-
-         switch (type_event)
-         {
-            case AINPUT_EVENT_TYPE_MOTION:
-               if (android_input_poll_event_type_motion(android, event, port, source))
-                  engine_handle_dpad(android, event, port, source);
-               break;
-            case AINPUT_EVENT_TYPE_KEY:
-               {
-                  int keycode = AKeyEvent_getKeyCode(event);
-                   if(keycode == 109 ){
-                       command_event(CMD_EVENT_QUIT, NULL);
-                       return;
-                   }
-
-                  if (is_keyboard_id(id))
-                  {
-                     if (!predispatched)
-                     {
-//                        android_input_poll_event_type_keyboard(, keycode, &handled);
-                        android_input_poll_event_type_key(android_app, event, ANDROID_KEYBOARD_PORT, keycode, source, type_event, &handled);
-                     }
-                  }
-                  else
-                     android_input_poll_event_type_key(android_app, event, port, keycode, source, type_event, &handled);
-               }
-               break;
-         }
-
-         if (!predispatched)
-            AInputQueue_finishEvent(android_app->inputQueue, event, handled);
-      }
-   }
+//   /* Read all pending events. */
+//   while (AInputQueue_hasEvents(android_app->inputQueue))
+//   {
+//      while (AInputQueue_getEvent(android_app->inputQueue, &event) >= 0)
+//      {
+//         int32_t   handled = 1;
+//         int predispatched = AInputQueue_preDispatchEvent(android_app->inputQueue, event);
+//         int        source = AInputEvent_getSource(event);
+//         int    type_event = AInputEvent_getType(event);
+//         int            id = android_input_get_id(event);
+//         int          port = android_input_get_id_port(android, id, source);
+//
+//         if (port < 0 && !is_keyboard_id(id))
+//            handle_hotplug(android, android_app, &port, id, source);
+//
+//         switch (type_event)
+//         {
+//            case AINPUT_EVENT_TYPE_MOTION:
+//               if (android_input_poll_event_type_motion(android, event, port, source))
+//                  engine_handle_dpad(android, event, port, source);
+//               break;
+//            case AINPUT_EVENT_TYPE_KEY:
+//               {
+//                  int keycode = AKeyEvent_getKeyCode(event);
+//                   if(keycode == 109 ){
+//                       command_event(CMD_EVENT_QUIT, NULL);
+//                       return;
+//                   }
+//
+//                  if (is_keyboard_id(id))
+//                  {
+//                     if (!predispatched)
+//                     {
+////                        android_input_poll_event_type_keyboard(, keycode, &handled);
+//                        android_input_poll_event_type_key(android_app, event, ANDROID_KEYBOARD_PORT, keycode, source, type_event, &handled);
+//                     }
+//                  }
+//                  else
+//                     android_input_poll_event_type_key(android_app, event, port, keycode, source, type_event, &handled);
+//               }
+//               break;
+//         }
+//
+//         if (!predispatched)
+//            AInputQueue_finishEvent(android_app->inputQueue, event, handled);
+//      }
+//   }
 }
 
 
@@ -1265,7 +1265,7 @@ static void android_input_enable_sensor_manager(struct android_app *android_app)
 {
    android_app->sensorManager = ASensorManager_getInstance();
    android_app->accelerometerSensor = ASensorManager_getDefaultSensor(android_app->sensorManager, ASENSOR_TYPE_ACCELEROMETER);
-   android_app->sensorEventQueue = ASensorManager_createEventQueue(android_app->sensorManager, android_app->looper, LOOPER_ID_USER, NULL, NULL);
+//   android_app->sensorEventQueue = ASensorManager_createEventQueue(android_app->sensorManager, android_app->looper, LOOPER_ID_USER, NULL, NULL);
 }
 
 static bool android_input_set_sensor_state(void *data, unsigned port,
