@@ -125,42 +125,42 @@ struct android_app
 
    /* Current state of the app's activity.  May be either APP_CMD_START,
     * APP_CMD_RESUME, APP_CMD_PAUSE, or APP_CMD_STOP; see below. */
-   int activityState;
+//   int activityState;
 
-   int reinitRequested;
+//   int reinitRequested;
 
    /* This is non-zero when the application's NativeActivity is being
     * destroyed and waiting for the app thread to complete. */
-   int destroyRequested;
+//   int destroyRequested;
 
    /* Below are "private" implementation of the glue code. */
-   slock_t *mutex;
-   scond_t *cond;
+//   slock_t *mutex;
+//   scond_t *cond;
 
-   int msgread;
-   int msgwrite;
+//   int msgread;
+//   int msgwrite;
 
 //   sthread_t *thread;
 
-   struct android_poll_source cmdPollSource;
-   struct android_poll_source inputPollSource;
+//   struct android_poll_source cmdPollSource;
+//   struct android_poll_source inputPollSource;
 
-   int running;
-   int stateSaved;
-   int destroyed;
-   AInputQueue* pendingInputQueue;
-   ANativeWindow* pendingWindow;
+//   int running;
+//   int stateSaved;
+//   int destroyed;
+//   AInputQueue* pendingInputQueue;
+//   ANativeWindow* pendingWindow;
 
 
     /*  Below are "private" implementation of RA code. */
-    bool unfocused;
-    unsigned accelerometer_event_rate;
-    ASensorManager *sensorManager;
-    ASensorEventQueue *sensorEventQueue;
-    const ASensor* accelerometerSensor;
-    uint64_t sensor_state_mask;
-    char current_ime[PATH_MAX_LENGTH];
-    bool input_alive;
+//    bool unfocused;
+//    unsigned accelerometer_event_rate;
+//    ASensorManager *sensorManager;
+//    ASensorEventQueue *sensorEventQueue;
+//    const ASensor* accelerometerSensor;
+//    uint64_t sensor_state_mask;
+//    char current_ime[PATH_MAX_LENGTH];
+//    bool input_alive;
 //    int16_t analog_state[MAX_PADS][MAX_AXIS];
 //    int8_t hat_state[MAX_PADS][2];
 //    jmethodID getIntent;

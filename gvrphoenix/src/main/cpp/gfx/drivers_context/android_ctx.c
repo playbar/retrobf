@@ -158,7 +158,7 @@ static void *android_gfx_ctx_init(video_frame_info_t *video_info, void *video_dr
          break;
    }
 
-   slock_lock(android_app->mutex);
+//   slock_lock(android_app->mutex);
 //   if (!android_app->window)
 //      goto unlock_error;
 
@@ -184,11 +184,11 @@ static void *android_gfx_ctx_init(video_frame_info_t *video_info, void *video_dr
          break;
    }
 
-   slock_unlock(android_app->mutex);
+//   slock_unlock(android_app->mutex);
    return and;
 
 unlock_error:
-   slock_unlock(android_app->mutex);
+//   slock_unlock(android_app->mutex);
 error:
    android_gfx_ctx_destroy(and);
 
@@ -395,14 +395,14 @@ static bool android_gfx_ctx_bind_api(void *data,
 
 static bool android_gfx_ctx_has_focus(void *data)
 {
-   bool                    focused = false;
+   bool                    focused = true;
    struct android_app *android_app = (struct android_app*)g_android;
    if (!android_app)
       return true;
 
-   slock_lock(android_app->mutex);
-   focused = !android_app->unfocused;
-   slock_unlock(android_app->mutex);
+//   slock_lock(android_app->mutex);
+//   focused = !android_app->unfocused;
+//   slock_unlock(android_app->mutex);
 
    return focused;
 }

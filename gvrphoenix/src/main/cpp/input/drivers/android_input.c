@@ -290,18 +290,18 @@ static void android_input_poll_main_cmd(void)
    int8_t cmd;
    struct android_app *android_app = (struct android_app*)g_android;
 
-   if (read(android_app->msgread, &cmd, sizeof(cmd)) != sizeof(cmd))
-      cmd = -1;
+//   if (read(android_app->msgread, &cmd, sizeof(cmd)) != sizeof(cmd))
+//      cmd = -1;
 
    switch (cmd)
    {
       case APP_CMD_REINIT_DONE:
-         slock_lock(android_app->mutex);
+//         slock_lock(android_app->mutex);
 
-         android_app->reinitRequested = 0;
+//         android_app->reinitRequested = 0;
 
-         scond_broadcast(android_app->cond);
-         slock_unlock(android_app->mutex);
+//         scond_broadcast(android_app->cond);
+//         slock_unlock(android_app->mutex);
          break;
 
 //      case APP_CMD_INPUT_CHANGED:
@@ -326,43 +326,43 @@ static void android_input_poll_main_cmd(void)
 //         break;
 
       case APP_CMD_INIT_WINDOW:
-         slock_lock(android_app->mutex);
+//         slock_lock(android_app->mutex);
 //         android_app->window = android_app->pendingWindow;
-         android_app->reinitRequested = 1;
-         scond_broadcast(android_app->cond);
-         slock_unlock(android_app->mutex);
+//         android_app->reinitRequested = 1;
+//         scond_broadcast(android_app->cond);
+//         slock_unlock(android_app->mutex);
 
          break;
 
       case APP_CMD_SAVE_STATE:
-         slock_lock(android_app->mutex);
-         android_app->stateSaved = 1;
-         scond_broadcast(android_app->cond);
-         slock_unlock(android_app->mutex);
+//         slock_lock(android_app->mutex);
+//         android_app->stateSaved = 1;
+//         scond_broadcast(android_app->cond);
+//         slock_unlock(android_app->mutex);
          break;
 
       case APP_CMD_RESUME:
       case APP_CMD_START:
       case APP_CMD_PAUSE:
       case APP_CMD_STOP:
-         slock_lock(android_app->mutex);
-         android_app->activityState = cmd;
-         scond_broadcast(android_app->cond);
-         slock_unlock(android_app->mutex);
+//         slock_lock(android_app->mutex);
+//         android_app->activityState = cmd;
+//         scond_broadcast(android_app->cond);
+//         slock_unlock(android_app->mutex);
          break;
 
 //      case APP_CMD_CONFIG_CHANGED:
 //         AConfiguration_fromAssetManager(android_app->config, android_app->activity->assetManager);
 //         break;
       case APP_CMD_TERM_WINDOW:
-         slock_lock(android_app->mutex);
+//         slock_lock(android_app->mutex);
 
          /* The window is being hidden or closed, clean it up. */
          /* terminate display/EGL context here */
 
 //         android_app->window = NULL;
-         scond_broadcast(android_app->cond);
-         slock_unlock(android_app->mutex);
+//         scond_broadcast(android_app->cond);
+//         slock_unlock(android_app->mutex);
          break;
 
       case APP_CMD_GAINED_FOCUS:
@@ -373,17 +373,17 @@ static void android_input_poll_main_cmd(void)
             rarch_ctl(RARCH_CTL_SET_IDLE,   &boolean);
             video_driver_unset_stub_frame();
 
-            if ((android_app->sensor_state_mask
-                     & (UINT64_C(1) << RETRO_SENSOR_ACCELEROMETER_ENABLE))
-                  && android_app->accelerometerSensor == NULL)
-               input_sensor_set_state(0,
-                     RETRO_SENSOR_ACCELEROMETER_ENABLE,
-                     android_app->accelerometer_event_rate);
+//            if ((android_app->sensor_state_mask
+//                     & (UINT64_C(1) << RETRO_SENSOR_ACCELEROMETER_ENABLE))
+//                  && android_app->accelerometerSensor == NULL)
+//               input_sensor_set_state(0,
+//                     RETRO_SENSOR_ACCELEROMETER_ENABLE,
+//                     android_app->accelerometer_event_rate);
          }
-         slock_lock(android_app->mutex);
-         android_app->unfocused = false;
-         scond_broadcast(android_app->cond);
-         slock_unlock(android_app->mutex);
+//         slock_lock(android_app->mutex);
+//         android_app->unfocused = false;
+//         scond_broadcast(android_app->cond);
+//         slock_unlock(android_app->mutex);
          break;
       case APP_CMD_LOST_FOCUS:
          {
@@ -394,23 +394,23 @@ static void android_input_poll_main_cmd(void)
             video_driver_set_stub_frame();
 
             /* Avoid draining battery while app is not being used. */
-            if ((android_app->sensor_state_mask
-                     & (UINT64_C(1) << RETRO_SENSOR_ACCELEROMETER_ENABLE))
-                  && android_app->accelerometerSensor != NULL
-                  )
-               input_sensor_set_state(0,
-                     RETRO_SENSOR_ACCELEROMETER_DISABLE,
-                     android_app->accelerometer_event_rate);
+//            if ((android_app->sensor_state_mask
+//                     & (UINT64_C(1) << RETRO_SENSOR_ACCELEROMETER_ENABLE))
+//                  && android_app->accelerometerSensor != NULL
+//                  )
+//               input_sensor_set_state(0,
+//                     RETRO_SENSOR_ACCELEROMETER_DISABLE,
+//                     android_app->accelerometer_event_rate);
          }
-         slock_lock(android_app->mutex);
-         android_app->unfocused = true;
-         scond_broadcast(android_app->cond);
-         slock_unlock(android_app->mutex);
+//         slock_lock(android_app->mutex);
+//         android_app->unfocused = true;
+//         scond_broadcast(android_app->cond);
+//         slock_unlock(android_app->mutex);
          break;
 
       case APP_CMD_DESTROY:
          RARCH_LOG("APP_CMD_DESTROY\n");
-         android_app->destroyRequested = 1;
+//         android_app->destroyRequested = 1;
          break;
    }
 }
@@ -523,7 +523,7 @@ static void *android_input_init(const char *joypad_driver)
       RARCH_WARN("Unable to open libandroid.so\n");
    }
 
-   android_app->input_alive = true;
+//   android_app->input_alive = true;
 
    return android;
 }
@@ -878,12 +878,12 @@ static void handle_hotplug(android_input_t *android, struct android_app *android
    if (!string_is_empty(device_name))
       strlcpy(name_buf, device_name, sizeof(name_buf));
 
-   if (strstr(android_app->current_ime, "net.obsidianx.android.mogaime"))
-      strlcpy(name_buf, android_app->current_ime, sizeof(name_buf));
-   else if (strstr(android_app->current_ime, "com.ccpcreations.android.WiiUseAndroid"))
-      strlcpy(name_buf, android_app->current_ime, sizeof(name_buf));
-   else if (strstr(android_app->current_ime, "com.hexad.bluezime"))
-      strlcpy(name_buf, android_app->current_ime, sizeof(name_buf));
+   if (strstr(ime_dir, "net.obsidianx.android.mogaime"))
+      strlcpy(name_buf, ime_dir, sizeof(name_buf));
+   else if (strstr(ime_dir, "com.ccpcreations.android.WiiUseAndroid"))
+      strlcpy(name_buf, ime_dir, sizeof(name_buf));
+   else if (strstr(ime_dir, "com.hexad.bluezime"))
+      strlcpy(name_buf, ime_dir, sizeof(name_buf));
 
    if (*port < 0)
       *port = android->pads_connected;
@@ -1011,8 +1011,7 @@ void android_dispatch_motion_event(int source, int id,
     android->analog_state[port][8] = (int16_t)(brake * 32767.0f);
     android->analog_state[port][9] = (int16_t)(gas * 32767.0f);
 
-    if (android_app->input_alive)
-        android_input_poll_memcpy(android);
+   android_input_poll_memcpy(android);
 }
 
 void android_dispatch_key_event(int source, int id, int keycode, int action, int mate)
@@ -1048,7 +1047,6 @@ void android_dispatch_key_event(int source, int id, int keycode, int action, int
          }
 
 
-    if (android_app->input_alive)
         android_input_poll_memcpy(android);
 }
 
@@ -1057,16 +1055,16 @@ static void android_input_poll_user(void *data)
    struct android_app *android_app = (struct android_app*)g_android;
    android_input_t *android = (android_input_t*)data;
 
-   if ((android_app->sensor_state_mask & (UINT64_C(1) << RETRO_SENSOR_ACCELEROMETER_ENABLE)) && android_app->accelerometerSensor)
-   {
-      ASensorEvent event;
-      while (ASensorEventQueue_getEvents(android_app->sensorEventQueue, &event, 1) > 0)
-      {
-         android->accelerometer_state.x = event.acceleration.x;
-         android->accelerometer_state.y = event.acceleration.y;
-         android->accelerometer_state.z = event.acceleration.z;
-      }
-   }
+//   if ((android_app->sensor_state_mask & (UINT64_C(1) << RETRO_SENSOR_ACCELEROMETER_ENABLE)) && android_app->accelerometerSensor)
+//   {
+//      ASensorEvent event;
+//      while (ASensorEventQueue_getEvents(android_app->sensorEventQueue, &event, 1) > 0)
+//      {
+//         android->accelerometer_state.x = event.acceleration.x;
+//         android->accelerometer_state.y = event.acceleration.y;
+//         android->accelerometer_state.z = event.acceleration.z;
+//      }
+//   }
 }
 
 static bool android_input_key_pressed(void *data, int key)
@@ -1115,22 +1113,21 @@ static void android_input_poll(void *data)
             break;
       }
 
-      if (android_app->destroyRequested != 0)
-      {
-         rarch_ctl(RARCH_CTL_SET_SHUTDOWN, NULL);
-         return;
-      }
+//      if (android_app->destroyRequested != 0)
+//      {
+//         rarch_ctl(RARCH_CTL_SET_SHUTDOWN, NULL);
+//         return;
+//      }
 
-      if (android_app->reinitRequested != 0)
-      {
-         if (rarch_ctl(RARCH_CTL_IS_PAUSED, NULL))
-            command_event(CMD_EVENT_REINIT, NULL);
-         android_app_write_cmd(android_app, APP_CMD_REINIT_DONE);
-         return;
-      }
+//      if (android_app->reinitRequested != 0)
+//      {
+//         if (rarch_ctl(RARCH_CTL_IS_PAUSED, NULL))
+//            command_event(CMD_EVENT_REINIT, NULL);
+//         android_app_write_cmd(android_app, APP_CMD_REINIT_DONE);
+//         return;
+//      }
    }
 
-   if (android_app->input_alive)
       android_input_poll_memcpy(data);
 }
 
@@ -1141,19 +1138,19 @@ bool android_run_events(void *data)
    if (ALooper_pollOnce(-1, NULL, NULL, NULL) == LOOPER_ID_MAIN)
       android_input_poll_main_cmd();
 
-   /* Check if we are exiting. */
-   if (android_app->destroyRequested != 0)
-   {
-      rarch_ctl(RARCH_CTL_SET_SHUTDOWN, NULL);
-      return false;
-   }
+//   /* Check if we are exiting. */
+//   if (android_app->destroyRequested != 0)
+//   {
+//      rarch_ctl(RARCH_CTL_SET_SHUTDOWN, NULL);
+//      return false;
+//   }
 
-   if (android_app->reinitRequested != 0)
-   {
-      if (rarch_ctl(RARCH_CTL_IS_PAUSED, NULL))
-         command_event(CMD_EVENT_REINIT, NULL);
-      android_app_write_cmd(android_app, APP_CMD_REINIT_DONE);
-   }
+//   if (android_app->reinitRequested != 0)
+//   {
+//      if (rarch_ctl(RARCH_CTL_IS_PAUSED, NULL))
+//         command_event(CMD_EVENT_REINIT, NULL);
+//      android_app_write_cmd(android_app, APP_CMD_REINIT_DONE);
+//   }
 
    return true;
 }
@@ -1232,15 +1229,15 @@ static void android_input_free_input(void *data)
    if (!android)
       return;
 
-   if (android_app->sensorManager)
-      ASensorManager_destroyEventQueue(android_app->sensorManager,
-            android_app->sensorEventQueue);
+//   if (android_app->sensorManager)
+//      ASensorManager_destroyEventQueue(android_app->sensorManager,
+//            android_app->sensorEventQueue);
 
    if (android->joypad)
       android->joypad->destroy();
    android->joypad = NULL;
 
-   android_app->input_alive = false;
+//   android_app->input_alive = false;
 
    dylib_close((dylib_t)libandroid_handle);
    libandroid_handle = NULL;
@@ -1263,8 +1260,8 @@ static uint64_t android_input_get_capabilities(void *data)
 
 static void android_input_enable_sensor_manager(struct android_app *android_app)
 {
-   android_app->sensorManager = ASensorManager_getInstance();
-   android_app->accelerometerSensor = ASensorManager_getDefaultSensor(android_app->sensorManager, ASENSOR_TYPE_ACCELEROMETER);
+//   android_app->sensorManager = ASensorManager_getInstance();
+//   android_app->accelerometerSensor = ASensorManager_getDefaultSensor(android_app->sensorManager, ASENSOR_TYPE_ACCELEROMETER);
 //   android_app->sensorEventQueue = ASensorManager_createEventQueue(android_app->sensorManager, android_app->looper, LOOPER_ID_USER, NULL, NULL);
 }
 
@@ -1278,28 +1275,28 @@ static bool android_input_set_sensor_state(void *data, unsigned port,
 
    switch (action)
    {
-      case RETRO_SENSOR_ACCELEROMETER_ENABLE:
-         if (!android_app->accelerometerSensor)
-            android_input_enable_sensor_manager(android_app);
-
-         if (android_app->accelerometerSensor)
-            ASensorEventQueue_enableSensor(android_app->sensorEventQueue, android_app->accelerometerSensor);
-
-         /* Events per second (in microseconds). */
-         if (android_app->accelerometerSensor)
-            ASensorEventQueue_setEventRate(android_app->sensorEventQueue, android_app->accelerometerSensor, (1000L / event_rate) * 1000);
-
-         BIT64_CLEAR(android_app->sensor_state_mask, RETRO_SENSOR_ACCELEROMETER_DISABLE);
-         BIT64_SET(android_app->sensor_state_mask, RETRO_SENSOR_ACCELEROMETER_ENABLE);
-         return true;
-
-      case RETRO_SENSOR_ACCELEROMETER_DISABLE:
-         if (android_app->accelerometerSensor)
-            ASensorEventQueue_disableSensor(android_app->sensorEventQueue, android_app->accelerometerSensor);
-
-         BIT64_CLEAR(android_app->sensor_state_mask, RETRO_SENSOR_ACCELEROMETER_ENABLE);
-         BIT64_SET(android_app->sensor_state_mask, RETRO_SENSOR_ACCELEROMETER_DISABLE);
-         return true;
+//      case RETRO_SENSOR_ACCELEROMETER_ENABLE:
+//         if (!android_app->accelerometerSensor)
+//            android_input_enable_sensor_manager(android_app);
+//
+//         if (android_app->accelerometerSensor)
+//            ASensorEventQueue_enableSensor(android_app->sensorEventQueue, android_app->accelerometerSensor);
+//
+//         /* Events per second (in microseconds). */
+//         if (android_app->accelerometerSensor)
+//            ASensorEventQueue_setEventRate(android_app->sensorEventQueue, android_app->accelerometerSensor, (1000L / event_rate) * 1000);
+//
+//         BIT64_CLEAR(android_app->sensor_state_mask, RETRO_SENSOR_ACCELEROMETER_DISABLE);
+//         BIT64_SET(android_app->sensor_state_mask, RETRO_SENSOR_ACCELEROMETER_ENABLE);
+//         return true;
+//
+//      case RETRO_SENSOR_ACCELEROMETER_DISABLE:
+//         if (android_app->accelerometerSensor)
+//            ASensorEventQueue_disableSensor(android_app->sensorEventQueue, android_app->accelerometerSensor);
+//
+//         BIT64_CLEAR(android_app->sensor_state_mask, RETRO_SENSOR_ACCELEROMETER_ENABLE);
+//         BIT64_SET(android_app->sensor_state_mask, RETRO_SENSOR_ACCELEROMETER_DISABLE);
+//         return true;
       default:
          return false;
    }

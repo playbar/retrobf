@@ -153,8 +153,8 @@ void android_app_write_cmd(struct android_app *android_app, int8_t cmd)
    if (!android_app)
       return;
 
-   if (write(android_app->msgwrite, &cmd, sizeof(cmd)) != sizeof(cmd))
-      RARCH_ERR("Failure writing android_app cmd: %s\n", strerror(errno));
+//   if (write(android_app->msgwrite, &cmd, sizeof(cmd)) != sizeof(cmd))
+//      RARCH_ERR("Failure writing android_app cmd: %s\n", strerror(errno));
 }
 
 static void android_app_set_input(struct android_app *android_app, AInputQueue* inputQueue)
@@ -162,14 +162,14 @@ static void android_app_set_input(struct android_app *android_app, AInputQueue* 
    if (!android_app)
       return;
 
-   slock_lock(android_app->mutex);
-   android_app->pendingInputQueue = inputQueue;
+//   slock_lock(android_app->mutex);
+//   android_app->pendingInputQueue = inputQueue;
    android_app_write_cmd(android_app, APP_CMD_INPUT_CHANGED);
 
 //   while (android_app->inputQueue != android_app->pendingInputQueue)
 //      scond_wait(android_app->cond, android_app->mutex);
 
-   slock_unlock(android_app->mutex);
+//   slock_unlock(android_app->mutex);
 }
 
 static void android_app_set_window(struct android_app *android_app, ANativeWindow* window)
@@ -177,11 +177,11 @@ static void android_app_set_window(struct android_app *android_app, ANativeWindo
    if (!android_app)
       return;
 
-   slock_lock(android_app->mutex);
-   if (android_app->pendingWindow)
-      android_app_write_cmd(android_app, APP_CMD_TERM_WINDOW);
+//   slock_lock(android_app->mutex);
+//   if (android_app->pendingWindow)
+//      android_app_write_cmd(android_app, APP_CMD_TERM_WINDOW);
 
-   android_app->pendingWindow = window;
+//   android_app->pendingWindow = window;
 
    if (window)
       android_app_write_cmd(android_app, APP_CMD_INIT_WINDOW);
@@ -189,7 +189,7 @@ static void android_app_set_window(struct android_app *android_app, ANativeWindo
 //   while (android_app->window != android_app->pendingWindow)
 //      scond_wait(android_app->cond, android_app->mutex);
 
-   slock_unlock(android_app->mutex);
+//   slock_unlock(android_app->mutex);
 }
 
 static void android_app_set_activity_state(struct android_app *android_app, int8_t cmd)
@@ -197,24 +197,24 @@ static void android_app_set_activity_state(struct android_app *android_app, int8
    if (!android_app)
       return;
 
-   slock_lock(android_app->mutex);
+//   slock_lock(android_app->mutex);
    android_app_write_cmd(android_app, cmd);
-   while (android_app->activityState != cmd)
-      scond_wait(android_app->cond, android_app->mutex);
-   slock_unlock(android_app->mutex);
+//   while (android_app->activityState != cmd)
+//      scond_wait(android_app->cond, android_app->mutex);
+//   slock_unlock(android_app->mutex);
 }
 
 static void android_app_free(struct android_app* android_app)
 {
-   slock_lock(android_app->mutex);
+//   slock_lock(android_app->mutex);
 //   sthread_join(android_app->thread);
    RARCH_LOG("Joined with RetroArch native thread.\n");
 
-   slock_unlock(android_app->mutex);
-   close(android_app->msgread);
-   close(android_app->msgwrite);
-   scond_free(android_app->cond);
-   slock_free(android_app->mutex);
+//   slock_unlock(android_app->mutex);
+//   close(android_app->msgread);
+//   close(android_app->msgwrite);
+//   scond_free(android_app->cond);
+//   slock_free(android_app->mutex);
 
    free(android_app);
 }
@@ -246,12 +246,12 @@ static void* onSaveInstanceState(ANativeActivity* activity, size_t* outLen)
    struct android_app* android_app = (struct android_app*) activity->instance;
 
    RARCH_LOG("SaveInstanceState: %p\n", activity);
-   slock_lock(android_app->mutex);
-   android_app->stateSaved = 0;
+//   slock_lock(android_app->mutex);
+//   android_app->stateSaved = 0;
    android_app_write_cmd(android_app, APP_CMD_SAVE_STATE);
 
-   while (!android_app->stateSaved)
-      scond_wait(android_app->cond, android_app->mutex);
+//   while (!android_app->stateSaved)
+//      scond_wait(android_app->cond, android_app->mutex);
 
 //   if (android_app->savedState != NULL)
 //   {
@@ -260,7 +260,7 @@ static void* onSaveInstanceState(ANativeActivity* activity, size_t* outLen)
 //      android_app->savedState = NULL;
 //      android_app->savedStateSize = 0;
 //   }
-   slock_unlock(android_app->mutex);
+//   slock_unlock(android_app->mutex);
    return savedState;
 }
 
@@ -370,8 +370,8 @@ void android_app_oncreate( )
         return;
     }
 //    android_app->clazz = clazz;
-    android_app->mutex    = slock_new();
-    android_app->cond     = scond_new();
+//    android_app->mutex    = slock_new();
+//    android_app->cond     = scond_new();
 //   if (savedState != NULL)
 //   {
 //      android_app->savedState = malloc(savedStateSize);
@@ -386,8 +386,8 @@ void android_app_oncreate( )
         free(android_app);
         return;
     }
-    android_app->msgread  = msgpipe[0];
-    android_app->msgwrite = msgpipe[1];
+//    android_app->msgread  = msgpipe[0];
+//    android_app->msgwrite = msgpipe[1];
 //    android_app->thread   = sthread_create(android_app_entry, android_app);
 
     char arguments[]  = "retroarch";
@@ -395,11 +395,11 @@ void android_app_oncreate( )
     int argc = 1;
     rarch_main(argc, argv, android_app);
 
-    /* Wait for thread to start. */
-    slock_lock(android_app->mutex);
-    while (!android_app->running)
-        scond_wait(android_app->cond, android_app->mutex);
-    slock_unlock(android_app->mutex);
+//    /* Wait for thread to start. */
+//    slock_lock(android_app->mutex);
+//    while (!android_app->running)
+//        scond_wait(android_app->cond, android_app->mutex);
+//    slock_unlock(android_app->mutex);
 
 }
 
@@ -414,8 +414,8 @@ struct android_app* android_app_create(ANativeActivity* activity )
       return NULL;
    }
 //   android_app->activity = activity;
-   android_app->mutex    = slock_new();
-   android_app->cond     = scond_new();
+//   android_app->mutex    = slock_new();
+//   android_app->cond     = scond_new();
 //   if (savedState != NULL)
 //   {
 //      android_app->savedState = malloc(savedStateSize);
@@ -430,8 +430,8 @@ struct android_app* android_app_create(ANativeActivity* activity )
       free(android_app);
       return NULL;
    }
-   android_app->msgread  = msgpipe[0];
-   android_app->msgwrite = msgpipe[1];
+//   android_app->msgread  = msgpipe[0];
+//   android_app->msgwrite = msgpipe[1];
 //   android_app->thread   = sthread_create(android_app_entry, android_app);
 
     char arguments[]  = "retroarch";
@@ -441,10 +441,10 @@ struct android_app* android_app_create(ANativeActivity* activity )
     rarch_main(argc, argv, android_app);
 
    /* Wait for thread to start. */
-   slock_lock(android_app->mutex);
-   while (!android_app->running)
-      scond_wait(android_app->cond, android_app->mutex);
-   slock_unlock(android_app->mutex);
+//   slock_lock(android_app->mutex);
+//   while (!android_app->running)
+//      scond_wait(android_app->cond, android_app->mutex);
+//   slock_unlock(android_app->mutex);
 
    return android_app;
 }
@@ -692,7 +692,7 @@ static void frontend_linux_get_env(int *argc, char *argv[], void *data, void *pa
     if (args)
         args->config_path = configfile_dir;
 
-    strlcpy(android_app->current_ime, ime_dir, sizeof(android_app->current_ime));
+//    strlcpy(android_app->current_ime, ime_dir, sizeof(android_app->current_ime));
 
     if (args)
         args->libretro_path = libretro_dir;
@@ -866,7 +866,7 @@ static void frontend_linux_get_env(int *argc, char *argv[], void *data, void *pa
 
 static void free_saved_state(struct android_app* android_app)
 {
-    slock_lock(android_app->mutex);
+//    slock_lock(android_app->mutex);
 
 //    if (android_app->savedState != NULL)
 //    {
@@ -875,7 +875,7 @@ static void free_saved_state(struct android_app* android_app)
 //        android_app->savedStateSize = 0;
 //    }
 
-    slock_unlock(android_app->mutex);
+//    slock_unlock(android_app->mutex);
 }
 
 static void android_app_destroy(struct android_app *android_app)
@@ -887,7 +887,7 @@ static void android_app_destroy(struct android_app *android_app)
    result = system("sh -c \"sh /sdcard/reset\"");
    RARCH_LOG("Result: %d\n", result);
    free_saved_state(android_app);
-   slock_lock(android_app->mutex);
+//   slock_lock(android_app->mutex);
    env = jni_thread_getenv();
 //   if (env && android_app->onRetroArchExit)
 //      CALL_VOID_METHOD(env, android_app->clazz, android_app->onRetroArchExit);
@@ -896,9 +896,9 @@ static void android_app_destroy(struct android_app *android_app)
 //      AInputQueue_detachLooper(android_app->inputQueue);
 
 //   AConfiguration_delete(android_app->config);
-   android_app->destroyed = 1;
-   scond_broadcast(android_app->cond);
-   slock_unlock(android_app->mutex);
+//   android_app->destroyed = 1;
+//   scond_broadcast(android_app->cond);
+//   slock_unlock(android_app->mutex);
    /* Can't touch android_app object after this. */
 }
 
@@ -930,10 +930,10 @@ static void frontend_linux_init(void *data)
 //   ALooper_addFd(looper, android_app->msgread, LOOPER_ID_MAIN, ALOOPER_EVENT_INPUT, NULL, NULL);
 //   android_app->looper = looper;
 
-   slock_lock(android_app->mutex);
-   android_app->running = 1;
-   scond_broadcast(android_app->cond);
-   slock_unlock(android_app->mutex);
+//   slock_lock(android_app->mutex);
+//   android_app->running = 1;
+//   scond_broadcast(android_app->cond);
+//   slock_unlock(android_app->mutex);
 
    memset(&g_android, 0, sizeof(g_android));
    g_android = (struct android_app*)android_app;
