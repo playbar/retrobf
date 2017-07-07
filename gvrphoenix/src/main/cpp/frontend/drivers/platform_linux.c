@@ -97,6 +97,9 @@ char internal_storage_app_path[PATH_MAX_LENGTH] = {0};
 static char app_dir[PATH_MAX_LENGTH] = {0};
 static bool is_android_tv_device = false;
 
+int16_t analog_state[MAX_PADS][MAX_AXIS];
+int8_t hat_state[MAX_PADS][2];
+
 extern JavaVM* gvm;
 
 

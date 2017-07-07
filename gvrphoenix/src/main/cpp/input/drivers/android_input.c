@@ -978,9 +978,9 @@ static void android_input_poll_memcpy(void *data)
    for (i = 0; i < MAX_PADS; i++)
    {
       for (j = 0; j < 2; j++)
-         android_app->hat_state[i][j]    = android->hat_state[i][j];
+         hat_state[i][j]    = android->hat_state[i][j];
       for (j = 0; j < MAX_AXIS; j++)
-         android_app->analog_state[i][j] = android->analog_state[i][j];
+         analog_state[i][j] = android->analog_state[i][j];
    }
 }
 

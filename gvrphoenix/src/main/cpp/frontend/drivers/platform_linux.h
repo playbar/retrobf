@@ -59,6 +59,9 @@ extern char external_dir[PATH_MAX_LENGTH];
 extern char internal_storage_path[PATH_MAX_LENGTH];
 extern char internal_storage_app_path[PATH_MAX_LENGTH];
 
+extern int16_t analog_state[MAX_PADS][MAX_AXIS];
+extern int8_t hat_state[MAX_PADS][2];
+
 struct android_app;
 
 struct android_poll_source
@@ -158,8 +161,8 @@ struct android_app
     uint64_t sensor_state_mask;
     char current_ime[PATH_MAX_LENGTH];
     bool input_alive;
-    int16_t analog_state[MAX_PADS][MAX_AXIS];
-    int8_t hat_state[MAX_PADS][2];
+//    int16_t analog_state[MAX_PADS][MAX_AXIS];
+//    int8_t hat_state[MAX_PADS][2];
 //    jmethodID getIntent;
 //    jmethodID onRetroArchExit;
 //    jmethodID getStringExtra;
