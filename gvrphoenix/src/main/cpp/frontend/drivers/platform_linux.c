@@ -77,7 +77,7 @@ enum
    INTERNAL_STORAGE_NOT_WRITABLE
 };
 
-struct android_app *g_android;
+//struct android_app *g_android;
 static pthread_key_t thread_key;
 
 char rom_dir[PATH_MAX_LENGTH] = {0};
@@ -148,14 +148,14 @@ error:
 /* forward declaration */
 bool android_run_events(void *data);
 
-void android_app_write_cmd(struct android_app *android_app, int8_t cmd)
-{
-   if (!android_app)
-      return;
-
-//   if (write(android_app->msgwrite, &cmd, sizeof(cmd)) != sizeof(cmd))
-//      RARCH_ERR("Failure writing android_app cmd: %s\n", strerror(errno));
-}
+//void android_app_write_cmd(struct android_app *android_app, int8_t cmd)
+//{
+//   if (!android_app)
+//      return;
+//
+////   if (write(android_app->msgwrite, &cmd, sizeof(cmd)) != sizeof(cmd))
+////      RARCH_ERR("Failure writing android_app cmd: %s\n", strerror(errno));
+//}
 
 static void android_app_set_input(struct android_app *android_app, AInputQueue* inputQueue)
 {
@@ -248,7 +248,7 @@ static void* onSaveInstanceState(ANativeActivity* activity, size_t* outLen)
    RARCH_LOG("SaveInstanceState: %p\n", activity);
 //   slock_lock(android_app->mutex);
 //   android_app->stateSaved = 0;
-   android_app_write_cmd(android_app, APP_CMD_SAVE_STATE);
+//   android_app_write_cmd(android_app, APP_CMD_SAVE_STATE);
 
 //   while (!android_app->stateSaved)
 //      scond_wait(android_app->cond, android_app->mutex);
@@ -321,7 +321,7 @@ static void onInputQueueDestroyed(ANativeActivity* activity, AInputQueue* queue)
 JNIEnv *jni_thread_getenv(void)
 {
    JNIEnv *env;
-   struct android_app* android_app = (struct android_app*)g_android;
+//   struct android_app* android_app = (struct android_app*)g_android;
    int status = (*gvm)->AttachCurrentThread(gvm, &env, 0);
 
    if (status < 0)
@@ -337,148 +337,25 @@ JNIEnv *jni_thread_getenv(void)
 static void jni_thread_destruct(void *value)
 {
    JNIEnv *env = (JNIEnv*)value;
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
    RARCH_LOG("jni_thread_destruct()\n");
 
    if (!env)
       return;
 
-   if (android_app)
-      (*gvm)->DetachCurrentThread(gvm);
+//   if (android_app)
+//      (*gvm)->DetachCurrentThread(gvm);
    pthread_setspecific(thread_key, NULL);
 }
 
-static void android_app_entry(void *data)
-{
-   char arguments[]  = "retroarch";
-   char *argv[] = {arguments,   NULL};
-   int argc = 1;
-
-   rarch_main(argc, argv, data);
-    return;
-}
-
-
 void android_app_oncreate( )
 {
-    int msgpipe[2];
-    struct android_app *android_app = (struct android_app*)calloc(1, sizeof(*android_app));
-
-    if (!android_app)
-    {
-        RARCH_ERR("Failed to initialize android_app\n");
-        return;
-    }
-//    android_app->clazz = clazz;
-//    android_app->mutex    = slock_new();
-//    android_app->cond     = scond_new();
-//   if (savedState != NULL)
-//   {
-//      android_app->savedState = malloc(savedStateSize);
-//      android_app->savedStateSize = savedStateSize;
-//      memcpy(android_app->savedState, savedState, savedStateSize);
-//   }
-    if (pipe(msgpipe))
-    {
-        RARCH_ERR("could not create pipe: %s.\n", strerror(errno));
-//      if(android_app->savedState)
-//        free(android_app->savedState);
-        free(android_app);
-        return;
-    }
-//    android_app->msgread  = msgpipe[0];
-//    android_app->msgwrite = msgpipe[1];
-//    android_app->thread   = sthread_create(android_app_entry, android_app);
-
     char arguments[]  = "retroarch";
     char *argv[] = {arguments,   NULL};
     int argc = 1;
-    rarch_main(argc, argv, android_app);
-
-//    /* Wait for thread to start. */
-//    slock_lock(android_app->mutex);
-//    while (!android_app->running)
-//        scond_wait(android_app->cond, android_app->mutex);
-//    slock_unlock(android_app->mutex);
-
+    rarch_main(argc, argv);
 }
 
-struct android_app* android_app_create(ANativeActivity* activity )
-{
-   int msgpipe[2];
-   struct android_app *android_app = (struct android_app*)calloc(1, sizeof(*android_app));
-
-   if (!android_app)
-   {
-      RARCH_ERR("Failed to initialize android_app\n");
-      return NULL;
-   }
-//   android_app->activity = activity;
-//   android_app->mutex    = slock_new();
-//   android_app->cond     = scond_new();
-//   if (savedState != NULL)
-//   {
-//      android_app->savedState = malloc(savedStateSize);
-//      android_app->savedStateSize = savedStateSize;
-//      memcpy(android_app->savedState, savedState, savedStateSize);
-//   }
-   if (pipe(msgpipe))
-   {
-      RARCH_ERR("could not create pipe: %s.\n", strerror(errno));
-//      if(android_app->savedState)
-//        free(android_app->savedState);
-      free(android_app);
-      return NULL;
-   }
-//   android_app->msgread  = msgpipe[0];
-//   android_app->msgwrite = msgpipe[1];
-//   android_app->thread   = sthread_create(android_app_entry, android_app);
-
-    char arguments[]  = "retroarch";
-    char *argv[] = {arguments,   NULL};
-    int argc = 1;
-
-    rarch_main(argc, argv, android_app);
-
-   /* Wait for thread to start. */
-//   slock_lock(android_app->mutex);
-//   while (!android_app->running)
-//      scond_wait(android_app->cond, android_app->mutex);
-//   slock_unlock(android_app->mutex);
-
-   return android_app;
-}
-
-/*
- * Native activity interaction (called from main thread)
- **/
-
-void ANativeActivity_onCreate(ANativeActivity* activity, void* savedState, size_t savedStateSize)
-{
-   RARCH_LOG("Creating Native Activity: %p\n", activity);
-   activity->callbacks->onDestroy               = onDestroy;
-   activity->callbacks->onStart                 = onStart;
-   activity->callbacks->onResume                = onResume;
-   activity->callbacks->onSaveInstanceState     = onSaveInstanceState;
-   activity->callbacks->onPause                 = onPause;
-   activity->callbacks->onStop                  = onStop;
-   activity->callbacks->onConfigurationChanged  = onConfigurationChanged;
-   activity->callbacks->onLowMemory             = onLowMemory;
-   activity->callbacks->onWindowFocusChanged    = onWindowFocusChanged;
-   activity->callbacks->onNativeWindowCreated   = onNativeWindowCreated;
-   activity->callbacks->onNativeWindowDestroyed = onNativeWindowDestroyed;
-   activity->callbacks->onInputQueueCreated     = onInputQueueCreated;
-   activity->callbacks->onInputQueueDestroyed   = onInputQueueDestroyed;
-
-   /* These are set only for the native activity,
-    * and are reset when it ends. */
-   ANativeActivity_setWindowFlags(activity, AWINDOW_FLAG_KEEP_SCREEN_ON | AWINDOW_FLAG_FULLSCREEN, 0);
-
-   if (pthread_key_create(&thread_key, jni_thread_destruct))
-      RARCH_ERR("Error initializing pthread_key\n");
-
-   activity->instance = android_app_create(activity );
-}
 
 void frontend_android_get_name(char *s, size_t len)
 {
@@ -651,7 +528,7 @@ static void frontend_linux_get_os(char *s,
    strlcpy(s, "Android", len);
 }
 
-static void frontend_linux_get_env(int *argc, char *argv[], void *data, void *params_data)
+static void frontend_linux_get_env(int *argc, char *argv[], void *params_data)
 {
    unsigned i;
    int32_t major, minor, rel;
@@ -662,10 +539,10 @@ static void frontend_linux_get_env(int *argc, char *argv[], void *data, void *pa
    jobject                       obj  = NULL;
    jstring                      jstr  = NULL;
    jboolean                     jbool = JNI_FALSE;
-   struct android_app   *android_app  = (struct android_app*)data;
+//   struct android_app   *android_app  = (struct android_app*)data;
 
-   if (!android_app)
-      return;
+//   if (!android_app)
+//      return;
 
    env = jni_thread_getenv();
    if (!env)
@@ -935,8 +812,8 @@ static void frontend_linux_init(void *data)
 //   scond_broadcast(android_app->cond);
 //   slock_unlock(android_app->mutex);
 
-   memset(&g_android, 0, sizeof(g_android));
-   g_android = (struct android_app*)android_app;
+//   memset(&g_android, 0, sizeof(g_android));
+//   g_android = (struct android_app*)android_app;
 
    RARCH_LOG("Waiting for Android Native Window to be initialized ...\n");
 

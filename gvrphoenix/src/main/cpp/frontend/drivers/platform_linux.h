@@ -62,24 +62,24 @@ extern char internal_storage_app_path[PATH_MAX_LENGTH];
 extern int16_t analog_state[MAX_PADS][MAX_AXIS];
 extern int8_t hat_state[MAX_PADS][2];
 
-struct android_app;
+//struct android_app;
 
-struct android_poll_source
-{
-   /* The identifier of this source.  May be LOOPER_ID_MAIN or
-    * LOOPER_ID_INPUT. */
-   int32_t id;
+//struct android_poll_source
+//{
+//   /* The identifier of this source.  May be LOOPER_ID_MAIN or
+//    * LOOPER_ID_INPUT. */
+//   int32_t id;
+//
+//   /* The android_app this ident is associated with. */
+//   struct android_app* app;
+//
+//   /* Function to call to perform the standard processing of data from
+//    * this source. */
+//   void (*process)(struct android_app* app, struct android_poll_source* source);
+//};
 
-   /* The android_app this ident is associated with. */
-   struct android_app* app;
-
-   /* Function to call to perform the standard processing of data from
-    * this source. */
-   void (*process)(struct android_app* app, struct android_poll_source* source);
-};
-
-struct android_app
-{
+//struct android_app
+//{
    /* The application can place a pointer to its own state object
     * here if it likes. */
 //   void* userData;
@@ -169,7 +169,7 @@ struct android_app
 //    jmethodID isAndroidTV;
 //    jmethodID checkRuntimePermissions;
 
-};
+//};
 
 //struct activity_data{
 //  AConfiguration *config;
@@ -361,9 +361,9 @@ enum
 
 extern JNIEnv *jni_thread_getenv(void);
 
-void android_app_write_cmd(struct android_app *android_app, int8_t cmd);
+//void android_app_write_cmd(struct android_app *android_app, int8_t cmd);
 
-extern struct android_app *g_android;
+//extern struct android_app *g_android;
 #else
 #endif
 

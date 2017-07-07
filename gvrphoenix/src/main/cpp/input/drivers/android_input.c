@@ -288,7 +288,7 @@ error:
 static void android_input_poll_main_cmd(void)
 {
    int8_t cmd;
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
 
 //   if (read(android_app->msgread, &cmd, sizeof(cmd)) != sizeof(cmd))
 //      cmd = -1;
@@ -494,7 +494,7 @@ static bool android_input_init_handle(void)
 static void *android_input_init(const char *joypad_driver)
 {
    int32_t sdk;
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
    android_input_t *android = (android_input_t*)
       calloc(1, sizeof(*android));
 
@@ -790,7 +790,6 @@ static INLINE void android_input_poll_event_type_keyboard(
 }
 
 static INLINE void android_input_poll_event_type_key(
-      struct android_app *android_app,
       int action, int port, int keycode, int source,
       int type_event, int *handled)
 {
@@ -845,7 +844,7 @@ static int android_input_get_id_index_from_name(android_input_t *android,
    return -1;
 }
 
-static void handle_hotplug(android_input_t *android, struct android_app *android_app, int *port, int id, int source)
+static void handle_hotplug(android_input_t *android, int *port, int id, int source)
 {
    char device_name[256];
    char device_model[256];
@@ -916,7 +915,7 @@ static int android_input_get_id(AInputEvent *event)
 static void android_input_poll_input(void *data)
 {
    AInputEvent *event = NULL;
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
    android_input_t    *android     = (android_input_t*)data;
 
 //   /* Read all pending events. */
@@ -973,7 +972,7 @@ static void android_input_poll_memcpy(void *data)
 {
    unsigned i, j;
    android_input_t *android = (android_input_t*)data;
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
 
    for (i = 0; i < MAX_PADS; i++)
    {
@@ -989,13 +988,13 @@ void android_dispatch_motion_event(int source, int id,
                                    float x, float y, float z, float rz, float hatx, float haty,
                                    float ltrig, float rtrig, float brake, float gas)
 {
-    struct android_app *android_app = (struct android_app*)g_android;
+//    struct android_app *android_app = (struct android_app*)g_android;
     android_input_t    *android     = (android_input_t*)current_input_data;
     if (id == pad_id2)
         id = pad_id1;
     int port = android_input_get_id_port(android, id, source);
     if (port < 0 && !is_keyboard_id(id))
-        handle_hotplug(android, android_app, &port, id, source);
+        handle_hotplug(android, &port, id, source);
 
     android->hat_state[port][0] = (int)hatx;
     android->hat_state[port][1] = (int)haty;
@@ -1017,7 +1016,7 @@ void android_dispatch_motion_event(int source, int id,
 void android_dispatch_key_event(int source, int id, int keycode, int action, int mate)
 {
 //    AInputEvent *event = NULL;
-    struct android_app *android_app = (struct android_app*)g_android;
+//    struct android_app *android_app = (struct android_app*)g_android;
     android_input_t    *android     = (android_input_t*)current_input_data;
     if( current_input_data == NULL )
         return;
@@ -1030,7 +1029,7 @@ void android_dispatch_key_event(int source, int id, int keycode, int action, int
          int port = android_input_get_id_port(android, id, source);
 
          if (port < 0 && !is_keyboard_id(id))
-            handle_hotplug(android, android_app, &port, id, source);
+            handle_hotplug(android,  &port, id, source);
 
 
 //         if (keycode == 109) {
@@ -1039,10 +1038,10 @@ void android_dispatch_key_event(int source, int id, int keycode, int action, int
 //         }
          if (is_keyboard_id(id)) {
             android_input_poll_event_type_keyboard(action, mate, keycode, &handled);
-            android_input_poll_event_type_key(android_app, action, ANDROID_KEYBOARD_PORT, keycode,
+            android_input_poll_event_type_key( action, ANDROID_KEYBOARD_PORT, keycode,
                                               source, type_event, &handled);
          } else {
-            android_input_poll_event_type_key(android_app, action, port, keycode, source,
+            android_input_poll_event_type_key( action, port, keycode, source,
                                               type_event, &handled);
          }
 
@@ -1052,7 +1051,7 @@ void android_dispatch_key_event(int source, int id, int keycode, int action, int
 
 static void android_input_poll_user(void *data)
 {
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
    android_input_t *android = (android_input_t*)data;
 
 //   if ((android_app->sensor_state_mask & (UINT64_C(1) << RETRO_SENSOR_ACCELEROMETER_ENABLE)) && android_app->accelerometerSensor)
@@ -1095,7 +1094,7 @@ static void android_input_poll(void *data)
 {
    int ident;
    unsigned key = RARCH_PAUSE_TOGGLE;
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
 
     bool bpress = android_input_key_pressed(data, key);
    while ((ident = ALooper_pollAll((bpress) ? -1 : 1, NULL, NULL, NULL)) >= 0)
@@ -1133,7 +1132,7 @@ static void android_input_poll(void *data)
 
 bool android_run_events(void *data)
 {
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
 
    if (ALooper_pollOnce(-1, NULL, NULL, NULL) == LOOPER_ID_MAIN)
       android_input_poll_main_cmd();
@@ -1225,7 +1224,7 @@ static bool android_input_meta_key_pressed(void *data, int key)
 static void android_input_free_input(void *data)
 {
    android_input_t *android = (android_input_t*)data;
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
    if (!android)
       return;
 
@@ -1268,7 +1267,7 @@ static void android_input_enable_sensor_manager(struct android_app *android_app)
 static bool android_input_set_sensor_state(void *data, unsigned port,
       enum retro_sensor_action action, unsigned event_rate)
 {
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
 
    if (event_rate == 0)
       event_rate = 60;

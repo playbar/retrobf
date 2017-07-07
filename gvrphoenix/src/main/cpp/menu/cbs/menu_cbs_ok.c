@@ -878,7 +878,7 @@ static int file_load_with_detect_core_wrapper(
 
             content_info.argc        = 0;
             content_info.argv        = NULL;
-            content_info.args        = NULL;
+//            content_info.args        = NULL;
             content_info.environ_get = NULL;
 
             if (!task_push_load_content_with_new_core_from_menu(
@@ -988,7 +988,7 @@ static int generic_action_ok(const char *path,
 
             content_info.argc        = 0;
             content_info.argv        = NULL;
-            content_info.args        = NULL;
+//            content_info.args        = NULL;
             content_info.environ_get = NULL;
 
             flush_type = MENU_SETTINGS;
@@ -1142,7 +1142,7 @@ static int action_ok_file_load(const char *path,
 
    content_info.argc                   = 0;
    content_info.argv                   = NULL;
-   content_info.args                   = NULL;
+//   content_info.args                   = NULL;
    content_info.environ_get            = NULL;
 
    menu_path_new[0] = full_path_new[0] = '\0';
@@ -1214,7 +1214,7 @@ static int action_ok_playlist_entry_collection(const char *path,
 
    content_info.argc                   = 0;
    content_info.argv                   = NULL;
-   content_info.args                   = NULL;
+//   content_info.args                   = NULL;
    content_info.environ_get            = NULL;
 
    if (!menu_driver_ctl(RARCH_MENU_CTL_DRIVER_DATA_GET, &menu))
@@ -1340,7 +1340,7 @@ static int action_ok_playlist_entry(const char *path,
 
    content_info.argc                   = 0;
    content_info.argv                   = NULL;
-   content_info.args                   = NULL;
+//   content_info.args                   = NULL;
    content_info.environ_get            = NULL;
 
    if (!menu_driver_ctl(RARCH_MENU_CTL_DRIVER_DATA_GET, &menu))
@@ -1432,7 +1432,7 @@ static int action_ok_playlist_entry_start_content(const char *path,
 
    content_info.argc                   = 0;
    content_info.argv                   = NULL;
-   content_info.args                   = NULL;
+//   content_info.args                   = NULL;
    content_info.environ_get            = NULL;
 
    if (!menu_driver_ctl(RARCH_MENU_CTL_DRIVER_DATA_GET, &menu))
@@ -2052,7 +2052,7 @@ static int action_ok_load_core_deferred(const char *path,
 
    content_info.argc                   = 0;
    content_info.argv                   = NULL;
-   content_info.args                   = NULL;
+//   content_info.args                   = NULL;
    content_info.environ_get            = NULL;
 
    if (!menu_driver_ctl(RARCH_MENU_CTL_DRIVER_DATA_GET, &menu))
@@ -2075,7 +2075,7 @@ static int action_ok_start_net_retropad_core(const char *path,
 
    content_info.argc                   = 0;
    content_info.argv                   = NULL;
-   content_info.args                   = NULL;
+//   content_info.args                   = NULL;
    content_info.environ_get            = NULL;
 
    if (!task_push_start_builtin_core(
@@ -2094,7 +2094,7 @@ static int action_ok_start_video_processor_core(const char *path,
 
    content_info.argc                   = 0;
    content_info.argv                   = NULL;
-   content_info.args                   = NULL;
+//   content_info.args                   = NULL;
    content_info.environ_get            = NULL;
 
    if (!task_push_start_builtin_core(
@@ -2155,7 +2155,7 @@ static int action_ok_audio_run(const char *path,
 
    content_info.argc                   = 0;
    content_info.argv                   = NULL;
-   content_info.args                   = NULL;
+//   content_info.args                   = NULL;
    content_info.environ_get            = NULL;
 
    if (!task_push_load_content_with_core_from_menu(
@@ -2181,7 +2181,7 @@ static int action_ok_file_load_imageviewer(const char *path,
 
    content_info.argc                   = 0;
    content_info.argv                   = NULL;
-   content_info.args                   = NULL;
+//   content_info.args                   = NULL;
    content_info.environ_get            = NULL;
 
    fill_pathname_join(fullpath, menu_path, path,
@@ -2204,7 +2204,7 @@ static int action_ok_file_load_current_core(const char *path,
 
    content_info.argc                   = 0;
    content_info.argv                   = NULL;
-   content_info.args                   = NULL;
+//   content_info.args                   = NULL;
    content_info.environ_get            = NULL;
 
    if (!task_push_load_content_with_core_from_menu(
@@ -2224,7 +2224,7 @@ static int action_ok_file_load_detect_core(const char *path,
 
    content_info.argc                   = 0;
    content_info.argv                   = NULL;
-   content_info.args                   = NULL;
+//   content_info.args                   = NULL;
    content_info.environ_get            = NULL;
 
    if (!task_push_load_content_with_new_core_from_menu(
@@ -3694,7 +3694,7 @@ static int action_ok_start_core(const char *path,
 
    content_info.argc                   = 0;
    content_info.argv                   = NULL;
-   content_info.args                   = NULL;
+//   content_info.args                   = NULL;
    content_info.environ_get            = NULL;
 
    if (!task_push_start_current_core(&content_info))
@@ -3777,7 +3777,7 @@ static int action_ok_load_archive(const char *path,
 
    content_info.argc                   = 0;
    content_info.argv                   = NULL;
-   content_info.args                   = NULL;
+//   content_info.args                   = NULL;
    content_info.environ_get            = NULL;
 
    if (!menu_driver_ctl(RARCH_MENU_CTL_DRIVER_DATA_GET, &menu))
@@ -3844,7 +3844,7 @@ static int action_ok_load_archive_detect_core(const char *path,
 
             content_info.argc                   = 0;
             content_info.argv                   = NULL;
-            content_info.args                   = NULL;
+//            content_info.args                   = NULL;
             content_info.environ_get            = NULL;
 
             if (!task_push_load_content_with_new_core_from_menu(

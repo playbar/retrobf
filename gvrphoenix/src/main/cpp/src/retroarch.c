@@ -2232,7 +2232,7 @@ static enum runloop_state runloop_check_state(settings_t *settings, bool input_n
 
             content_info.argc               = 0;
             content_info.argv               = NULL;
-            content_info.args               = NULL;
+//            content_info.args               = NULL;
             content_info.environ_get        = NULL;
 
             if (!task_push_start_dummy_core(&content_info))

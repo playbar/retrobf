@@ -68,7 +68,7 @@ static void android_gfx_ctx_destroy(void *data)
 {
    android_ctx_data_t *and         = (android_ctx_data_t*)data;
 #ifdef HAVE_VULKAN
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
 #endif
 
    if (!and)
@@ -118,11 +118,11 @@ static void *android_gfx_ctx_init(video_frame_info_t *video_info, void *video_dr
       EGL_NONE
    };
 #endif
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
    android_ctx_data_t *and  = (android_ctx_data_t*)calloc(1, sizeof(*and));
 
-   if (!android_app || !and)
-      return false;
+//   if (!android_app || !and)
+//      return false;
 
 #ifdef HAVE_EGL
    if (g_es3)
@@ -274,7 +274,7 @@ static bool android_gfx_ctx_set_resize(void *data,
 {
 #ifdef HAVE_VULKAN
    android_ctx_data_t        *and  = (android_ctx_data_t*)data;
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
 #endif
    (void)data;
    (void)width;
@@ -312,7 +312,7 @@ static bool android_gfx_ctx_set_video_mode(void *data,
       bool fullscreen)
 {
 #ifdef HAVE_VULKAN
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
    android_ctx_data_t *and = (android_ctx_data_t*)data;
 #endif
 
@@ -396,9 +396,9 @@ static bool android_gfx_ctx_bind_api(void *data,
 static bool android_gfx_ctx_has_focus(void *data)
 {
    bool                    focused = true;
-   struct android_app *android_app = (struct android_app*)g_android;
-   if (!android_app)
-      return true;
+//   struct android_app *android_app = (struct android_app*)g_android;
+//   if (!android_app)
+//      return true;
 
 //   slock_lock(android_app->mutex);
 //   focused = !android_app->unfocused;

@@ -55,13 +55,13 @@ enum frontend_architecture
    FRONTEND_ARCH_TILE
 };
 
-typedef void (*environment_get_t)(int *argc, char *argv[], void *args, void *params_data);
+typedef void (*environment_get_t)(int *argc, char *argv[], void *params_data);
 typedef void (*process_args_t)(int *argc, char *argv[]);
 
 typedef struct frontend_ctx_driver
 {
    environment_get_t environment_get;
-   void (*init)(void *data);
+   void (*init)();
    void (*deinit)(void *data);
    void (*exitspawn)(char *s, size_t len);
 
@@ -121,7 +121,7 @@ void frontend_driver_process_args(int *argc, char *argv[]);
 
 bool frontend_driver_is_inited(void);
 
-void frontend_driver_init_first(void *args);
+void frontend_driver_init_first();
 
 void frontend_driver_free(void);
 

@@ -34,7 +34,7 @@ typedef struct content_ctx_info
 {
    int argc;                       /* Argument count. */
    char **argv;                    /* Argument variable list. */
-   void *args;                     /* Arguments passed from callee */
+//   void *args;                     /* Arguments passed from callee */
    environment_get_t environ_get;  /* Function passed for environment_get function */
 } content_ctx_info_t;
 

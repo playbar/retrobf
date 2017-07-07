@@ -96,26 +96,16 @@ void main_exit(void *args)
  *
  * Returns: varies per platform.
  **/
-int rarch_main(int argc, char *argv[], void *data)
+int rarch_main(int argc, char *argv[])
 {
-   void *args = (void*)data;
 
    rarch_ctl(RARCH_CTL_PREINIT, NULL);
-   frontend_driver_init_first(args);
+   frontend_driver_init_first();
    rarch_ctl(RARCH_CTL_INIT, NULL);
 
 //    todo set path
 //    path_set(RARCH_PATH_CORE, "/data/user/0/com.retroarch/cores/2048_libretro_android.so");
 //   path_set(RARCH_PATH_CORE, "lib2048.so");
-
-//    while(true) {
-//        input_poll();
-//        if( runloop_shutdown_initiated ) {
-//            break;
-//        }
-//    }
-
-
    return 0;
 }
 

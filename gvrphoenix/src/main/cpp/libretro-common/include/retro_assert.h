@@ -24,10 +24,11 @@
 #define __RETRO_ASSERT_H
 
 #include <assert.h>
+#include "log.h"
 
 #ifdef RARCH_INTERNAL
 #define retro_assert(cond) do { \
-   if (!(cond)) { printf("Assertion failed at %s:%d.\n", __FILE__, __LINE__); abort(); } \
+   if (!(cond)) { LOGE("Assertion failed at %s:%d.\n", __FILE__, __LINE__); abort(); } \
 } while(0)
 #else
 #define retro_assert(cond) assert(cond)

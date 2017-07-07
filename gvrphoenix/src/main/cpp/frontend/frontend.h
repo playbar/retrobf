@@ -27,7 +27,7 @@ RETRO_BEGIN_DECLS
 
 void main_exit(void *args);
     
-int rarch_main(int argc, char *argv[], void *data);
+int rarch_main(int argc, char *argv[]);
 
 RETRO_END_DECLS
 

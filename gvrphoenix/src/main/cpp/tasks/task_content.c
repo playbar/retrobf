@@ -246,9 +246,10 @@ static bool content_load(content_ctx_info_t *info)
 
    retro_assert(wrap_args);
 
-   if (info->environ_get)
-      info->environ_get(rarch_argc_ptr,
-            rarch_argv_ptr, info->args, wrap_args);
+   if (info->environ_get) {
+//       retro_assert(false);
+       info->environ_get(rarch_argc_ptr, rarch_argv_ptr, wrap_args);
+   }
 
    if (wrap_args->touched)
    {
@@ -706,8 +707,7 @@ static bool content_file_init(
 
 
 #ifdef HAVE_MENU
-static void menu_content_environment_get(int *argc, char *argv[],
-      void *args, void *params_data)
+static void menu_content_environment_get(int *argc, char *argv[],  void *params_data)
 {
    struct rarch_main_wrap *wrap_args = (struct rarch_main_wrap*)params_data;
    rarch_system_info_t *sys_info     = runloop_get_system_info();
@@ -857,7 +857,7 @@ static bool command_event_cmd_exec(const char *data,
 
    content_info.argc        = 0;
    content_info.argv        = NULL;
-   content_info.args        = NULL;
+//   content_info.args        = NULL;
    content_info.environ_get = NULL;
    content_info.environ_get = menu_content_environment_get;
 #endif
@@ -1469,13 +1469,14 @@ bool task_push_start_content(const char *core_path, const char *fullpath,
         return false;
 //
 //   core_path = "/data/data/com.retroarch/lib/ppsspp_libretro_android.so";
-   core_path = "libppsspp.so";
+   core_path = "/data/data/com.retroarch/lib/libppsspp.so";
+//    core_path = "/storage/emulated/0/apsp/libppsspp.so";
    fullpath = "/storage/emulated/0/apsp/9000715.iso";
 //
     content_ctx_info_t ctinfo;
     ctinfo.argc                   = 0;
     ctinfo.argv                   = NULL;
-    ctinfo.args                   = NULL;
+//    ctinfo.args                   = NULL;
     ctinfo.environ_get            = NULL;
     if (!task_push_load_content_from_playlist_from_menu(core_path, fullpath, &ctinfo, NULL, NULL))
         return false;

@@ -76,8 +76,6 @@ public final class RetroActivityFuture extends RetroActivityCommon {
 				Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath(),
 				Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.retroarch/files");
 
-		checkRuntimePermissions();
-
 		retroRender = new RetroRender(this);
 		// Ensure fullscreen immersion.
 		setImmersiveSticky();

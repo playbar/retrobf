@@ -37,6 +37,7 @@ public class RetroActivityCommon extends Activity
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		checkRuntimePermissionsRunnable();
 //		nativeOnCreate();
 	}
 
@@ -170,36 +171,8 @@ public class RetroActivityCommon extends Activity
 
 			if (permissionsList.size() > 0)
 			{
-				if (permissionsNeeded.size() > 0)
-				{
-					// Need Rationale
-					Log.i("RetroActivity", "Need to request external storage permissions.");
-
-					String message = "You need to grant access to " + permissionsNeeded.get(0);
-
-					for (int i = 1; i < permissionsNeeded.size(); i++)
-						message = message + ", " + permissionsNeeded.get(i);
-
-					showMessageOKCancel(message,
-						new DialogInterface.OnClickListener()
-						{
-							@Override
-							public void onClick(DialogInterface dialog, int which)
-							{
-								requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
-									REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
-
-								Log.i("RetroActivity", "User accepted request for external storage permissions.");
-							}
-						});
-				}
-				else
-				{
-					requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
+				requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
 						REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
-
-					Log.i("RetroActivity", "Requested external storage permissions.");
-				}
 			}
 		}
 	}

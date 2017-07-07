@@ -96,12 +96,12 @@ bool frontend_driver_is_inited(void)
    return true;
 }
 
-void frontend_driver_init_first(void *args)
+void frontend_driver_init_first()
 {
    current_frontend_ctx = &frontend_ctx_linux;
 
    if (current_frontend_ctx && current_frontend_ctx->init)
-      current_frontend_ctx->init(args);
+      current_frontend_ctx->init();
 }
 
 void frontend_driver_free(void)

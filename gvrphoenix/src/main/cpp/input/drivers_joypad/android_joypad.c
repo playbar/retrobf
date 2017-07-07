@@ -34,7 +34,7 @@ static bool android_joypad_button(unsigned port, uint16_t joykey)
 {
    unsigned hat_dir                = 0;
    uint8_t *buf                    = android_keyboard_state_get(port);
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
 
    if (port >= MAX_PADS)
       return false;
@@ -68,7 +68,7 @@ static bool android_joypad_button(unsigned port, uint16_t joykey)
 static int16_t android_joypad_axis(unsigned port, uint32_t joyaxis)
 {
    int val                  = 0;
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
 
    if (joyaxis == AXIS_NONE)
       return 0;
@@ -102,7 +102,7 @@ static bool android_joypad_query_pad(unsigned pad)
 static void android_joypad_destroy(void)
 {
    unsigned i, j;
-   struct android_app *android_app = (struct android_app*)g_android;
+//   struct android_app *android_app = (struct android_app*)g_android;
 
    for (i = 0; i < MAX_PADS; i++)
    {
