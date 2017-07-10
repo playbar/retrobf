@@ -1,19 +1,3 @@
-/*  RetroArch - A frontend for libretro.
- *  Copyright (C) 2010-2014 - Hans-Kristian Arntzen
- *  Copyright (C) 2011-2017 - Daniel De Matteis
- * 
- *  RetroArch is free software: you can redistribute it and/or modify it under the terms
- *  of the GNU General Public License as published by the Free Software Found-
- *  ation, either version 3 of the License, or (at your option) any later version.
- *
- *  RetroArch is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- *  PURPOSE.  See the GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License along with RetroArch.
- *  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #ifndef __AUDIO_DRIVER__H
 #define __AUDIO_DRIVER__H
 
@@ -254,29 +238,8 @@ bool audio_driver_init(void);
 
 bool audio_driver_mixer_add_stream(audio_mixer_stream_params_t *params);
 
-extern audio_driver_t audio_rsound;
-extern audio_driver_t audio_oss;
-extern audio_driver_t audio_alsa;
-extern audio_driver_t audio_alsathread;
-extern audio_driver_t audio_roar;
-extern audio_driver_t audio_openal;
 extern audio_driver_t audio_opensl;
-extern audio_driver_t audio_jack;
-extern audio_driver_t audio_sdl;
-extern audio_driver_t audio_xa;
-extern audio_driver_t audio_pulse;
-extern audio_driver_t audio_dsound;
-extern audio_driver_t audio_wasapi;
-extern audio_driver_t audio_coreaudio;
-extern audio_driver_t audio_xenon360;
-extern audio_driver_t audio_ps3;
-extern audio_driver_t audio_gx;
-extern audio_driver_t audio_ax;
-extern audio_driver_t audio_psp;
-extern audio_driver_t audio_ctr_csnd;
-extern audio_driver_t audio_ctr_dsp;
-extern audio_driver_t audio_rwebaudio;
-extern audio_driver_t audio_null;
+
 
 RETRO_END_DECLS
 

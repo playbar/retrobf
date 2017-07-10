@@ -1474,10 +1474,10 @@ bool task_push_start_content(const char *core_path, const char *fullpath,
    fullpath = "/storage/emulated/0/apsp/9000715.iso";
 //
     content_ctx_info_t ctinfo;
-    ctinfo.argc                   = 0;
-    ctinfo.argv                   = NULL;
+    ctinfo.argc = 0;
+    ctinfo.argv = NULL;
 //    ctinfo.args                   = NULL;
-    ctinfo.environ_get            = NULL;
+    ctinfo.environ_get = NULL;
     if (!task_push_load_content_from_playlist_from_menu(core_path, fullpath, &ctinfo, NULL, NULL))
         return false;
 

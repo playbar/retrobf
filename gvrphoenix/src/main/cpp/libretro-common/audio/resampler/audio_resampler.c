@@ -29,13 +29,7 @@
 #include <audio/audio_resampler.h>
 
 static const retro_resampler_t *resampler_drivers[] = {
-   &sinc_resampler,
-#ifdef HAVE_CC_RESAMPLER
-   &CC_resampler,
-#endif
    &nearest_resampler,
-   &null_resampler,
-   NULL,
 };
 
 static const struct resampler_config resampler_config = {
@@ -58,12 +52,7 @@ static const struct resampler_config resampler_config = {
  **/
 static int find_resampler_driver_index(const char *ident)
 {
-   unsigned i;
-
-   for (i = 0; resampler_drivers[i]; i++)
-      if (string_is_equal_noncase(ident, resampler_drivers[i]->ident))
-         return i;
-   return -1;
+   return 0;
 }
 
 /**
@@ -75,6 +64,7 @@ static int find_resampler_driver_index(const char *ident)
  **/
 const void *audio_resampler_driver_find_handle(int idx)
 {
+    idx = 0;
    const void *drv = resampler_drivers[idx];
    if (!drv)
       return NULL;
@@ -90,6 +80,7 @@ const void *audio_resampler_driver_find_handle(int idx)
  **/
 const char *audio_resampler_driver_find_ident(int idx)
 {
+    idx = 0;
    const retro_resampler_t *drv = resampler_drivers[idx];
    if (!drv)
       return NULL;
@@ -107,11 +98,6 @@ const char *audio_resampler_driver_find_ident(int idx)
  **/
 static const retro_resampler_t *find_resampler_driver(const char *ident)
 {
-   int i = find_resampler_driver_index(ident);
-
-   if (i >= 0)
-      return resampler_drivers[i];
-
    return resampler_drivers[0];
 }
 

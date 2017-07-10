@@ -98,20 +98,18 @@ static void sl_free(void *data)
    free(sl);
 }
 
-static void *sl_init(const char *device, unsigned rate, unsigned latency,
-      unsigned block_frames,
-      unsigned *new_rate)
+static void *sl_init(const char *device, unsigned rate, unsigned latency, unsigned block_frames, unsigned *new_rate)
 {
    unsigned i;
-   SLDataFormat_PCM fmt_pcm                        = {0};
-   SLDataSource audio_src                          = {0};
-   SLDataSink audio_sink                           = {0};
+   SLDataFormat_PCM fmt_pcm = {0};
+   SLDataSource audio_src = {0};
+   SLDataSink audio_sink = {0};
    SLDataLocator_AndroidSimpleBufferQueue loc_bufq = {0};
-   SLDataLocator_OutputMix loc_outmix              = {0};
-   SLresult res                                    = 0;
-   SLInterfaceID                                id = SL_IID_ANDROIDSIMPLEBUFFERQUEUE;
-   SLboolean                                req    = SL_BOOLEAN_TRUE;
-   sl_t                                        *sl = (sl_t*)calloc(1, sizeof(sl_t));
+   SLDataLocator_OutputMix loc_outmix = {0};
+   SLresult res = 0;
+   SLInterfaceID id = SL_IID_ANDROIDSIMPLEBUFFERQUEUE;
+   SLboolean req    = SL_BOOLEAN_TRUE;
+   sl_t *sl = (sl_t*)calloc(1, sizeof(sl_t));
 
    (void)device;
    if (!sl)
@@ -175,8 +173,8 @@ static void *sl_init(const char *device, unsigned rate, unsigned latency,
    GOTO_IF_FAIL(SLObjectItf_GetInterface(sl->buffer_queue_object, SL_IID_ANDROIDSIMPLEBUFFERQUEUE,
             &sl->buffer_queue));
 
-   sl->cond               = scond_new();
-   sl->lock               = slock_new();
+   sl->cond = scond_new();
+   sl->lock = slock_new();
 
    (*sl->buffer_queue)->RegisterCallback(sl->buffer_queue, opensl_callback, sl);
 
@@ -201,8 +199,7 @@ error:
 static bool sl_stop(void *data)
 {
    sl_t      *sl = (sl_t*)data;
-   sl->is_paused = (SLPlayItf_SetPlayState(sl->player, SL_PLAYSTATE_STOPPED) 
-         == SL_RESULT_SUCCESS) ? true : false;
+   sl->is_paused = (SLPlayItf_SetPlayState(sl->player, SL_PLAYSTATE_STOPPED) == SL_RESULT_SUCCESS) ? true : false;
 
    return sl->is_paused ? true : false;
 }
@@ -224,17 +221,16 @@ static void sl_set_nonblock_state(void *data, bool state)
 
 static bool sl_start(void *data, bool is_shutdown)
 {
-   sl_t      *sl = (sl_t*)data;
-   sl->is_paused = (SLPlayItf_SetPlayState(sl->player, SL_PLAYSTATE_PLAYING)
-         == SL_RESULT_SUCCESS) ? false : true;
+   sl_t *sl = (sl_t*)data;
+   sl->is_paused = (SLPlayItf_SetPlayState(sl->player, SL_PLAYSTATE_PLAYING) == SL_RESULT_SUCCESS) ? false : true;
    return sl->is_paused ? false : true;
 }
 
 
 static ssize_t sl_write(void *data, const void *buf_, size_t size)
 {
-   sl_t           *sl = (sl_t*)data;
-   size_t     written = 0;
+   sl_t *sl = (sl_t*)data;
+   size_t written = 0;
    const uint8_t *buf = (const uint8_t*)buf_;
 
    while (size)
