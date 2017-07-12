@@ -181,6 +181,7 @@ static void *sl_init(const char *device, unsigned rate, unsigned latency, unsign
    /* Enqueue a bit to get stuff rolling. */
    sl->buffered_blocks    = sl->buf_count;
    sl->buffer_index       = 0;
+//    sl->nonblock = true;
 
    for (i = 0; i < sl->buf_count; i++)
       (*sl->buffer_queue)->Enqueue(sl->buffer_queue, sl->buffer[i], sl->buf_size);

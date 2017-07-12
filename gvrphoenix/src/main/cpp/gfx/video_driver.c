@@ -2096,6 +2096,16 @@ unsigned video_pixel_get_alignment(unsigned pitch)
  *
  * Video frame render callback function.
  **/
+static const void *gdata;
+static unsigned gwidth;
+static unsigned gheight;
+static size_t  gpitch;
+
+void RetroDrawSecond()
+{
+    video_driver_frame(gdata, gwidth, gheight, gpitch);
+}
+
 void video_driver_frame(const void *data, unsigned width, unsigned height, size_t pitch)
 {
    static char video_driver_msg[256];
@@ -2103,6 +2113,10 @@ void video_driver_frame(const void *data, unsigned width, unsigned height, size_
    static retro_time_t curr_time;
    static retro_time_t fps_time;
    static float last_fps;
+    gdata = data;
+    gwidth = width;
+    gheight = height;
+    gpitch = pitch;
    unsigned output_width = 0;
    unsigned output_height = 0;
    unsigned output_pitch = 0;

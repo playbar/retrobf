@@ -484,16 +484,14 @@ static bool audio_driver_flush(const int16_t *data, size_t samples)
    if (recording_data)
       recording_push_audio(data, samples);
 
-   runloop_get_status(&is_paused, &is_idle, &is_slowmotion,
-         &is_perfcnt_enable);
+   runloop_get_status(&is_paused, &is_idle, &is_slowmotion, &is_perfcnt_enable);
 
    if (is_paused || audio_driver_mute_enable)
       return true;
    if (!audio_driver_active || !audio_driver_input_data)
       return false;
 
-   convert_s16_to_float(audio_driver_input_data, data, samples,
-         audio_driver_volume_gain);
+   convert_s16_to_float(audio_driver_input_data, data, samples, audio_driver_volume_gain);
 
    src_data.data_in               = audio_driver_input_data;
    src_data.input_frames          = samples >> 1;
@@ -525,11 +523,9 @@ static bool audio_driver_flush(const int16_t *data, size_t samples)
    if (audio_driver_control)
    {
       /* Readjust the audio input rate. */
-      unsigned write_idx   = audio_driver_free_samples_count++ &
-         (AUDIO_BUFFER_FREE_SAMPLES_COUNT - 1);
+      unsigned write_idx   = audio_driver_free_samples_count++ & (AUDIO_BUFFER_FREE_SAMPLES_COUNT - 1);
       int      half_size   = (int)(audio_driver_buffer_size / 2);
-      int      avail       =
-         (int)current_audio->write_avail(audio_driver_context_audio_data);
+      int      avail       = (int)current_audio->write_avail(audio_driver_context_audio_data);
       int      delta_mid   = avail - half_size;
       double   direction   = (double)delta_mid / half_size;
       double   adjust      = 1.0 + audio_driver_rate_control_delta * direction;
@@ -539,10 +535,8 @@ static bool audio_driver_flush(const int16_t *data, size_t samples)
             (unsigned)(100 - (avail * 100) / audio_driver_buffer_size));
 #endif
 
-      audio_driver_free_samples_buf
-         [write_idx]               = avail;
-      audio_source_ratio_current   =
-         audio_source_ratio_original * adjust;
+      audio_driver_free_samples_buf[write_idx] = avail;
+      audio_source_ratio_current = audio_source_ratio_original * adjust;
 
 #if 0
       RARCH_LOG_OUTPUT("[Audio]: New rate: %lf, Orig rate: %lf\n",
@@ -628,12 +622,12 @@ size_t audio_driver_sample_batch(const int16_t *data, size_t frames)
    if (frames > (AUDIO_CHUNK_SIZE_NONBLOCKING >> 1))
       frames = AUDIO_CHUNK_SIZE_NONBLOCKING >> 1;
 
-   slock_lock(glock);
+//   slock_lock(glock);
    gaudioeable = true;
    gframes = frames;
    memcpy(gdata, data, sizeof(int16_t) * gframes * 2);
 //   scond_signal(gcond);
-   slock_unlock(glock);
+//   slock_unlock(glock);
 
 //   audio_driver_flush(data, frames << 1);
 
@@ -1078,14 +1072,14 @@ void audio_driver_monitor_set_rate(void)
 
 bool audio_driver_callback(void)
 {
-   slock_lock(glock);
+//   slock_lock(glock);
    if(gaudioeable && gframes > 0) {
 //      scond_wait(gcond, glock);
       audio_driver_flush(gdata, gframes << 1);
 //      memset(gdata, 0, sizeof(int16_t)* 4096);
       gframes = 0;
    }
-   slock_unlock(glock);
+//   slock_unlock(glock);
 
 //   if (!audio_callback.callback)
 //      return false;

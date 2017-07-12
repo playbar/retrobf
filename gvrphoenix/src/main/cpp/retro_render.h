@@ -5,7 +5,8 @@
 extern "C"{
 void RetroInit(const char *core_path, const char *game_path);
 void RetroSurfaceChange(int width, int height);
-void RetroDrawFrame();
+void RetroDrawFirst();
+void RetroDrawSecond();
 }
 #endif
 

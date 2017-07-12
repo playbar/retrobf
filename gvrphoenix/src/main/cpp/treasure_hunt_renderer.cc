@@ -500,8 +500,11 @@ void TreasureHuntRenderer::DrawFrame() {
         DrawWorld(kMultiview);
     } else {
         DrawWorld(kLeftView);
+        RetroDrawFirst();
         DrawWorld(kRightView);
+        RetroDrawSecond();
     }
+
     frame.Unbind();
     framebuf = frame.GetFramebufferObject(0);
     re=    glIsFramebuffer(framebuf);
@@ -674,7 +677,7 @@ void TreasureHuntRenderer::DrawWorld(ViewType view) {
 //    DrawCube(view);
 //    DrawFloor(view);
 
-  RetroDrawFrame();
+//  RetroDrawFirst();
 //  Draw(&esContext);
 
   if (gvr_viewer_type_ == GVR_VIEWER_TYPE_DAYDREAM) {

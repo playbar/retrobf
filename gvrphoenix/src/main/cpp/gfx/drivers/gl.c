@@ -1028,7 +1028,7 @@ static bool gl_frame(void *data, const void *frame,
       if (!gl->fbo_inited)
       {
          gl_bind_backbuffer();
-         gl_set_viewport(gl, video_info, width, height, false, true);
+         gl_set_viewport(gl, video_info, frame_width, frame_height, false, true);
       }
 
       glDisable(GL_DEPTH_TEST);

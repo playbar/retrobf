@@ -156,11 +156,15 @@ JNI_RETRO(void,  nativeRetroSurfaceChange)(JNIEnv *env, jclass clazz, int width,
     RetroSurfaceChange(width, height);
 }
 
-JNI_RETRO(void,  nativeRetroDrawFrame)(JNIEnv *env, jclass clazz)
+JNI_RETRO(void,  nativeRetroDrawFirst)(JNIEnv *env, jclass clazz)
 {
-    RetroDrawFrame();
+    RetroDrawFirst();
 }
 
+JNI_RETRO(void,  nativeRetroSecond)(JNIEnv *env, jclass clazz)
+{
+    RetroDrawSecond();
+}
 ///////////////////////////////////////////////
 
 

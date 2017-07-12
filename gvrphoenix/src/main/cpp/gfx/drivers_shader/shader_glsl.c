@@ -503,20 +503,17 @@ static void gl_glsl_reset_attrib(glsl_shader_data_t *glsl)
    glsl->attribs.index = 0;
 }
 
-static void gl_glsl_set_vbo(GLfloat **buffer, size_t *buffer_elems,
-      const GLfloat *data, size_t elems)
+static void gl_glsl_set_vbo(GLfloat **buffer, size_t *buffer_elems, const GLfloat *data, size_t elems)
 {
    if (elems > *buffer_elems)
    {
-      GLfloat *new_buffer = (GLfloat*)
-         realloc(*buffer, elems * sizeof(GLfloat));
+      GLfloat *new_buffer = (GLfloat*) realloc(*buffer, elems * sizeof(GLfloat));
       retro_assert(new_buffer);
       *buffer = new_buffer;
    }
 
    memcpy(*buffer, data, elems * sizeof(GLfloat));
-   glBufferData(GL_ARRAY_BUFFER, elems * sizeof(GLfloat),
-         data, GL_STATIC_DRAW);
+   glBufferData(GL_ARRAY_BUFFER, elems * sizeof(GLfloat), data, GL_STATIC_DRAW);
    *buffer_elems = elems;
 }
 
@@ -530,8 +527,7 @@ static INLINE void gl_glsl_set_attribs(glsl_shader_data_t *glsl,
 
    glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-   if (elems != *buffer_elems ||
-         memcmp(data, *buffer, elems * sizeof(GLfloat)))
+   if (elems != *buffer_elems || memcmp(data, *buffer, elems * sizeof(GLfloat)))
       gl_glsl_set_vbo(buffer, buffer_elems, data, elems);
 
    for (i = 0; i < num_attrs; i++)
@@ -541,8 +537,7 @@ static INLINE void gl_glsl_set_attribs(glsl_shader_data_t *glsl,
          GLint loc = attrs[i].loc;
 
          glEnableVertexAttribArray(loc);
-         glVertexAttribPointer(loc, attrs[i].size, GL_FLOAT, GL_FALSE, 0,
-               (const GLvoid*)(uintptr_t)attrs[i].offset);
+         glVertexAttribPointer(loc, attrs[i].size, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)(uintptr_t)attrs[i].offset);
          glsl->attribs.elems[glsl->attribs.index++] = loc;
       }
       else
@@ -1426,29 +1421,54 @@ static bool gl_glsl_set_coords(void *handle_data, void *shader_data,
 
    if (uni->tex_coord >= 0)
    {
-      gl_glsl_set_coord_array(attribs, uni->tex_coord,
-            coords->tex_coord, coords, size, 2);
+//      gl_glsl_set_coord_array(attribs, uni->tex_coord, coords->tex_coord, coords, size, 2);
+      unsigned y;
+      attribs[attribs_size].loc = uni->tex_coord;
+      attribs[attribs_size].size = 2;
+      attribs[attribs_size].offset = size * sizeof(GLfloat);
+      for (y = 0; y < (2 * coords->vertices); y++)
+         buffer[y + size]  = coords->tex_coord[y];
+      size += 2 * coords->vertices;
+
       attribs_size++;
    }
 
    if (uni->vertex_coord >= 0)
    {
-      gl_glsl_set_coord_array(attribs, uni->vertex_coord,
-            coords->vertex, coords, size, 2);
+//      gl_glsl_set_coord_array(attribs, uni->vertex_coord, coords->vertex, coords, size, 2);
+       unsigned y;
+       attribs[attribs_size].loc = uni->vertex_coord;
+       attribs[attribs_size].size = 2;
+       attribs[attribs_size].offset = size * sizeof(GLfloat);
+       for (y = 0; y < (2 * coords->vertices); y++)
+           buffer[y + size]  = coords->vertex[y];
+       size += 2 * coords->vertices;
       attribs_size++;
    }
 
    if (uni->color >= 0)
    {
-      gl_glsl_set_coord_array(attribs, uni->color,
-            coords->color, coords, size, 4);
+//      gl_glsl_set_coord_array(attribs, uni->color, coords->color, coords, size, 4);
+       unsigned y;
+       attribs[attribs_size].loc = uni->color;
+       attribs[attribs_size].size = 4;
+       attribs[attribs_size].offset = size * sizeof(GLfloat);
+       for (y = 0; y < (4 * coords->vertices); y++)
+           buffer[y + size]  = coords->color[y];
+       size += 4 * coords->vertices;
       attribs_size++;
    }
 
    if (uni->lut_tex_coord >= 0)
    {
-      gl_glsl_set_coord_array(attribs, uni->lut_tex_coord,
-            coords->lut_tex_coord, coords, size, 2);
+//      gl_glsl_set_coord_array(attribs, uni->lut_tex_coord, coords->lut_tex_coord, coords, size, 2);
+       unsigned y;
+       attribs[attribs_size].loc = uni->lut_tex_coord;
+       attribs[attribs_size].size = 2;
+       attribs[attribs_size].offset = size * sizeof(GLfloat);
+       for (y = 0; y < (2 * coords->vertices); y++)
+           buffer[y + size]  = coords->lut_tex_coord[y];
+       size += 2 * coords->vertices;
       attribs_size++;
    }
 

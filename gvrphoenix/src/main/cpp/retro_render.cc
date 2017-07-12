@@ -34,10 +34,10 @@ void RetroSurfaceChange(int width, int height)
 
 }
 
-void RetroDrawFrame()
+void RetroDrawFirst()
 {
     pthread_t pid = pthread_self();
-    LOGE("threadid:RetroDrawFrame, pid=%ld", pid);
+    LOGE("threadid:RetroDrawFirst, pid=%ld", pid);
     unsigned sleep_ms = 0;
     int ret = runloop_iterate(&sleep_ms);
     if (ret == 1 && sleep_ms > 0)

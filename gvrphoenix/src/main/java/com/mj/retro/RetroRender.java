@@ -74,6 +74,7 @@ public class RetroRender {
     private native void nativeSetPath(String strPath);
     private native void nativeRetroInit(String strCorepath, String strGamePath);
     private native void nativeRetroSurfaceChange(int width, int height );
-    private native void nativeRetroDrawFrame( );
+    private native void nativeRetroDrawFirst( );
+    private native void nativeRetroDrawSecond();
 
 }
