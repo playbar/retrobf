@@ -44,7 +44,7 @@
   }
 
 int gViewType = 0; // 0:left, 1:right
-video_viewport gViewPort;
+video_viewport gViewPort = {0, 0, 1124, 1381, 0, 0};
 GLint frameBuffer = 0;
 
 namespace {
@@ -415,7 +415,12 @@ void TreasureHuntRenderer::InitializeGl() {
 ////    // todo set path
 //////    path_set(RARCH_PATH_CORE, "/data/user/0/com.retroarch/cores/2048_libretro_android.so");
 //    path_set(RARCH_PATH_CORE, "lib2048.so");
-    RetroInit(NULL, NULL);
+    //   core_path = "/data/data/com.retroarch/lib/ppsspp_libretro_android.so";
+//    const char *core_path = "/data/data/com.retroarch/lib/libsnes9x.so";
+    const char *core_path = "/data/data/com.retroarch/lib/libppsspp.so";
+    const char *fullpath = "/storage/emulated/0/apsp/psp/9000715.iso";
+//    const char *fullpath = "/storage/emulated/0/apsp/sfc/3000528.zip";
+    RetroInit(core_path, fullpath);
 
 }
 

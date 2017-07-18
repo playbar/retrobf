@@ -268,10 +268,6 @@ void gl_set_viewport(void *data, video_frame_info_t *video_info,
         height = gViewPort.width / device_aspect;
         glViewport(gViewPort.x, gViewPort.y + height/2, gViewPort.width, height);
     }
-//    if(gViewType == 0)
-//        glViewport(gl->vp.x, gl->vp.y, 1280, gl->vp.height);
-//    else
-//        glViewport(1280, gl->vp.y, 1280, gl->vp.height);
 
    gl_set_projection(gl, &default_ortho, allow_rotate);
 

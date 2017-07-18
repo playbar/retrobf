@@ -306,7 +306,8 @@ public final class RetroActivityFuture extends GvrActivity implements GvrView.St
 				Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath(),
 				Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.retroarch/files");
 
-		initializeGvrView();
+		initNativeView();
+//		initializeGvrView();
 
 		modelCube = new float[16];
 		camera = new float[16];
@@ -805,8 +806,8 @@ public final class RetroActivityFuture extends GvrActivity implements GvrView.St
 
 		updateModelPosition();
 
-		String corepath = "/data/data/com.retroarch/lib/libsnes9x.so";
-		String gamepath = "/storage/emulated/0/apsp/sfc/3000528.zip";
+		String corepath = "/data/data/com.retroarch/lib/libppsspp.so";
+		String gamepath = "/storage/emulated/0/apsp/psp/9000715.iso";
 		retroRender.retroInit(corepath, gamepath);
 
 		checkGLError("onSurfaceCreated");
