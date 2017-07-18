@@ -1469,9 +1469,10 @@ bool task_push_start_content(const char *core_path, const char *fullpath,
         return false;
 //
 //   core_path = "/data/data/com.retroarch/lib/ppsspp_libretro_android.so";
-   core_path = "/data/data/com.retroarch/lib/libppsspp.so";
+   core_path = "/data/data/com.retroarch/lib/libsnes9x.so";
 //    core_path = "/storage/emulated/0/apsp/libppsspp.so";
-   fullpath = "/storage/emulated/0/apsp/9000715.iso";
+   fullpath = "/storage/emulated/0/apsp/sfc/3000528.zip";
+//    fullpath = "/storage/emulated/0/apsp/sola.iso";
 //
     content_ctx_info_t ctinfo;
     ctinfo.argc = 0;

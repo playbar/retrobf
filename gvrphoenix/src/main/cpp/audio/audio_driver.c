@@ -54,6 +54,7 @@ size_t  gframes;
 slock_t *glock;
 scond_t *gcond;
 bool gaudioeable = false;
+FILE *pFile = NULL;
 
 static const audio_driver_t *audio_drivers[] = {
    &audio_opensl,
@@ -270,7 +271,7 @@ static bool audio_driver_init_internal(bool audio_cb_inited)
    settings_t *settings  = config_get_ptr();
    /* Accomodate rewind since at some point we might have two full buffers. */
    size_t outsamples_max = AUDIO_CHUNK_SIZE_NONBLOCKING * 2 * AUDIO_MAX_RATIO * settings->floats.slowmotion_ratio;
-   audio_cb_inited = true;
+//   audio_cb_inited = true;
 
    convert_s16_to_float_init_simd();
    convert_float_to_s16_init_simd();
@@ -622,14 +623,21 @@ size_t audio_driver_sample_batch(const int16_t *data, size_t frames)
    if (frames > (AUDIO_CHUNK_SIZE_NONBLOCKING >> 1))
       frames = AUDIO_CHUNK_SIZE_NONBLOCKING >> 1;
 
-//   slock_lock(glock);
-   gaudioeable = true;
-   gframes = frames;
-   memcpy(gdata, data, sizeof(int16_t) * gframes * 2);
+//   pFile = fopen("/storage/emulated/0/wave.pcm", "ab+");
+//    if( pFile != NULL )
+//    {
+//        fwrite(data, frames << 1, 1, pFile);
+//    }
+//   fclose(pFile);
+
+////   slock_lock(glock);
+//   gaudioeable = true;
+//   gframes = frames;
+//   memcpy(gdata, data, sizeof(int16_t) * gframes * 2);
 //   scond_signal(gcond);
 //   slock_unlock(glock);
 
-//   audio_driver_flush(data, frames << 1);
+   audio_driver_flush(data, frames << 1);
 
    return frames;
 }

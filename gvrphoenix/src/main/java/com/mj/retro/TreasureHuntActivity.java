@@ -16,6 +16,7 @@
 
 package com.mj.retro;
 
+import android.app.Activity;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.Matrix;

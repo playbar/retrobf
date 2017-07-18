@@ -494,7 +494,7 @@ void TreasureHuntRenderer::DrawFrame() {
     if( re == GL_TRUE ){
         LOGE("frame is framebuffer, frameid:%d", framebuf);
     }
-    glClearColor(0.8f, 0.8f, 0.8f, 0.5f);  // Dark background so text shows up.
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  // Dark background so text shows up.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (multiview_enabled_) {
         DrawWorld(kMultiview);

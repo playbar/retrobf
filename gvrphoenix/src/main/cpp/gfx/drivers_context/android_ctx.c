@@ -237,7 +237,7 @@ static void android_gfx_ctx_check_window(void *data, bool *quit,
 #ifdef HAVE_EGL
          egl_get_video_size(&and->egl, &new_width, &new_height);
 #endif
-        new_width = 2560;
+        new_width = 1280;
            new_height = 1440;
          break;
       case GFX_CTX_VULKAN_API:

@@ -21,6 +21,7 @@
 
 #include <rthreads/rthreads.h>
 #include <src/verbosity.h>
+#include <stdio.h>
 
 #include "../audio_driver.h"
 
@@ -128,9 +129,11 @@ static void *sl_init(const char *device, unsigned rate, unsigned latency, unsign
       sl->buf_size  = block_frames * 4;
    else
       sl->buf_size  = next_pow2(32 * latency);
+//    sl->buf_size = 4096;
 
    sl->buf_count    = (latency * 4 * rate + 500) / 1000;
    sl->buf_count    = (sl->buf_count + sl->buf_size / 2) / sl->buf_size;
+//    sl->buf_count = 4;
 
    sl->buffer       = (uint8_t**)calloc(sizeof(uint8_t*), sl->buf_count);
    if (!sl->buffer)
@@ -264,6 +267,12 @@ static ssize_t sl_write(void *data, const void *buf_, size_t size)
 
       if (sl->buffer_ptr >= sl->buf_size)
       {
+//          FILE *pFile = fopen("/storage/emulated/0/wave.pcm", "ab+");
+//          if( pFile != NULL )
+//          {
+//              fwrite(sl->buffer[sl->buffer_index], sl->buf_size, 1, pFile);
+//          }
+//          fclose(pFile);
          SLresult res     = (*sl->buffer_queue)->Enqueue(sl->buffer_queue, sl->buffer[sl->buffer_index], sl->buf_size);
          sl->buffer_index = (sl->buffer_index + 1) % sl->buf_count;
          __sync_fetch_and_add(&sl->buffered_blocks, 1);

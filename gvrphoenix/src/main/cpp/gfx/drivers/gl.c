@@ -174,6 +174,8 @@ static void gl_set_viewport_wrapper(void *data, unsigned viewport_width,
 extern int gViewType;
 extern struct video_viewport gViewPort;
 
+int icount = 0;
+
 void gl_set_viewport(void *data, video_frame_info_t *video_info,
       unsigned viewport_width,
       unsigned viewport_height,
@@ -258,7 +260,14 @@ void gl_set_viewport(void *data, video_frame_info_t *video_info,
       gl->vp.y *= 2;
 #endif
 
-   glViewport(gViewPort.x, gViewPort.y, gViewPort.width, gViewPort.height);
+    if( (viewport_width < 10 || viewport_height < 10) && icount < 1000 ) {
+        ++icount;
+        glViewport(gViewPort.x, gViewPort.y, gViewPort.width, gViewPort.height);
+    }
+    else{
+        height = gViewPort.width / device_aspect;
+        glViewport(gViewPort.x, gViewPort.y + height/2, gViewPort.width, height);
+    }
 //    if(gViewType == 0)
 //        glViewport(gl->vp.x, gl->vp.y, 1280, gl->vp.height);
 //    else
@@ -997,7 +1006,7 @@ static bool gl_frame(void *data, const void *frame,
          gl_renderchain_start_render(gl, video_info);
       }
       else
-         gl_set_viewport(gl, video_info, width, height, false, true);
+         gl_set_viewport(gl, video_info, frame_width, frame_height, false, true);
    }
 
    if (frame)
