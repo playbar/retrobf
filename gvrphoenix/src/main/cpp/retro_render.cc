@@ -14,12 +14,11 @@ void RetroInit(const char *core_path, const char *game_path)
     if (frontend_driver_is_inited())
     {
         content_ctx_info_t info;
-        char arguments[]  = "retroarch";
+        char arguments[]  = "retrobf";
         char *argv[] = {arguments,   NULL};
         int argc = 1;
         info.argc            = argc;
         info.argv            = argv;
-//        info.args            = (void*)g_android;
         info.environ_get     = frontend_driver_environment_get_ptr();
 
         if (!task_push_start_content(core_path, game_path, &info, CORE_TYPE_PLAIN, NULL, NULL))

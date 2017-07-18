@@ -10,8 +10,7 @@ import android.view.MotionEvent;
 
 public class RetroRender {
 
-    public RetroRender(Context ctx){
-//        nativeOnCreate(ctx);
+    public RetroRender(){
     }
 
     public void setPath(String strPath)
@@ -19,11 +18,17 @@ public class RetroRender {
         nativeSetPath(strPath);
     }
 
-    public void retroInit()
+    public void retroInit(String corePath, String gamePath)
     {
-        String corepath = "/data/data/com.retroarch/cores/ppsspp_libretro_android.so";
-        String gamepath = "/storage/emulated/0/apsp/sola.iso";
-        nativeRetroInit(corepath, gamepath);
+        nativeRetroInit(corePath, gamePath);
+    }
+
+    public void retroDrawFirst(){
+        nativeRetroDrawFirst();
+    }
+
+    public void retroDrawSecond(){
+        nativeRetroDrawSecond();
     }
 
     public void dispatchMotionEvent(MotionEvent ev )

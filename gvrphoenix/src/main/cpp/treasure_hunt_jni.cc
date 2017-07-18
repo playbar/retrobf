@@ -161,7 +161,7 @@ JNI_RETRO(void,  nativeRetroDrawFirst)(JNIEnv *env, jclass clazz)
     RetroDrawFirst();
 }
 
-JNI_RETRO(void,  nativeRetroSecond)(JNIEnv *env, jclass clazz)
+JNI_RETRO(void,  nativeRetroDrawSecond)(JNIEnv *env, jclass clazz)
 {
     RetroDrawSecond();
 }
