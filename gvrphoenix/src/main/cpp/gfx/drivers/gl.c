@@ -996,12 +996,14 @@ static bool gl_frame(void *data, const void *frame,
 
       video_info->cb_set_resize(video_info->context_data, mode.width, mode.height);
 
+#ifdef HAVE_FBO
       if (gl->fbo_inited)
       {
          gl_check_fbo_dimensions(gl);
          gl_renderchain_start_render(gl, video_info);
       }
       else
+#endif
          gl_set_viewport(gl, video_info, frame_width, frame_height, false, true);
    }
 
@@ -1013,11 +1015,13 @@ static bool gl_frame(void *data, const void *frame,
    /* Can be NULL for frame dupe / NULL render. */
    if (frame)
    {
+#ifdef HAVE_FBO
       if (!gl->hw_render_fbo_init)
       {
          gl_update_input_size(gl, frame_width, frame_height, pitch, true);
          gl_copy_frame(gl, video_info, frame, frame_width, frame_height, pitch);
       }
+#endif
 
       /* No point regenerating mipmaps
        * if there are no new frames. */
@@ -1027,6 +1031,7 @@ static bool gl_frame(void *data, const void *frame,
 
    /* Have to reset rendering state which libretro core
     * could easily have overridden. */
+#ifdef HAVE_FBO
    if (gl->hw_render_fbo_init)
    {
       gl_update_input_size(gl, frame_width, frame_height, pitch, false);
@@ -1045,6 +1050,7 @@ static bool gl_frame(void *data, const void *frame,
       glBlendEquation(GL_FUNC_ADD);
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
    }
+#endif
 
    gl->tex_info.tex           = gl->texture[gl->tex_index];
    gl->tex_info.input_size[0] = frame_width;
@@ -1054,6 +1060,7 @@ static bool gl_frame(void *data, const void *frame,
 
    feedback_info              = gl->tex_info;
 
+#ifdef HAVE_FBO
    if (gl->fbo_feedback_enable)
    {
       const struct video_fbo_rect *rect = &gl->fbo_rect[gl->fbo_feedback_pass];
@@ -1068,6 +1075,7 @@ static bool gl_frame(void *data, const void *frame,
 
       set_texture_coords(feedback_info.coord, xamt, yamt);
    }
+#endif
 
 //   glClear(GL_COLOR_BUFFER_BIT);
 
@@ -1099,8 +1107,10 @@ static bool gl_frame(void *data, const void *frame,
 
    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
+#ifdef HAVE_FBO
    if (gl->fbo_inited)
       gl_renderchain_render(gl, video_info, frame_count, &gl->tex_info, &feedback_info);
+#endif
 
    /* Set prev textures. */
    gl_renderchain_bind_prev_texture(gl, &gl->tex_info);
@@ -1125,12 +1135,13 @@ static bool gl_frame(void *data, const void *frame,
    video_info->cb_update_window_title(video_info->context_data, video_info);
 
    /* Reset state which could easily mess up libretro core. */
+#ifdef HAVE_FBO
    if (gl->hw_render_fbo_init)
    {
       video_info->cb_shader_use(gl, video_info->shader_data, 0, true);
       glBindTexture(GL_TEXTURE_2D, 0);
-
    }
+#endif
 
    /* Screenshots. */
    if (gl->readback_buffer_screenshot)
@@ -1342,7 +1353,9 @@ static bool resolve_extensions(gl_t *gl, const char *context_ident)
 
    /* GLES3 has unpack_subimage and sRGB in core. */
    gl->support_unpack_row_length = gl_check_capability(GL_CAPS_UNPACK_ROW_LENGTH);
+#ifdef HAVE_FBO
    gl->has_srgb_fbo_gles3        = gl_check_capability(GL_CAPS_SRGB_FBO_ES3);
+#endif
 
    /* TODO/FIXME - No extensions for float FBO currently. */
 #endif

@@ -44,8 +44,8 @@
   }
 
 int gViewType = 0; // 0:left, 1:right
-video_viewport gViewPort = {0, 0, 1124, 1381, 0, 0};
-GLint frameBuffer = 0;
+video_viewport gViewPort = {1124, 0, 1124, 1381, 0, 0};
+GLint frameBuffer = 2;
 
 namespace {
 static const float kZNear = 1.0f;

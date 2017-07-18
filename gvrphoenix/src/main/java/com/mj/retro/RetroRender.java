@@ -27,6 +27,10 @@ public class RetroRender {
         nativeRetroDrawFirst();
     }
 
+    public void setViewPort(int x, int y, int w, int h){
+        nativeSetViewPort(x, y, w, h);
+    }
+
     public void retroDrawSecond(){
         nativeRetroDrawSecond();
     }
@@ -79,6 +83,7 @@ public class RetroRender {
     private native void nativeSetPath(String strPath);
     private native void nativeRetroInit(String strCorepath, String strGamePath);
     private native void nativeRetroSurfaceChange(int width, int height );
+    private native void nativeSetViewPort(int x, int y, int w, int h);
     private native void nativeRetroDrawFirst( );
     private native void nativeRetroDrawSecond();
 

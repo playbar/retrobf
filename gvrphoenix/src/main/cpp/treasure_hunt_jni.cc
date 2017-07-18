@@ -19,6 +19,7 @@
 #include <memory>
 #include <src/paths.h>
 #include <frontend/drivers/platform_linux.h>
+#include <gfx/video_driver.h>
 
 #include "treasure_hunt_renderer.h"  // NOLINT
 #include "gvr.h"
@@ -154,6 +155,16 @@ JNI_RETRO(void,  nativeRetroInit)(JNIEnv *env, jclass clazz, jstring strCorePath
 JNI_RETRO(void,  nativeRetroSurfaceChange)(JNIEnv *env, jclass clazz, int width, int height )
 {
     RetroSurfaceChange(width, height);
+}
+
+extern video_viewport gViewPort;
+JNI_RETRO(void,  nativeSetViewPort)(JNIEnv *env, jclass clazz, int xx, int yy, int ww, int hh)
+{
+    gViewPort.x = xx;
+    gViewPort.y = yy;
+    gViewPort.width = ww;
+    gViewPort.height = hh;
+
 }
 
 JNI_RETRO(void,  nativeRetroDrawFirst)(JNIEnv *env, jclass clazz)

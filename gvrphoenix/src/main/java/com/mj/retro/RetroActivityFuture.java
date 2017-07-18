@@ -306,8 +306,8 @@ public final class RetroActivityFuture extends GvrActivity implements GvrView.St
 				Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath(),
 				Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.retroarch/files");
 
-		initNativeView();
-//		initializeGvrView();
+//		initNativeView();
+		initializeGvrView();
 
 		modelCube = new float[16];
 		camera = new float[16];
@@ -695,6 +695,8 @@ public final class RetroActivityFuture extends GvrActivity implements GvrView.St
 //		Matrix.multiplyMM(modelView, 0, view, 0, modelFloor, 0);
 //		Matrix.multiplyMM(modelViewProjection, 0, perspective, 0, modelView, 0);
 //		drawFloor();
+		Viewport vp = eye.getViewport();
+		retroRender.setViewPort(vp.x, vp.y, vp.width, vp.height);
 		if( eye.getType() == 1)
 			retroRender.retroDrawFirst();
 		else
