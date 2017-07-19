@@ -1353,12 +1353,12 @@ static bool menu_init(menu_handle_t *menu_data)
          && (settings->uints.bundle_assets_extract_version_current  != settings->uints.bundle_assets_extract_last_version))
    {
       menu_dialog_push_pending(true, MENU_DIALOG_HELP_EXTRACT);
-#ifdef HAVE_COMPRESSION
-      task_push_decompress(settings->arrays.bundle_assets_src,
-            settings->arrays.bundle_assets_dst,
-            NULL, settings->arrays.bundle_assets_dst_subdir,
-            NULL, bundle_decompressed, NULL);
-#endif
+//#ifdef HAVE_COMPRESSION
+//      task_push_decompress(settings->arrays.bundle_assets_src,
+//            settings->arrays.bundle_assets_dst,
+//            NULL, settings->arrays.bundle_assets_dst_subdir,
+//            NULL, bundle_decompressed, NULL);
+//#endif
    }
 
    menu_shader_manager_init();
