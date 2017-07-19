@@ -381,9 +381,15 @@ public final class RetroActivityFuture extends GvrActivity implements GvrView.St
 	}
 
 	@Override
-	public boolean dispatchKeyEvent(android.view.KeyEvent event) {
-		retroRender.dispatchKeyEvent( event);
-		return true;
+	public boolean dispatchKeyEvent(KeyEvent event) {
+//		return super.dispatchKeyEvent(event);
+		if( event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN )
+		{
+			return super.dispatchKeyEvent(event);
+		}else {
+			retroRender.dispatchKeyEvent(event);
+			return true;
+		}
 	}
 
 	@Override

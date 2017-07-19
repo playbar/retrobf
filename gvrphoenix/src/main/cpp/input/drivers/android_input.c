@@ -872,6 +872,12 @@ static void handle_hotplug(android_input_t *android, int *port, int id, int sour
    }
 
 
+   if(source == AINPUT_SOURCE_KEYBOARD && kbd_num < MAX_NUM_KEYBOARDS)
+   {
+      kbd_id[kbd_num] = id;
+      kbd_num++;
+      return;
+   }
    /* if device was not keyboard only, yet did not match any of the devices
     * then try to autoconfigure as gamepad based on device_name. */
    if (!string_is_empty(device_name))
